@@ -1,7 +1,6 @@
 package main;
 
 import db.UserDAO;
-
 import java.util.Scanner;
 
 public class KwartrackApp {
