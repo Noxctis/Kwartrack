@@ -14,9 +14,9 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "root",
+            "database": "kwartrack",
             "username": "root",
-            "database": "kwartrack"
+            "name": "Kwartrack"
         }
     ]
 }
