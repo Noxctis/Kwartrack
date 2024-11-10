@@ -22,26 +22,30 @@ CREATE TABLE accounts (
 );
 
 -- Table for transactions (tracking income and expenses)
-CREATE TABLE transactions (
-    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
-    account_id INT NOT NULL,
-    amount DECIMAL(15, 2) NOT NULL,
-    transaction_type ENUM('income', 'expense', 'utang_payment') NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    description TEXT,
-    transaction_date DATE NOT NULL,
+CREATE TABLE Transaction (
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT, -- The user making the transaction
+    amount DECIMAL(10, 2),
+    transaction_type ENUM('income', 'expense', 'debt_payment') NOT NULL,
+    related_user_id INT, -- The related user for transactions (e.g., creditor)
+    date DATE NOT NULL,
+    description VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (related_user_id) REFERENCES User(user_id)
 );
 
+
 -- Table to track 'utang' (debts)
-CREATE TABLE utang (
-    utang_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    creditor_name VARCHAR(100) NOT NULL,
-    amount DECIMAL(15, 2) NOT NULL,
+CREATE TABLE Debt (
+    debt_id INT PRIMARY KEY AUTO_INCREMENT,
+    debtor_user_id INT, -- User who owes the debt
+    creditor_user_id INT, -- User to whom the debt is owed
+    amount DECIMAL(10, 2),
     due_date DATE,
     status ENUM('unpaid', 'paid') DEFAULT 'unpaid',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (debtor_user_id) REFERENCES User(user_id),
+    FOREIGN KEY (creditor_user_id) REFERENCES User(user_id)
 );
+
