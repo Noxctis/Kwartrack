@@ -2,7 +2,6 @@ package main;
 
 import db.UserDAO;
 import java.util.Scanner;
-import login1.Logn;
 
 public class KwartrackApp {
 
@@ -12,7 +11,7 @@ public class KwartrackApp {
 
         System.out.println("Welcome to Kwartrack!");
 
-        /* System.out.print("1. Register\n2. Login\nChoose an option: ");
+        System.out.print("1. Register\n2. Login\nChoose an option: ");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
@@ -46,11 +45,11 @@ public class KwartrackApp {
                 System.out.println("Invalid option.");
         }
 
-        scanner.close(); */
+        scanner.close();
 
-        Logn loginFrame = new Logn();
+/*         Logn loginFrame = new Logn();
         loginFrame.setVisible(true);
         loginFrame.pack();
-        loginFrame.setLocationRelativeTo(null);
+        loginFrame.setLocationRelativeTo(null); */
     }
 }
