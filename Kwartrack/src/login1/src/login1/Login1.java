@@ -15,6 +15,7 @@ public class Login1 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        UserDAO userDAO = new UserDAO();
         Logn loginFrame = new Logn();
         loginFrame.setVisible(true);
         loginFrame.pack();
