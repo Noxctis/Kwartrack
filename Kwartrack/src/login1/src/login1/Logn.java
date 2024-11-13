@@ -83,7 +83,7 @@ public class Logn extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setIcon(new javax.swing.ImageIcon("Z:\Kwartrack\Kwartrack\src\login1\Kwartrack Logo (smaller).png")); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon("Z:\\Kwartrack\\Kwartrack\\src\\login1\\Kwartrack Logo (smaller).png")); // NOI18N
         jLabel5.setText("jLabel5");
 
         javax.swing.GroupLayout blackBGLayout = new javax.swing.GroupLayout(blackBG);
