@@ -52,7 +52,5 @@ public class KwartrackApp {
         loginFrame.setVisible(true);
         loginFrame.pack();
         loginFrame.setLocationRelativeTo(null);
-
-        String loginUsername = loginFrame.Logn.username;
     }
 }
