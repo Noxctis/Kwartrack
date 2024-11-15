@@ -45,7 +45,7 @@ public class Register extends javax.swing.JFrame {
         lastnamelabel = new javax.swing.JLabel();
         lastname = new javax.swing.JTextField();
         registerinfo = new javax.swing.JButton();
-        displayError = new javax.swing.JLabel();
+        registerErrorMessage = new javax.swing.JLabel();
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Username");
@@ -129,9 +129,9 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        displayError.setBackground(new java.awt.Color(0, 0, 0));
-        displayError.setForeground(new java.awt.Color(255, 51, 51));
-        displayError.setText("     ");
+        registerErrorMessage.setBackground(new java.awt.Color(0, 0, 0));
+        registerErrorMessage.setForeground(new java.awt.Color(255, 51, 51));
+        registerErrorMessage.setText("     ");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -157,7 +157,7 @@ public class Register extends javax.swing.JFrame {
                         .addComponent(registerinfo))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(103, 103, 103)
-                        .addComponent(displayError, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(registerErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(92, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
@@ -173,7 +173,7 @@ public class Register extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
-                .addComponent(displayError)
+                .addComponent(registerErrorMessage)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(firstnamelabel)
                 .addGap(4, 4, 4)
@@ -261,7 +261,7 @@ public class Register extends javax.swing.JFrame {
         String lastname = this.lastname.getText();
         String username = this.username.getText();
         String password = regpassword.getText();
-        displayError.setText(lastname);
+        registerErrorMessage.setText(lastname);
         //displayError.setText(password);
         
         
@@ -278,7 +278,6 @@ public class Register extends javax.swing.JFrame {
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel displayError;
     private javax.swing.JTextField firstname;
     private javax.swing.JLabel firstnamelabel;
     private javax.swing.JLabel jLabel3;
@@ -292,6 +291,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel lastnamelabel;
     private javax.swing.JButton login;
     private javax.swing.JTextField out1;
+    private javax.swing.JLabel registerErrorMessage;
     private javax.swing.JButton registerinfo;
     private javax.swing.JPasswordField regpassword;
     private java.awt.TextArea textArea1;
