@@ -14,7 +14,7 @@ public class UserDAO {
             return false; // Return false if the username is already taken
         }
     
-        String insertQuery = "INSERT INTO users (username, email, password, firstname, lastname) VALUES (?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO users (username, email, password_hash, firstname, lastname) VALUES (?, ?, ?, ?, ?)";
     
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
