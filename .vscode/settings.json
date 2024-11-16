@@ -3,7 +3,11 @@
         "lib/**/*.jar",
         "Kwartrack/lib/jbcrypt-0.4.jar",
         "Kwartrack/lib/mysql-connector-j-9.1.0.jar",
-        "Kwartrack/lib/jBCrypt-0.4.1.jar"
+        "Kwartrack/lib/jBCrypt-0.4.1.jar",
+        "Kwartrack/lib/activation-1.1.jar",
+        "Kwartrack/lib/javax.mail.jar",
+        "Kwartrack/lib/miglayout-4.0.jar",
+        "Kwartrack/lib/TimingFramework-0.55.jar"
     ],
     "sqltools.connections": [
         {
