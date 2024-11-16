@@ -7,26 +7,32 @@ import java.sql.SQLException;
 public class UserDAO {
 
     // Method to register a new user
-    public boolean registerUser(String username, String email, String password) {
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt()); // Hash the password
-
-        String sql = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
-
+    public boolean registerUser(String username, String email, String password, String firstname, String lastname) {
+        String insertQuery = "INSERT INTO users (username, email, password, firstname, lastname) VALUES (?, ?, ?, ?, ?)";
+    
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+             PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
+    
+            // Hash the password using BCrypt
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+    
+            // Set the parameters
             stmt.setString(1, username);
             stmt.setString(2, email);
             stmt.setString(3, hashedPassword);
-
-            int rowsInserted = stmt.executeUpdate();
-            return rowsInserted > 0;
-
+            stmt.setString(4, firstname);
+            stmt.setString(5, lastname);
+    
+            // Execute the query
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Return true if a row was inserted
+    
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return false; // Return false if an error occurred
         }
     }
+    
 
     // Method to login an existing user
     public boolean loginUser(String username, String password) {

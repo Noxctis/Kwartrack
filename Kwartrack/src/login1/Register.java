@@ -266,45 +266,44 @@ public class Register extends javax.swing.JFrame {
 
     private void registerRegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerRegisterButtonActionPerformed
         // TODO add your handling code here:
-        // Validate input
-        String firstname = registerFirstField.getText().trim();
-        String lastname = registerLastField.getText().trim();
+        // Step 1: Get input values
+        String firstName = registerFirstField.getText().trim();
+        String lastName = registerLastField.getText().trim();
         String regUsername = registerUserField.getText().trim();
         String regEmail = registerEmailField.getText().trim();
         char[] regPasswordArray = registerPasswordField.getPassword();
         String regPassword = new String(regPasswordArray).trim();
 
-        if (firstname.isEmpty() || lastname.isEmpty() || regUsername.isEmpty() || regEmail.isEmpty() || regPassword.isEmpty()) {
+        // Step 2: Validate inputs
+        if (firstName.isEmpty() || lastName.isEmpty() || regUsername.isEmpty() || regEmail.isEmpty() || regPassword.isEmpty()) {
             registerErrorMessage.setText("All fields are required.");
-        return;
+            return;
         }
 
-        // Validate email format
         if (!regEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             registerErrorMessage.setText("Invalid email format.");
             return;
         }
 
-        // Check password strength
         if (regPassword.length() < 8 || !regPassword.matches(".*[A-Z].*") || !regPassword.matches(".*[0-9].*")) {
             registerErrorMessage.setText("Password must be at least 8 characters long, contain a number, and an uppercase letter.");
             return;
         }
 
-        // Perform registration
+        // Step 3: Register the user
         UserDAO userDAO = new UserDAO();
-        boolean registrationSuccess = userDAO.registerUser(regUsername, regEmail, regPassword);
+        boolean registrationSuccess = userDAO.registerUser(regUsername, regEmail, regPassword, firstName, lastName);
 
+        // Step 4: Feedback
         if (registrationSuccess) {
             registerErrorMessage.setText("Registration successful!");
-            // Navigate to Login screen
             Logn loginFrame = new Logn();
             loginFrame.setVisible(true);
             loginFrame.pack();
             loginFrame.setLocationRelativeTo(null);
             this.dispose();
         } else {
-            registerErrorMessage.setText("Registration failed. Try again.");
+            registerErrorMessage.setText("Registration failed. Username or email may already exist.");
         }
     }//GEN-LAST:event_registerRegisterButtonActionPerformed
 
