@@ -26,8 +26,8 @@ public class KwartrackApp {
                 System.out.print("Enter password: ");
                 String regPassword = scanner.nextLine();
 
-                boolean registrationSuccess = userDAO.registerUser(regUsername, regEmail, regPassword);
-                System.out.println("Registration successful: " + registrationSuccess);
+                //boolean registrationSuccess = userDAO.registerUser(regUsername, regEmail, regPassword);
+                //System.out.println("Registration successful: " + registrationSuccess);
                 break;
 
             case 2:
@@ -37,8 +37,8 @@ public class KwartrackApp {
                 System.out.print("Enter password: ");
                 String loginPassword = scanner.nextLine();
 
-                boolean loginSuccess = userDAO.loginUser(loginUsername, loginPassword);
-                System.out.println("Login successful: " + loginSuccess);
+                //boolean loginSuccess = userDAO.loginUser(loginUsername, loginPassword);
+                //System.out.println("Login successful: " + loginSuccess);
                 break;
 
             default:

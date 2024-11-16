@@ -9,7 +9,7 @@ public class LoginUser {
         String username = "user123";
         String password = "password123";
         
-        boolean loginSuccess = userDAO.loginUser(username, password);
-        System.out.println("Login successful: " + loginSuccess);
+        //boolean loginSuccess = userDAO.loginUser(username, password);
+        //System.out.println("Login successful: " + loginSuccess);
     }
 }

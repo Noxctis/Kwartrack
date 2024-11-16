@@ -10,7 +10,7 @@ public class RegisterUser {
         String email = "user@example.com";
         String password = "password123";
         
-        boolean registrationSuccess = userDAO.registerUser(username, email, password);
-        System.out.println("Registration successful: " + registrationSuccess);
+        //boolean registrationSuccess = userDAO.registerUser(username, email, password);
+        //System.out.println("Registration successful: " + registrationSuccess);
     }
 }
