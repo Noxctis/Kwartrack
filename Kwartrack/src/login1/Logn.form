@@ -77,33 +77,33 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
-                              <Component id="jLabel5" min="-2" pref="253" max="-2" attributes="0"/>
+                              <Component id="KwartrackLogo" min="-2" pref="253" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="2" attributes="0">
-                                      <Component id="Finance" alignment="2" min="-2" pref="60" max="-2" attributes="0"/>
-                                      <Component id="kwartrack" alignment="2" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="login" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                                      <Component id="register" min="-2" pref="120" max="-2" attributes="0"/>
-                                  </Group>
+                              <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+                              <Component id="loginLoginButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                              <Component id="loginRegisterButton" min="-2" pref="120" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="Finance" alignment="2" min="-2" pref="60" max="-2" attributes="0"/>
+                                  <Component id="kwartrack" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="loginErrorMessage" alignment="2" min="-2" pref="244" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="127" max="32767" attributes="0"/>
+                      <EmptySpace pref="117" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel4" min="-2" pref="60" max="-2" attributes="0"/>
-                              <Component id="username" min="-2" pref="320" max="-2" attributes="0"/>
-                              <Component id="jLabel3" min="-2" pref="60" max="-2" attributes="0"/>
-                              <Component id="password" min="-2" pref="320" max="-2" attributes="0"/>
+                              <Component id="loginUsernameLabel" min="-2" pref="60" max="-2" attributes="0"/>
+                              <Component id="loginUsernameField" min="-2" pref="320" max="-2" attributes="0"/>
+                              <Component id="loginPasswordLabel" min="-2" pref="60" max="-2" attributes="0"/>
+                              <Component id="loginPasswordField" min="-2" pref="320" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -114,28 +114,30 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="33" max="32767" attributes="0"/>
-                      <Component id="jLabel5" min="-2" pref="195" max="-2" attributes="0"/>
+                      <Component id="KwartrackLogo" min="-2" pref="195" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="kwartrack" min="-2" pref="40" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Component id="Finance" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
+                      <Component id="loginErrorMessage" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="login" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="register" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="loginLoginButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="loginRegisterButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace pref="290" max="32767" attributes="0"/>
-                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <Component id="loginUsernameLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                          <Component id="username" min="-2" max="-2" attributes="0"/>
+                          <Component id="loginUsernameField" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <Component id="loginPasswordLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                          <Component id="password" min="-2" max="-2" attributes="0"/>
+                          <Component id="loginPasswordField" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="108" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -165,7 +167,7 @@
                 <Property name="text" type="java.lang.String" value="FINANCE"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel3">
+            <Component class="javax.swing.JLabel" name="loginPasswordLabel">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -173,12 +175,12 @@
                 <Property name="text" type="java.lang.String" value="Password"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="username">
+            <Component class="javax.swing.JTextField" name="loginUsernameField">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usernameActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginUsernameFieldActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel4">
+            <Component class="javax.swing.JLabel" name="loginUsernameLabel">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -186,30 +188,39 @@
                 <Property name="text" type="java.lang.String" value="Username"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="password">
+            <Component class="javax.swing.JPasswordField" name="loginPasswordField">
             </Component>
-            <Component class="javax.swing.JButton" name="register">
+            <Component class="javax.swing.JButton" name="loginRegisterButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="REGISTER"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="registerActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginRegisterButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="login">
+            <Component class="javax.swing.JButton" name="loginLoginButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="LOG IN"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginLoginButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel5">
+            <Component class="javax.swing.JLabel" name="KwartrackLogo">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\user\OneDrive\Documents\NetBeansProjects\login1\Kwartrack Logo (smaller).png"/>
+                  <Image iconType="2" name="C:\Users\user\OneDrive\Documents\NetBeansProjects\Kwartrack UI\Kwartrack Logo (smaller).png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="jLabel5"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="loginErrorMessage">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="0" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value=" "/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>
           </SubComponents>
