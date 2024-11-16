@@ -86,7 +86,7 @@ public class Logn extends javax.swing.JFrame {
             }
         });
 
-        KwartrackLogo.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\OneDrive\\Documents\\NetBeansProjects\\Kwartrack UI\\Kwartrack Logo (smaller).png")); // NOI18N
+        KwartrackLogo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Chrys Sean Sevilla\\Documents\\Kwartrack\\Kwartrack\\src\\login1\\Kwartrack Logo (smaller).png")); // NOI18N
         KwartrackLogo.setText("jLabel5");
 
         loginErrorMessage.setForeground(new java.awt.Color(255, 0, 51));
