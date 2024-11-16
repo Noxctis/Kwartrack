@@ -198,9 +198,9 @@ public class Logn extends javax.swing.JFrame {
         if (isValidUser) {
             loginErrorMessage.setText("Login successful!");
             // Redirect to the dashboard or main screen.
-            //Dashboard dashboard = new Dashboard();
-            //dashboard.setVisible(true);
-            //this.dispose();
+            homePage dashboard = new homePage();
+            dashboard.setVisible(true);
+            this.dispose();
         } else {
             loginErrorMessage.setText("Invalid username or password.");
         }
