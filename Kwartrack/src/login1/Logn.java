@@ -4,6 +4,8 @@
  */
 package login1;
 
+import db.UserDAO;
+
 /**
  *
  * @author user
@@ -186,7 +188,11 @@ public class Logn extends javax.swing.JFrame {
     }//GEN-LAST:event_loginRegisterButtonActionPerformed
 
     private void loginLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginLoginButtonActionPerformed
-        // TODO add your handling code here:
+        UserDAO userDAO = new UserDAO();
+        String username = this.loginUsernameField.getText();
+        String password = loginPasswordField.getText();
+        boolean loginSuccess = userDAO.loginUser(username, password);
+        loginErrorMessage.setText("Login successful: " + loginSuccess);
     }//GEN-LAST:event_loginLoginButtonActionPerformed
 
     /**

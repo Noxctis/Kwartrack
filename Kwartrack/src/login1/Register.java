@@ -4,6 +4,8 @@
  */
 package login1;
 
+import db.UserDAO;
+
 /**
  *
  * @author user
@@ -264,12 +266,14 @@ public class Register extends javax.swing.JFrame {
 
     private void registerRegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerRegisterButtonActionPerformed
         // TODO add your handling code here:
+        UserDAO userDAO = new UserDAO();
         String firstname = this.registerFirstField.getText();
         String lastname = this.registerLastField.getText();
         String username = this.registerUserField.getText();
         String password = registerPasswordField.getText();
         String Email = this.registerEmailField.getText();
-        registerErrorMessage.setText(lastname);
+        boolean registrationSuccess = userDAO.registerUser(username, Email, password);
+        registerErrorMessage.setText("Registration successful: " + registrationSuccess);
         //displayError.setText(password);
         
         
