@@ -4,6 +4,8 @@
  */
 package Login.src.login1;
 
+import db.UserDAO;
+
 /**
  *
  * @author user
@@ -187,6 +189,21 @@ public class Logn extends javax.swing.JFrame {
 
     private void loginLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginLoginButtonActionPerformed
         // TODO add your handling code here:
+        String username = loginUsernameField.getText();
+        String password = new String(loginPasswordField.getPassword());
+    
+        UserDAO userDAO = new UserDAO();
+        boolean isValidUser = userDAO.loginUser(username, password);
+
+        if (isValidUser) {
+            loginErrorMessage.setText("Login successful!");
+            // Redirect to the dashboard or main screen.
+            //Dashboard dashboard = new Dashboard();
+            //dashboard.setVisible(true);
+            //this.dispose();
+        } else {
+            loginErrorMessage.setText("Invalid username or password.");
+        }
     }//GEN-LAST:event_loginLoginButtonActionPerformed
 
     /**

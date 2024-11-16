@@ -4,6 +4,8 @@
  */
 package Login.src.login1;
 
+import db.UserDAO;
+
 /**
  *
  * @author user
@@ -264,16 +266,46 @@ public class Register extends javax.swing.JFrame {
 
     private void registerRegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerRegisterButtonActionPerformed
         // TODO add your handling code here:
-        String firstname = this.registerFirstField.getText();
-        String lastname = this.registerLastField.getText();
-        String username = this.registerUserField.getText();
-        String password = registerPasswordField.getText();
-        String Email = this.registerEmailField.getText();
-        registerErrorMessage.setText(lastname);
-        //displayError.setText(password);
-        
-        
-        
+        // Validate input
+        String firstname = registerFirstField.getText().trim();
+        String lastname = registerLastField.getText().trim();
+        String regUsername = registerUserField.getText().trim();
+        String regEmail = registerEmailField.getText().trim();
+        char[] regPasswordArray = registerPasswordField.getPassword();
+        String regPassword = new String(regPasswordArray).trim();
+
+        if (firstname.isEmpty() || lastname.isEmpty() || regUsername.isEmpty() || regEmail.isEmpty() || regPassword.isEmpty()) {
+            registerErrorMessage.setText("All fields are required.");
+        return;
+        }
+
+        // Validate email format
+        if (!regEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            registerErrorMessage.setText("Invalid email format.");
+            return;
+        }
+
+        // Check password strength
+        if (regPassword.length() < 8 || !regPassword.matches(".*[A-Z].*") || !regPassword.matches(".*[0-9].*")) {
+            registerErrorMessage.setText("Password must be at least 8 characters long, contain a number, and an uppercase letter.");
+            return;
+        }
+
+        // Perform registration
+        UserDAO userDAO = new UserDAO();
+        boolean registrationSuccess = userDAO.registerUser(regUsername, regEmail, regPassword);
+
+        if (registrationSuccess) {
+            registerErrorMessage.setText("Registration successful!");
+            // Navigate to Login screen
+            Logn loginFrame = new Logn();
+            loginFrame.setVisible(true);
+            loginFrame.pack();
+            loginFrame.setLocationRelativeTo(null);
+            this.dispose();
+        } else {
+            registerErrorMessage.setText("Registration failed. Try again.");
+        }
     }//GEN-LAST:event_registerRegisterButtonActionPerformed
 
     private void out1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_out1ActionPerformed
