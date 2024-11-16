@@ -1,0 +1,23 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "Kwartrack/lib/jbcrypt-0.4.jar",
+        "Kwartrack/lib/mysql-connector-j-9.1.0.jar",
+        "Kwartrack/lib/jBCrypt-0.4.1.jar"
+    ],
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "database": "kwartrack",
+            "username": "root",
+            "name": "Kwartrack"
+        }
+    ]
+}
