@@ -12,11 +12,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
+import main.Dashboard;
 
 public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
 
@@ -256,6 +256,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
 
                         // Launch the Dashboard
                         // launchDashboard(username);
+                        launchDashboard();
                         break;
 
                     case "Incorrect password":
@@ -287,6 +288,17 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
             // Launch the dashboard
             //Dashboard dashboard = new Dashboard(username); // Assuming you have a Dashboard class
             //dashboard.setVisible(true);
+        });
+    }
+
+    private void launchDashboard() {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Dispose the current login window
+            javax.swing.SwingUtilities.getWindowAncestor(login).dispose();
+
+            // Launch the dashboard
+            Dashboard dashboard = new Dashboard(); // Assuming you have a Dashboard class
+            dashboard.setVisible(true);
         });
     }
 
