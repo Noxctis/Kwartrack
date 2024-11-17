@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-import db.DatabaseConnection;
-
 public class UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAO.class.getName());
@@ -47,7 +45,9 @@ public class UserDAO {
             // Convert char[] password to String (temporarily)
             String passwordString = new String(password);
             String hashedPassword = BCrypt.hashpw(passwordString, BCrypt.gensalt());
-
+            // Clear password string immediately after use
+            java.util.Arrays.fill(password, '\0');
+            
             stmt.setString(1, username);
             stmt.setString(2, email);
             stmt.setString(3, hashedPassword);
