@@ -4,24 +4,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
+import db.DatabaseConnection;
 
 public class UserDAO {
 
-    public User registerUser(String username, String email, String password, String firstname, String lastname) {
-        // Check if the username or email already exists
+    private static final Logger LOGGER = Logger.getLogger(UserDAO.class.getName());
+
+    // Register a new user
+    public User registerUser(String username, String email, char[] password, String firstname, String lastname) {
+        
         if (checkIfUsernameExists(username)) {
-            System.out.println("Username already exists.");
+            LOGGER.warning("Username already exists: " + username);
+            javax.swing.JOptionPane.showMessageDialog(null, // Use 'null' to center the dialog on screen
+                    "Username already exists. Please choose another username.",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
             return null;
         }
         if (checkIfEmailExists(email)) {
-            System.out.println("Email already exists.");
+            LOGGER.warning("Email already exists: " + email);
+            javax.swing.JOptionPane.showMessageDialog(null, // Use 'null' to center the dialog on screen
+                    "Email already exists. Please choose another email.",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
             return null;
         }
 
-        // Validate password strength
-        if (password.length() < 8 || !password.matches(".*[A-Z].*") || !password.matches(".*\\d.*")) {
-            System.out
-                    .println("Password must be at least 8 characters long, contain an uppercase letter, and a number.");
+        if (!isPasswordStrong(password)) {
+            LOGGER.warning("Password does not meet strength requirements.");
+            javax.swing.JOptionPane.showMessageDialog(null, // Use 'null' to center the dialog on screen
+                    "Password does not meet strength requirements.",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
             return null;
         }
 
@@ -29,37 +44,61 @@ public class UserDAO {
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            // Convert char[] password to String (temporarily)
+            String passwordString = new String(password);
+            String hashedPassword = BCrypt.hashpw(passwordString, BCrypt.gensalt());
 
-            // Hash the password using BCrypt
-            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
-            // Set the parameters
             stmt.setString(1, username);
             stmt.setString(2, email);
             stmt.setString(3, hashedPassword);
             stmt.setString(4, firstname);
             stmt.setString(5, lastname);
 
-            // Execute the query
             int rowsAffected = stmt.executeUpdate();
+
             if (rowsAffected > 0) {
-                // Retrieve the generated userID
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        int userID = generatedKeys.getInt(1); // Retrieve generated userID
-                        // Return a User object
+                        int userID = generatedKeys.getInt(1);
                         return new User(userID, firstname, lastname, email, username);
                     }
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Registration failed: " + e.getMessage());
+            LOGGER.severe("Registration failed: " + e.getMessage());
+        }finally {
+            // Clear the password array after use for security
+            java.util.Arrays.fill(password, '\0');
         }
-        return null; // Return null if registration fails
+        return null;
     }
 
-    // Method to login an existing user
-    public String loginUserWithFeedback(String username, String password) {
+    // Check password strength
+    private boolean isPasswordStrong(char[] password) {
+        if (password.length < 8) {
+            return false;
+        }
+
+        boolean hasUppercase = false;
+        boolean hasDigit = false;
+
+        for (char c : password) {
+            if (Character.isUpperCase(c)) {
+                hasUppercase = true;
+            }
+            if (Character.isDigit(c)) {
+                hasDigit = true;
+            }
+            if (hasUppercase && hasDigit) {
+                break; // Stop early if both conditions are met
+            }
+        }
+
+        return hasUppercase && hasDigit;
+    }
+
+    // Login user with feedback
+    public String loginUserWithFeedback(String username, char[] password) {
         String sql = "SELECT password_hash FROM users WHERE username = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -70,7 +109,9 @@ public class UserDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String storedHash = rs.getString("password_hash");
-                    if (BCrypt.checkpw(password, storedHash)) {
+                    // Convert char[] password to String (temporarily)
+                    String passwordString = new String(password);
+                    if (BCrypt.checkpw(passwordString, storedHash)) {
                         return "Login successful";
                     } else {
                         return "Incorrect password";
@@ -80,7 +121,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Login failed: " + e.getMessage());
+            LOGGER.severe("Login failed: " + e.getMessage());
         }
         return "Error occurred during login";
     }
@@ -93,13 +134,13 @@ public class UserDAO {
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                return count > 0; // Return true if the username exists
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
             }
         } catch (SQLException e) {
-            System.err.println("Error checking username: " + e.getMessage());
+            LOGGER.severe("Error checking username: " + e.getMessage());
         }
         return false;
     }
@@ -112,18 +153,18 @@ public class UserDAO {
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                return count > 0; // Return true if the email exists
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
             }
         } catch (SQLException e) {
-            System.err.println("Error checking email: " + e.getMessage());
+            LOGGER.severe("Error checking email: " + e.getMessage());
         }
         return false;
     }
 
-    // Retrieve user details by username
+    // Retrieve user by username
     public User getUserByUsername(String username) {
         String query = "SELECT user_id, firstname, lastname, email, username FROM users WHERE username = ?";
 
@@ -131,56 +172,19 @@ public class UserDAO {
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new User(
-                        rs.getInt("user_id"),
-                        rs.getString("firstname"),
-                        rs.getString("lastname"),
-                        rs.getString("email"),
-                        rs.getString("username"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error retrieving user: " + e.getMessage());
-        }
-        return null;
-    }
-
-    // Optional: Transaction management for registering a user (if needed for atomic
-    // operations)
-    public boolean registerUserWithTransaction(String username, String email, String password, String firstname,
-            String lastname) {
-        String insertQuery = "INSERT INTO users (username, email, password_hash, firstname, lastname) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            conn.setAutoCommit(false); // Start transaction
-
-            // Check if username or email exists
-            if (checkIfUsernameExists(username) || checkIfEmailExists(email)) {
-                System.out.println("Username or email already exists.");
-                conn.rollback(); // Rollback transaction
-                return false;
-            }
-
-            try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
-                String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-                stmt.setString(1, username);
-                stmt.setString(2, email);
-                stmt.setString(3, hashedPassword);
-                stmt.setString(4, firstname);
-                stmt.setString(5, lastname);
-
-                int rowsAffected = stmt.executeUpdate();
-                if (rowsAffected > 0) {
-                    conn.commit(); // Commit transaction
-                    return true;
-                } else {
-                    conn.rollback(); // Rollback transaction
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                            rs.getInt("user_id"),
+                            rs.getString("firstname"),
+                            rs.getString("lastname"),
+                            rs.getString("email"),
+                            rs.getString("username"));
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Transaction failed: " + e.getMessage());
+            LOGGER.severe("Error retrieving user: " + e.getMessage());
         }
-        return false;
+        return null;
     }
 }
