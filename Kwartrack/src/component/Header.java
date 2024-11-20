@@ -1,7 +1,7 @@
 package component;
 
-import swing.PanelTransparent;
 import java.awt.event.ActionListener;
+import swing.PanelTransparent;
 
 public class Header extends PanelTransparent {
 
@@ -26,9 +26,9 @@ public class Header extends PanelTransparent {
         buttonBadges1 = new swing.ButtonBadges();
         buttonBadges2 = new swing.ButtonBadges();
 
-        cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/menu.png"))); // NOI18N
+        cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu.png"))); // NOI18N
 
-        pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/profile.jpg"))); // NOI18N
+        pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.jpg"))); // NOI18N
 
         lbUserName.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lbUserName.setForeground(new java.awt.Color(127, 127, 127));
@@ -40,11 +40,11 @@ public class Header extends PanelTransparent {
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         buttonBadges1.setForeground(new java.awt.Color(250, 49, 49));
-        buttonBadges1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/notification.png"))); // NOI18N
+        buttonBadges1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/notification.png"))); // NOI18N
         buttonBadges1.setBadges(12);
 
         buttonBadges2.setForeground(new java.awt.Color(63, 178, 232));
-        buttonBadges2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/message.png"))); // NOI18N
+        buttonBadges2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/message.png"))); // NOI18N
         buttonBadges2.setBadges(5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

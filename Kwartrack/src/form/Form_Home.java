@@ -39,11 +39,11 @@ public class Form_Home extends javax.swing.JPanel {
 //                showMessage("Update Student : " + student.getName());
 //            }
 //        };
-        table1.addRow(new ModelStudent("utang", "84/6/13", "asd", 999).toRowTable());
-        table1.addRow(new ModelStudent("bayad", "56032095", "zxc", 999).toRowTable());
-        table1.addRow(new ModelStudent("bitch", "12/78/15", "qwe", 999).toRowTable());
-        table1.addRow(new ModelStudent("fuck", "56/23/96", "fgh", 999).toRowTable());
-        table1.addRow(new ModelStudent("ni-", "48/89/32", "rty", 999).toRowTable());
+        // table1.addRow(new ModelStudent("utang", "84/6/13", "asd", 999).toRowTable());
+        // table1.addRow(new ModelStudent("bayad", "56032095", "zxc", 999).toRowTable());
+        // table1.addRow(new ModelStudent("bitch", "12/78/15", "qwe", 999).toRowTable());
+        // table1.addRow(new ModelStudent("fuck", "56/23/96", "fgh", 999).toRowTable());
+        // table1.addRow(new ModelStudent("ni-", "48/89/32", "rty", 999).toRowTable());
 
         
 //        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/com/raven/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
@@ -58,9 +58,9 @@ public class Form_Home extends javax.swing.JPanel {
 
     private void initCardData() {
         Icon icon1 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
-        card1.setData(new ModelCard("Total Balance", 5100, icon1));
+        //card1.setData(new ModelCard("Total Balance", 5100, icon1));
         Icon icon2 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
-        card2.setData(new ModelCard("Expense This Week", 2000, icon2));
+        //card2.setData(new ModelCard("Expense This Week", 2000, icon2));
 //        Icon icon3 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.SHOPPING_BASKET, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
 //        card3.setData(new ModelCard("Expense", 3000, 80, icon3));
 //        Icon icon4 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.BUSINESS_CENTER, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
