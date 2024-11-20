@@ -17,22 +17,22 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="cmdMenu" min="-2" pref="38" max="-2" attributes="0"/>
-              <EmptySpace pref="362" max="32767" attributes="0"/>
-              <Component id="buttonBadges2" min="-2" pref="38" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="359" max="-2" attributes="0"/>
+              <Component id="buttonBadges2" pref="38" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="buttonBadges1" min="-2" pref="38" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="8" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lbUserName" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Component id="lbRole" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Component id="pic" min="-2" pref="38" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -50,7 +50,7 @@
                   <Component id="pic" max="32767" attributes="0"/>
                   <Component id="jSeparator1" max="32767" attributes="0"/>
                   <Component id="buttonBadges1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="buttonBadges2" alignment="0" max="32767" attributes="0"/>
+                  <Component id="buttonBadges2" alignment="0" min="-2" pref="38" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -58,7 +58,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="com.raven.swing.Button2" name="cmdMenu">
+    <Component class="com.raven.swing.Button" name="cmdMenu">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/com/raven/icon/menu.png"/>

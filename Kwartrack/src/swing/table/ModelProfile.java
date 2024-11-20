@@ -20,8 +20,8 @@ public class ModelProfile {
         this.name = name;
     }
 
-    public ModelProfile(Icon icon, String name) {
-        this.icon = icon;
+    public ModelProfile(/*Icon icon,*/ String name) {
+        //this.icon = icon;
         this.name = name;
     }
 
