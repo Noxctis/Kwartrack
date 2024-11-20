@@ -4,7 +4,9 @@ import com.raven.component.Header;
 import com.raven.component.Menu;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
-import com.raven.form.Form1;
+import com.raven.form.Form1; 
+import com.raven.form.Form2; //import new "forms"
+import com.raven.form.Form3;
 import com.raven.form.Form_Home;
 import com.raven.form.MainForm;
 import com.raven.swing.MenuItem;
@@ -34,11 +36,11 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void init() {
-        layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10");
+        layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10"); //arranged components in the window
         bg.setLayout(layout);
-        menu = new Menu();
-        header = new Header();
-        main = new MainForm();
+        menu = new Menu(); //navigation drawer
+        header = new Header(); // top portion
+        main = new MainForm(); // content area
         //  Init google icon font
         IconFontSwing.register(GoogleMaterialDesignIcons.getIconFont());
         menu.addEvent(new EventMenuSelected() {
@@ -49,7 +51,11 @@ public class Main extends javax.swing.JFrame {
                     if (subMenuIndex == 0) {
                         main.showForm(new Form_Home());
                     } else if (subMenuIndex == 1) {
-                        main.showForm(new Form1());
+                        main.showForm(new Form1()); // shows form 1
+                    } else if (subMenuIndex == 2){
+                        main.showForm(new Form2());
+                    } else if (subMenuIndex == 3){
+                        main.showForm(new Form3());
                     }
                 }
             }
