@@ -284,7 +284,6 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         javax.swing.SwingUtilities.invokeLater(() -> {
             // Dispose the current login window
             javax.swing.SwingUtilities.getWindowAncestor(login).dispose();
-
             // Launch the dashboard
             //Dashboard dashboard = new Dashboard(username); // Assuming you have a Dashboard class
             //dashboard.setVisible(true);
