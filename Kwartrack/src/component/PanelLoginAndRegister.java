@@ -128,6 +128,14 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
                             javax.swing.JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                
+                if (username.length() < 4) {
+                    javax.swing.JOptionPane.showMessageDialog(login,
+                            "Username must be at least 4 characters long!",
+                            "Error",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 if (!isValidEmail(email)) {
                     javax.swing.JOptionPane.showMessageDialog(register, 
