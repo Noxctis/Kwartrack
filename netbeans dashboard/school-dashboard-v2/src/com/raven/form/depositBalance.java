@@ -30,10 +30,10 @@ public class depositBalance extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        depositBalanceMoneyField = new javax.swing.JTextArea();
+        addExpenseMoneyField = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        depositBalanceDateField = new javax.swing.JTextArea();
+        addExpenseDateField = new javax.swing.JTextArea();
         ayosButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,16 +48,16 @@ public class depositBalance extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("GET MONEY");
 
-        depositBalanceMoneyField.setColumns(20);
-        depositBalanceMoneyField.setRows(5);
-        jScrollPane1.setViewportView(depositBalanceMoneyField);
+        addExpenseMoneyField.setColumns(20);
+        addExpenseMoneyField.setRows(5);
+        jScrollPane1.setViewportView(addExpenseMoneyField);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("WHAT DATE");
 
-        depositBalanceDateField.setColumns(20);
-        depositBalanceDateField.setRows(5);
-        jScrollPane2.setViewportView(depositBalanceDateField);
+        addExpenseDateField.setColumns(20);
+        addExpenseDateField.setRows(5);
+        jScrollPane2.setViewportView(addExpenseDateField);
 
         ayosButton.setText("Ayos!");
         ayosButton.addActionListener(new java.awt.event.ActionListener() {
@@ -127,56 +127,54 @@ public class depositBalance extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        getAccessibleContext().setAccessibleName("DEPOSIT");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayosButtonActionPerformed
         // TODO add your handling code here:
-        double balance = Double.parseDouble(depositBalanceMoneyField.getText());
-        String date = depositBalanceDateField.getText();
+        double balance = Double.parseDouble(addExpenseMoneyField.getText());
+        String balanceBate = addExpenseDateField.getText();
     }//GEN-LAST:event_ayosButtonActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(depositBalance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(depositBalance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(depositBalance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(depositBalance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new depositBalance().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(depositBalance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(depositBalance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(depositBalance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(depositBalance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new depositBalance().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea addExpenseDateField;
+    private javax.swing.JTextArea addExpenseMoneyField;
     private javax.swing.JButton ayosButton;
-    private javax.swing.JTextArea depositBalanceDateField;
-    private javax.swing.JTextArea depositBalanceMoneyField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

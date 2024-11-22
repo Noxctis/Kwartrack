@@ -12,6 +12,8 @@ import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+
+
 public class Form_Home extends javax.swing.JPanel {
 
     public Form_Home() {
@@ -287,6 +289,7 @@ public class Form_Home extends javax.swing.JPanel {
         depositBalance depositBalanceWindow = new depositBalance();
         depositBalanceWindow.setVisible(true);
         depositBalanceWindow.pack();
+        depositBalanceWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         depositBalanceWindow.setLocationRelativeTo(null);
     }//GEN-LAST:event_dashboardBalanceButtonActionPerformed
 
@@ -295,6 +298,7 @@ public class Form_Home extends javax.swing.JPanel {
         addExpense addExpenseWindow = new addExpense();
         addExpenseWindow.setVisible(true);
         addExpenseWindow.pack();
+        addExpenseWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addExpenseWindow.setLocationRelativeTo(null);
     }//GEN-LAST:event_dashboardExpenseButtonActionPerformed
 
@@ -303,6 +307,7 @@ public class Form_Home extends javax.swing.JPanel {
         addDebt addDebtWindow = new addDebt();
         addDebtWindow.setVisible(true);
         addDebtWindow.pack();
+        addDebtWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addDebtWindow.setLocationRelativeTo(null);
     }//GEN-LAST:event_dashboardDebtButtonActionPerformed
 
