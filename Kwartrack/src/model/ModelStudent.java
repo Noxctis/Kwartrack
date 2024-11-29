@@ -1,9 +1,5 @@
 package model;
 
-import swing.table.EventAction;
-import swing.table.ModelAction;
-import swing.table.ModelProfile;
-import java.text.DecimalFormat;
 import javax.swing.Icon;
 
 public class ModelStudent {

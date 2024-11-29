@@ -1,8 +1,8 @@
 package form;
 
-public class Form1 extends javax.swing.JPanel {
+public class Form3 extends javax.swing.JPanel {
 
-    public Form1() {
+    public Form3() {
         initComponents();
         setOpaque(false);
     }

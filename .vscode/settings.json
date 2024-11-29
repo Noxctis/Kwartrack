@@ -34,6 +34,8 @@
         }
     ],
     "java.project.sourcePaths": [
-        "Kwartrack\\src"
-    ]
+        "Kwartrack/src",
+        "netbeans dashboard/school-dashboard-v2/src/com/raven/main"
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
 }
