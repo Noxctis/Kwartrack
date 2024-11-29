@@ -158,13 +158,13 @@ public class addDebt extends javax.swing.JFrame {
         // Retrieve input data
         double debt = Double.parseDouble(addDebtMoneyField.getText());
         String debtDateIssued = addDebtDateField.getText();
-        String debtDateDue = addDebtDueDateField.getText(); // Add this field if available
+        /* String debtDateDue = addDebtDueDateField.getText(); // Add this field if available
         if (debtDateDue.isEmpty()) {
             debtDateDue = null; // Optional due date
-        }
+        } */
 
         // Create an AddDebt object
-        AddDebt addDebt = new AddDebt(debtorId, creditorId, debt, debtDateIssued, debtDateDue);
+        AddDebt addDebt = new AddDebt(debtorId, creditorId, debt);
 
         // Save to database
         if (addDebt.saveToDatabase()) {

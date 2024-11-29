@@ -1,5 +1,6 @@
 package model;
 
+import db.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -13,19 +14,16 @@ public class AddDebt {
     private boolean isPaid;
 
     // Constructor
-    public AddDebt(int debtorId, int creditorId, double amount, String dateIssued, String dateDue) {
+    public AddDebt(int debtorId, int creditorId, double amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative.");
-        }
-        if (!isValidDate(dateIssued) || (dateDue != null && !isValidDate(dateDue))) {
-            throw new IllegalArgumentException("Invalid date format. Expected: YYYY-MM-DD");
         }
 
         this.debtorId = debtorId;
         this.creditorId = creditorId;
         this.amount = amount;
-        this.dateIssued = dateIssued;
-        this.dateDue = dateDue;
+        this.dateIssued = java.time.LocalDate.now().toString(); // Set current date as dateIssued
+        this.dateDue = null; // Default to null
         this.isPaid = false; // Default to unpaid
     }
 
@@ -36,8 +34,8 @@ public class AddDebt {
 
     // Save debt to the database
     public boolean saveToDatabase() {
-        String insertQuery = "INSERT INTO debts (debtor_id, creditor_id, amount, date_issued, date_due, is_paid) " +
-                             "VALUES (?, ?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO debts (debtor_id, creditor_id, amount, date_issued, is_paid) " +
+                             "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
@@ -46,12 +44,7 @@ public class AddDebt {
             stmt.setInt(2, this.creditorId);
             stmt.setDouble(3, this.amount);
             stmt.setString(4, this.dateIssued);
-            if (this.dateDue != null) {
-                stmt.setString(5, this.dateDue);
-            } else {
-                stmt.setNull(5, java.sql.Types.DATE);
-            }
-            stmt.setBoolean(6, this.isPaid);
+            stmt.setBoolean(5, this.isPaid);
 
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
