@@ -2,9 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package form;
-
-import model.DepositBalance;
+package com.raven.form;
 
 /**
  *
@@ -135,44 +133,10 @@ public class depositBalance extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayosButtonActionPerformed
-    try {
-        // Assuming the user is logged in, and userId is known
-        int userId = 1; // Replace with the actual logged-in user's ID
-        int categoryId = 2; // Replace with the selected category ID (if applicable)
-
-        // Retrieve data from input fields
-        double amount = Double.parseDouble(depositBalanceMoneyField.getText());
+        // TODO add your handling code here:
+        double balance = Double.parseDouble(depositBalanceMoneyField.getText());
         String date = depositBalanceDateField.getText();
-
-        // Create a DepositBalance object
-        DepositBalance deposit = new DepositBalance(userId, categoryId, amount, date);
-
-        // Save to database
-        if (deposit.saveToDatabase()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Deposit saved successfully:\n" + deposit,
-                    "Success",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Failed to save deposit. Please try again.",
-                    "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
-
-    } catch (NumberFormatException e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "Invalid amount. Please enter a valid number.",
-                "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-    } catch (IllegalArgumentException e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-                e.getMessage(),
-                "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
-}//GEN-LAST:event_ayosButtonActionPerformed
-
+    }//GEN-LAST:event_ayosButtonActionPerformed
 
     /**
      * @param args the command line arguments
