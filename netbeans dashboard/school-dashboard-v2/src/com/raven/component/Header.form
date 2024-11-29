@@ -19,11 +19,11 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="cmdMenu" min="-2" pref="38" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="359" max="-2" attributes="0"/>
-              <Component id="buttonBadges2" pref="38" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="buttonBadges1" min="-2" pref="38" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="150" max="32767" attributes="0"/>
+              <Component id="mailBadge" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="buttonBadges1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="8" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -50,7 +50,7 @@
                   <Component id="pic" max="32767" attributes="0"/>
                   <Component id="jSeparator1" max="32767" attributes="0"/>
                   <Component id="buttonBadges1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="buttonBadges2" alignment="0" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="mailBadge" alignment="0" min="-2" pref="38" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -64,6 +64,9 @@
           <Image iconType="3" name="/com/raven/icon/menu.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdMenuActionPerformed"/>
+      </Events>
     </Component>
     <Container class="com.raven.swing.ImageAvatar" name="pic">
       <Properties>
@@ -111,7 +114,7 @@
         <Property name="badges" type="int" value="12"/>
       </Properties>
     </Component>
-    <Component class="com.raven.swing.ButtonBadges" name="buttonBadges2">
+    <Component class="com.raven.swing.ButtonBadges" name="mailBadge">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="e8" green="b2" red="3f" type="rgb"/>

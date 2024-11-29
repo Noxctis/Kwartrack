@@ -8,7 +8,7 @@ public class MainForm extends javax.swing.JPanel {
 
     public MainForm() {
         initComponents();
-        setOpaque(true);
+        setOpaque(false);
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(10, 20, 10, 20));
     }

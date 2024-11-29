@@ -44,7 +44,7 @@ public class addExpense extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(153, 153, 153));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("GET MONEY");
+        jLabel1.setText("GET MONEYs");
 
         addExpenseMoneyField.setColumns(20);
         addExpenseMoneyField.setRows(5);
