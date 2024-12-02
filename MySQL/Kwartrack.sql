@@ -22,7 +22,6 @@ CREATE TABLE user_sessions (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
-
 -- Categories table (for expenses, income, etc.)
 CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
