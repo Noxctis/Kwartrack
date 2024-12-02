@@ -58,20 +58,20 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="com.raven.swing.Button" name="cmdMenu">
+    <Component class="swing.Button" name="cmdMenu">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/raven/icon/menu.png"/>
+          <Image iconType="3" name="/icon/menu.png"/>
         </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdMenuActionPerformed"/>
       </Events>
     </Component>
-    <Container class="com.raven.swing.ImageAvatar" name="pic">
+    <Container class="swing.ImageAvatar" name="pic">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/raven/icon/profile.jpg"/>
+          <Image iconType="3" name="/icon/profile.jpg"/>
         </Property>
       </Properties>
 
@@ -103,24 +103,24 @@
         <Property name="orientation" type="int" value="1"/>
       </Properties>
     </Component>
-    <Component class="com.raven.swing.ButtonBadges" name="buttonBadges1">
+    <Component class="swing.ButtonBadges" name="buttonBadges1">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="31" green="31" red="fa" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/raven/icon/notification.png"/>
+          <Image iconType="3" name="/icon/notification.png"/>
         </Property>
         <Property name="badges" type="int" value="12"/>
       </Properties>
     </Component>
-    <Component class="com.raven.swing.ButtonBadges" name="mailBadge">
+    <Component class="swing.ButtonBadges" name="mailBadge">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="e8" green="b2" red="3f" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/raven/icon/message.png"/>
+          <Image iconType="3" name="/icon/message.png"/>
         </Property>
         <Property name="badges" type="int" value="5"/>
       </Properties>
