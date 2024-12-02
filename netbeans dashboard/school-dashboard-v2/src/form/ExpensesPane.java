@@ -1,4 +1,4 @@
-package com.raven.form;
+package form;
 
 public class ExpensesPane extends javax.swing.JPanel {
 

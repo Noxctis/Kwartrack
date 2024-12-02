@@ -1,4 +1,4 @@
-package com.raven.form;
+package form;
 
 public class DebtsPane extends javax.swing.JPanel {
 
