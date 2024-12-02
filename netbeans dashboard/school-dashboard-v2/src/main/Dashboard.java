@@ -21,6 +21,7 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import swingacrylic.SwingAcrylic;
+import db.SessionManager;
 
 public class Dashboard extends javax.swing.JFrame {
 
@@ -36,6 +37,16 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     private void init() {
+        // Check if the session is valid
+    /*if (!SessionManager.getInstance().isSessionValid()) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+                "Your session has expired. Please log in again.",
+                "Session Expired",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        //new Login().setVisible(true); // Redirect to login screen
+        this.dispose(); // Close the current dashboard
+        return; // Stop further initialization
+    }*/
         layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10");
         bg.setLayout(layout);
         menu = new Menu();
@@ -174,7 +185,7 @@ public class Dashboard extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override

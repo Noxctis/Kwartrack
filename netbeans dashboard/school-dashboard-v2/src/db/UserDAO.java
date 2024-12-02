@@ -4,14 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 import java.util.logging.Logger;
+
 public class UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAO.class.getName());
 
     // Register a new user
     public User registerUser(String username, String email, char[] password, String firstname, String lastname) {
-        
+
         if (checkIfUsernameExists(username)) {
             LOGGER.warning("Username already exists: " + username);
             javax.swing.JOptionPane.showMessageDialog(null, // Use 'null' to center the dialog on screen
@@ -47,7 +49,7 @@ public class UserDAO {
             String hashedPassword = BCrypt.hashpw(passwordString, BCrypt.gensalt());
             // Clear password string immediately after use
             java.util.Arrays.fill(password, '\0');
-            
+
             stmt.setString(1, username);
             stmt.setString(2, email);
             stmt.setString(3, hashedPassword);
@@ -66,7 +68,7 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.severe("Registration failed: " + e.getMessage());
-        }finally {
+        } finally {
             // Clear the password array after use for security
             java.util.Arrays.fill(password, '\0');
         }
@@ -97,21 +99,46 @@ public class UserDAO {
         return hasUppercase && hasDigit;
     }
 
-    // Login user with feedback
-    public String loginUserWithFeedback(String username, char[] password) {
-        String sql = "SELECT password_hash FROM users WHERE username = ?";
+        // Check if a username exists
+        public boolean checkIfUsernameExists(String username) {
+            String query = "SELECT COUNT(*) FROM users WHERE username = ?";
+    
+            try (Connection conn = DatabaseConnection.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(query)) {
+    
+                stmt.setString(1, username);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1) > 0;
+                    }
+                }
+            } catch (SQLException e) {
+                LOGGER.severe("Error checking username: " + e.getMessage());
+            }
+            return false;
+        }
 
+    // Login user with feedback and session token generation
+    public String loginUserWithFeedback(String username, char[] password) {
+        String sql = "SELECT user_id, password_hash FROM users WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, username);
-
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String storedHash = rs.getString("password_hash");
-                    // Convert char[] password to String (temporarily)
+                    int userId = rs.getInt("user_id");
                     String passwordString = new String(password);
+
                     if (BCrypt.checkpw(passwordString, storedHash)) {
+                        // Generate session token
+                        String sessionToken = generateSessionToken();
+                        long expirationTime = System.currentTimeMillis() + (15 * 60 * 1000); // 15 minutes
+
+                        // Save session token to the database
+                        saveSessionToken(userId, sessionToken, expirationTime);
+
                         return "Login successful";
                     } else {
                         return "Incorrect password";
@@ -126,23 +153,38 @@ public class UserDAO {
         return "Error occurred during login";
     }
 
-    // Check if a username exists
-    public boolean checkIfUsernameExists(String username) {
-        String query = "SELECT COUNT(*) FROM users WHERE username = ?";
+    // Generate a secure session token (UUID with timestamp)
+    private String generateSessionToken() {
+        return UUID.randomUUID().toString() + "-" + System.currentTimeMillis();
+    }
 
+    // Save session token to database
+    public void saveSessionToken(int userId, String sessionToken, long expirationTime) throws SQLException {
+        String sql = "INSERT INTO user_sessions (user_id, session_token, expires_at) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setString(2, sessionToken);
+            stmt.setTimestamp(3, new java.sql.Timestamp(expirationTime));
+            stmt.executeUpdate();
+        }
+    }
 
-            stmt.setString(1, username);
+    // Retrieve session token for a user
+    public String getSessionToken(int userId) throws SQLException {
+        String sql = "SELECT session_token FROM user_sessions WHERE user_id = ? AND expires_at > NOW()";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    return rs.getString("session_token");
                 }
             }
         } catch (SQLException e) {
-            LOGGER.severe("Error checking username: " + e.getMessage());
+            LOGGER.severe("Error retrieving session token: " + e.getMessage());
         }
-        return false;
+        return null; // No valid session token found
     }
 
     // Check if an email exists
