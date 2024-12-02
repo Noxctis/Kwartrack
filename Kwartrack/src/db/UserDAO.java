@@ -99,6 +99,25 @@ public class UserDAO {
         return hasUppercase && hasDigit;
     }
 
+        // Check if a username exists
+        public boolean checkIfUsernameExists(String username) {
+            String query = "SELECT COUNT(*) FROM users WHERE username = ?";
+    
+            try (Connection conn = DatabaseConnection.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(query)) {
+    
+                stmt.setString(1, username);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1) > 0;
+                    }
+                }
+            } catch (SQLException e) {
+                LOGGER.severe("Error checking username: " + e.getMessage());
+            }
+            return false;
+        }
+
     // Login user with feedback and session token generation
     public String loginUserWithFeedback(String username, char[] password) {
         String sql = "SELECT user_id, password_hash FROM users WHERE username = ?";
