@@ -47,10 +47,20 @@ public class Header extends PanelTransparent {
         buttonBadges1.setForeground(new java.awt.Color(250, 49, 49));
         buttonBadges1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/notification.png"))); // NOI18N
         buttonBadges1.setBadges(12);
+        buttonBadges1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBadges1ActionPerformed(evt);
+            }
+        });
 
         mailBadge.setForeground(new java.awt.Color(63, 178, 232));
         mailBadge.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/message.png"))); // NOI18N
         mailBadge.setBadges(5);
+        mailBadge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mailBadgeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -94,6 +104,17 @@ public class Header extends PanelTransparent {
     private void cmdMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMenuActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmdMenuActionPerformed
+
+    private void mailBadgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailBadgeActionPerformed
+    /*SessionManager.getInstance().clearSession(); // Clear session data
+    new Login().setVisible(true); // Redirect to login
+    this.dispose(); // Close current form*/
+
+    }//GEN-LAST:event_mailBadgeActionPerformed
+
+    private void buttonBadges1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBadges1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonBadges1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swing.ButtonBadges buttonBadges1;

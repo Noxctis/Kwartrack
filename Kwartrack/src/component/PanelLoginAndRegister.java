@@ -1,5 +1,7 @@
 package component;
 
+import db.SessionManager;
+import db.TokenGenerator;
 import db.User;
 import db.UserDAO;
 import model.ModelLogin;
@@ -130,10 +132,10 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
                 }
 
                 if (!isValidEmail(email)) {
-                    javax.swing.JOptionPane.showMessageDialog(register, 
-                        "Please enter a valid email address (e.g., user@example.com).", 
-                        "Invalid Email", 
-                        javax.swing.JOptionPane.ERROR_MESSAGE);
+                    javax.swing.JOptionPane.showMessageDialog(register,
+                            "Please enter a valid email address (e.g., user@example.com).",
+                            "Invalid Email",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -223,59 +225,66 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
                 String username = txtUsername.getText().trim();
                 char[] passwordArray = txtPass.getPassword();
 
-                // Input Validation
-                if (username.isEmpty() || passwordArray == null || passwordArray.length == 0) {
-                    javax.swing.JOptionPane.showMessageDialog(login,
-                            "Both fields are required!",
-                            "Error",
-                            javax.swing.JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                if (username.length() < 4) {
-                    javax.swing.JOptionPane.showMessageDialog(login,
-                            "Username must be at least 4 characters long!",
-                            "Error",
-                            javax.swing.JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Check Login Credentials Using UserDAO
-                UserDAO userDAO = new UserDAO();
-                String feedback = userDAO.loginUserWithFeedback(username, passwordArray);
-
-                switch (feedback) {
-                    case "Login successful":
+                try {
+                    // Input Validation
+                    if (username.isEmpty() || passwordArray == null || passwordArray.length == 0) {
                         javax.swing.JOptionPane.showMessageDialog(login,
-                                feedback,
-                                "Success",
-                                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-                        // Save login data for future use
-                        // dataLogin = new ModelLogin(username, password);
-
-                        // Launch the Dashboard
-                        // launchDashboard(username);
-                        launchDashboard();
-                        break;
-
-                    case "Incorrect password":
-                    case "Username does not exist":
-                        javax.swing.JOptionPane.showMessageDialog(login,
-                                feedback,
+                                "Both fields are required!",
                                 "Error",
                                 javax.swing.JOptionPane.ERROR_MESSAGE);
-                        break;
+                        return;
+                    }
 
-                    default:
+                    // Validate user credentials
+                    UserDAO userDAO = new UserDAO();
+                    String feedback = userDAO.loginUserWithFeedback(username, passwordArray); // This method gives
+                                                                                              // feedback
+
+                    if (feedback.equals("Login successful")) {
+                        // Retrieve user ID for session management
+                        User user = userDAO.getUserByUsername(username); // Fetch user details (includes userId)
+
+                        if (user != null) {
+                            // Save logged-in user information in SessionManager
+                            SessionManager.getInstance().setUserId(user.getUserID());
+                            SessionManager.getInstance().setUsername(user.getUsername());
+
+                            // Generate session token and store it in the session manager
+                            String sessionToken = TokenGenerator.generateToken(); // Generate unique token
+                            SessionManager.getInstance().setSessionToken(sessionToken);
+
+                            // Optionally: Save session token and expiration to the database
+                            long expirationTime = System.currentTimeMillis() + (15 * 60 * 1000); // 15 minutes
+                            userDAO.saveSessionToken(user.getUserID(), sessionToken, expirationTime); // Store token
+
+                            // Notify user and launch the dashboard
+                            javax.swing.JOptionPane.showMessageDialog(login,
+                                    "Welcome back, " + user.getUsername() + "!",
+                                    "Success",
+                                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                            launchDashboard();
+                        } else {
+                            javax.swing.JOptionPane.showMessageDialog(login,
+                                    "An error occurred while retrieving user details.",
+                                    "Error",
+                                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
                         javax.swing.JOptionPane.showMessageDialog(login,
-                                "An unexpected error occurred. Please try again.",
+                                "Invalid username or password!",
                                 "Error",
                                 javax.swing.JOptionPane.ERROR_MESSAGE);
-                }
+                    }
 
-                // Clear the password array for security
-                java.util.Arrays.fill(passwordArray, '\0');
+                } catch (Exception e) {
+                    javax.swing.JOptionPane.showMessageDialog(login,
+                            "An error occurred: " + e.getMessage(),
+                            "Error",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    // Clear password from memory
+                    java.util.Arrays.fill(passwordArray, '\0');
+                }
             }
         });
     }
@@ -286,8 +295,9 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
             javax.swing.SwingUtilities.getWindowAncestor(login).dispose();
 
             // Launch the dashboard
-            //Dashboard dashboard = new Dashboard(username); // Assuming you have a Dashboard class
-            //dashboard.setVisible(true);
+            // Dashboard dashboard = new Dashboard(username); // Assuming you have a
+            // Dashboard class
+            // dashboard.setVisible(true);
         });
     }
 
