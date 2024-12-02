@@ -4,9 +4,7 @@ import component.Header;
 import component.Menu;
 import event.EventMenuSelected;
 import event.EventShowPopupMenu;
-import form.Form1; 
-import form.Form2; //import new "forms"
-import form.Form3;
+import form.Form1;
 import form.Form_Home;
 import form.MainForm;
 import swing.MenuItem;
@@ -20,9 +18,9 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
-import ru.krlvm.swingacrylic.SwingAcrylic;
+import swingacrylic.SwingAcrylic;
 
-public class Main extends javax.swing.JFrame {
+public class Dashboard extends javax.swing.JFrame {
 
     private MigLayout layout;
     private Menu menu;
@@ -30,17 +28,17 @@ public class Main extends javax.swing.JFrame {
     private MainForm main;
     private Animator animator;
 
-    public Main() {
+    public Dashboard() {
         initComponents();
         init();
     }
 
     private void init() {
-        layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10"); //arranged components in the window
+        layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10");
         bg.setLayout(layout);
-        menu = new Menu(); //navigation drawer
-        header = new Header(); // top portion
-        main = new MainForm(); // content area
+        menu = new Menu();
+        header = new Header();
+        main = new MainForm();
         //  Init google icon font
         IconFontSwing.register(GoogleMaterialDesignIcons.getIconFont());
         menu.addEvent(new EventMenuSelected() {
@@ -51,11 +49,7 @@ public class Main extends javax.swing.JFrame {
                     if (subMenuIndex == 0) {
                         main.showForm(new Form_Home());
                     } else if (subMenuIndex == 1) {
-                        main.showForm(new Form1()); // shows form 1
-                    } else if (subMenuIndex == 2){
-                        main.showForm(new Form2());
-                    } else if (subMenuIndex == 3){
-                        main.showForm(new Form3());
+                        main.showForm(new Form1());
                     }
                 }
             }
@@ -64,9 +58,9 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void showPopup(Component com) {
                 MenuItem item = (MenuItem) com;
-                PopupMenu popup = new PopupMenu(Main.this, item.getIndex(), item.getEventSelected(), item.getMenu().getSubMenu());
-                int x = Main.this.getX() + 62;
-                int y = Main.this.getY() + com.getY() + 95;
+                PopupMenu popup = new PopupMenu(Dashboard.this, item.getIndex(), item.getEventSelected(), item.getMenu().getSubMenu());
+                int x = Dashboard.this.getX() + 62;
+                int y = Dashboard.this.getY() + com.getY() + 95;
                 popup.setLocation(x, y);
                 popup.setVisible(true);
             }
@@ -164,14 +158,15 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -179,7 +174,7 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void run() {
                 SwingAcrylic.prepareSwing();
-                Main frame = new Main();
+                Dashboard frame = new Dashboard();
                 frame.setVisible(true);
                 SwingAcrylic.processFrame(frame);
             }
