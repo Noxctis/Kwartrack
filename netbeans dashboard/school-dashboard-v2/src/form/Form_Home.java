@@ -1,7 +1,7 @@
 package form;
 
 import dialog.Message;
-import main.Main;
+import main.Dashboard;
 import model.ModelCard;
 import model.ModelStudent;
 import swing.icon.GoogleMaterialDesignIcons;
@@ -82,7 +82,7 @@ public class Form_Home extends javax.swing.JPanel {
     }
 
     private void showMessage(String message) {
-        Message obj = new Message(Main.getFrames()[0], true);
+        Message obj = new Message(Dashboard.getFrames()[0], true);
         obj.showMessage(message);
     }
 
