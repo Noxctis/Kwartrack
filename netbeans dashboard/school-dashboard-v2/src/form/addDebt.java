@@ -7,6 +7,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package form;
+import db.SessionManager;
+import db.UserDAO;
+import db.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -34,13 +40,13 @@ public class addDebt extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        addDebtMoneyField = new javax.swing.JTextArea();
+        amountTextField = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        addDebtDateField = new javax.swing.JTextArea();
+        dueDateTextField = new javax.swing.JTextArea();
         ayosButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        addDebtNameField = new javax.swing.JTextArea();
+        debtorUsernameTextField = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -53,16 +59,16 @@ public class addDebt extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("GET MONEY");
 
-        addDebtMoneyField.setColumns(20);
-        addDebtMoneyField.setRows(5);
-        jScrollPane1.setViewportView(addDebtMoneyField);
+        amountTextField.setColumns(20);
+        amountTextField.setRows(5);
+        jScrollPane1.setViewportView(amountTextField);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("WHAT DATE");
 
-        addDebtDateField.setColumns(20);
-        addDebtDateField.setRows(5);
-        jScrollPane2.setViewportView(addDebtDateField);
+        dueDateTextField.setColumns(20);
+        dueDateTextField.setRows(5);
+        jScrollPane2.setViewportView(dueDateTextField);
 
         ayosButton.setText("Ayos!");
         ayosButton.addActionListener(new java.awt.event.ActionListener() {
@@ -71,9 +77,9 @@ public class addDebt extends javax.swing.JFrame {
             }
         });
 
-        addDebtNameField.setColumns(20);
-        addDebtNameField.setRows(5);
-        jScrollPane3.setViewportView(addDebtNameField);
+        debtorUsernameTextField.setColumns(20);
+        debtorUsernameTextField.setRows(5);
+        jScrollPane3.setViewportView(debtorUsernameTextField);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("WHICH MF");
@@ -151,13 +157,88 @@ public class addDebt extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-        double debt = Double.parseDouble(addDebtMoneyField.getText());
-        String debtDateate = addDebtDateField.getText();
-        String debtor = addDebtNameField.getText();
-        // for testing addDebtMoneyField.setText(debtor);
-    }                                          
+private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) { 
+    String debtorUsername = debtorUsernameTextField.getText().trim();
+    String amountText = amountTextField.getText().trim();
+    String dueDateText = dueDateTextField.getText().trim();
+
+    if (debtorUsername.isEmpty() || amountText.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+                "Please enter both debtor username and amount owed.",
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    double amount = 0;
+    try {
+        amount = Double.parseDouble(amountText);
+    } catch (NumberFormatException ex) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+                "Invalid amount. Please enter a valid number.",
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Get the creditor ID based on the debtor's username
+    int debtorId = SessionManager.getInstance().getUserId(); // Get the logged-in user's ID (debtor)
+    int creditorId = 0;
+
+    try {
+        creditorId = UserDAO.getCreditorIdFromUsername(debtorUsername); // Get the creditor's user_id based on the username
+    } catch (SQLException ex) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+                "Failed to fetch creditor details: " + ex.getMessage(),
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Set due date: If no due date is provided, set it to 3 days later
+    java.util.Date dueDate = null;
+    if (dueDateText.isEmpty()) {
+        // Set to 3 days later if no due date is specified
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.add(java.util.Calendar.DATE, 3);
+        dueDate = calendar.getTime();
+    } else {
+        try {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            dueDate = sdf.parse(dueDateText);
+        } catch (java.text.ParseException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Invalid due date format. Please use yyyy-MM-dd.",
+                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }
+
+    // Proceed to save debt details to the database
+    String insertDebtQuery = "INSERT INTO debts (debtor_id, creditor_id, amount, date_due) VALUES (?, ?, ?, ?)";
+    
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(insertDebtQuery)) {
+        
+        stmt.setInt(1, debtorId);
+        stmt.setInt(2, creditorId);
+        stmt.setDouble(3, amount);
+        stmt.setDate(4, new java.sql.Date(dueDate.getTime()));
+        
+        int rowsAffected = stmt.executeUpdate();
+        
+        if (rowsAffected > 0) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Debt record successfully saved.",
+                    "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Failed to save debt record.",
+                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException ex) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+                "Error while saving debt record: " + ex.getMessage(),
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+}    
 
     /**
      * @param args the command line arguments
@@ -165,9 +246,9 @@ public class addDebt extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify                     
-    private javax.swing.JTextArea addDebtDateField;
-    private javax.swing.JTextArea addDebtMoneyField;
-    private javax.swing.JTextArea addDebtNameField;
+    private javax.swing.JTextArea dueDateTextField;
+    private javax.swing.JTextArea amountTextField;
+    private javax.swing.JTextArea debtorUsernameTextField;
     private javax.swing.JButton ayosButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

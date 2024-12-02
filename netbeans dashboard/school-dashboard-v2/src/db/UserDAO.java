@@ -229,4 +229,26 @@ public class UserDAO {
         }
         return null;
     }
+    
+    // Method to get creditor's user_id by username
+    public static int getCreditorIdFromUsername(String username) throws SQLException {
+        Connection conn = DatabaseConnection.getConnection();
+        String query = "SELECT user_id FROM users WHERE username = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);  // Set the parameter for the username
+
+            ResultSet rs = stmt.executeQuery();
+
+            // If a record is found, return the creditor's user_id
+            if (rs.next()) {
+                return rs.getInt("user_id");
+            } else {
+                throw new SQLException("Creditor not found with username: " + username);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error while fetching creditor ID: " + e.getMessage(), e);
+        }
+    }
+
 }
