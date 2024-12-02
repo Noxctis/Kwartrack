@@ -158,8 +158,8 @@ public class addDebt extends javax.swing.JFrame {
     }// </editor-fold>                        
 
 private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) { 
-// Get the amount owed from the user input (assuming it's a JTextArea)
-    String amountText = amountTextField.getText().trim();  // Adjust field name as needed
+// Get the amount owed from the user input
+    String amountText = amountTextField.getText().trim();
     if (amountText.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(null, 
             "Amount owed is required.", 
@@ -169,7 +169,7 @@ private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {
     }
     double amount;
     try {
-        amount = Double.parseDouble(amountText); // Parse amount to double
+        amount = Double.parseDouble(amountText);
     } catch (NumberFormatException e) {
         javax.swing.JOptionPane.showMessageDialog(null, 
             "Please enter a valid amount.", 
@@ -178,8 +178,8 @@ private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {
         return;
     }
 
-    // Get the username of the creditor (assuming it's a JTextArea)
-    String creditorUsername = creditorUsernameTextField.getText().trim(); // Adjust field name as needed
+    // Get the creditor's username
+    String creditorUsername = creditorUsernameTextField.getText().trim();
     if (creditorUsername.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(null, 
             "Creditor username is required.", 
@@ -188,12 +188,26 @@ private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {
         return;
     }
 
-    // Get the optional due date (if provided)
-    String dueDateText = dueDateTextField.getText().trim(); // Adjust field name as needed
+    // Check if creditor exists
+    int creditorId = 0;
+    try {
+        creditorId = UserDAO.getCreditorIdFromUsername(creditorUsername);  // Check if creditor exists
+    } catch (SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(null, 
+            "Creditor not found: " + e.getMessage(),
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Get the due date
+    String dueDateText = dueDateTextField.getText().trim();
     java.sql.Date dateDue = null;
+    
     if (!dueDateText.isEmpty()) {
         try {
-            dateDue = java.sql.Date.valueOf(dueDateText); // Convert to SQL Date if not empty
+            // If user input is provided, parse the date
+            dateDue = java.sql.Date.valueOf(dueDateText);
         } catch (IllegalArgumentException e) {
             javax.swing.JOptionPane.showMessageDialog(null, 
                 "Invalid date format. Please use yyyy-mm-dd.", 
@@ -202,42 +216,29 @@ private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {
             return;
         }
     } else {
-        // If no due date provided, set to 3 days later from current date
+        // If no due date is provided, set it to 3 days after the current date
         java.util.Calendar calendar = java.util.Calendar.getInstance();
-        calendar.add(java.util.Calendar.DATE, 3);
-        dateDue = new java.sql.Date(calendar.getTimeInMillis());
+        calendar.add(java.util.Calendar.DATE, 3);  // Add 3 days to the current date
+        dateDue = new java.sql.Date(calendar.getTimeInMillis());  // Set the date
     }
 
-    // Get the debtor's ID (from the logged-in user session)
+    // Get the debtor's ID from the session
     int debtorId = SessionManager.getInstance().getUserId();
 
-    // Get the creditor's ID using the username
-    int creditorId = 0;
-    try {
-        creditorId = UserDAO.getCreditorIdFromUsername(creditorUsername); // Get creditor ID from username
-    } catch (SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(null, 
-            "Error fetching creditor information: " + e.getMessage(),
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;  // Exit if the creditor ID could not be fetched
-    }
-
-    // Create SQL query to insert debt record
+    // SQL query to insert debt
     String insertDebtQuery = "INSERT INTO debts (debtor_id, creditor_id, amount, date_issued, date_due, is_paid) "
                             + "VALUES (?, ?, ?, CURDATE(), ?, ?)";
 
-    // Execute the query
     try (Connection conn = DatabaseConnection.getConnection();
          PreparedStatement stmt = conn.prepareStatement(insertDebtQuery)) {
 
-        stmt.setInt(1, debtorId);           // debtor_id from logged-in user
-        stmt.setInt(2, creditorId);         // creditor_id from username
-        stmt.setDouble(3, amount);          // amount owed
-        stmt.setDate(4, dateDue);           // due date (either provided or 3 days later)
-        stmt.setBoolean(5, false);          // is_paid set to false by default
+        stmt.setInt(1, debtorId);   // Set debtor_id
+        stmt.setInt(2, creditorId); // Set creditor_id
+        stmt.setDouble(3, amount);  // Set amount owed
+        stmt.setDate(4, dateDue);   // Set due date (either provided or calculated)
+        stmt.setBoolean(5, false);  // Set is_paid to false by default
 
-        int rowsAffected = stmt.executeUpdate(); // Execute the insert statement
+        int rowsAffected = stmt.executeUpdate();  // Execute insert
 
         if (rowsAffected > 0) {
             javax.swing.JOptionPane.showMessageDialog(null, 
