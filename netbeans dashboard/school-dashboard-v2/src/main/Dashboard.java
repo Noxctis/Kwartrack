@@ -6,6 +6,7 @@ import event.EventMenuSelected;
 import event.EventShowPopupMenu;
 import form.DebtsPane;
 import form.ExpensesPane;
+import form.TransactionsPane;
 import form.Form_Home;
 import form.MainForm;
 import swing.MenuItem;
@@ -53,6 +54,8 @@ public class Dashboard extends javax.swing.JFrame {
                         main.showForm(new ExpensesPane());
                     } else if (subMenuIndex == 2) {
                         main.showForm(new DebtsPane());
+                    } else if (subMenuIndex == 3) {
+                        main.showForm(new TransactionsPane());
                     }
                 }
             }

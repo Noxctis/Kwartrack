@@ -41,11 +41,11 @@ public class Form_Home extends javax.swing.JPanel {
 //                showMessage("Update Student : " + student.getName());
 //            }
 //        };
-        table1.addRow(new ModelStudent("utang", "84/6/13", "asd", 999).toRowTable());
-        table1.addRow(new ModelStudent("bayad", "56032095", "zxc", 999).toRowTable());
-        table1.addRow(new ModelStudent("bitch", "12/78/15", "qwe", 999).toRowTable());
-        table1.addRow(new ModelStudent("fuck", "56/23/96", "fgh", 999).toRowTable());
-        table1.addRow(new ModelStudent("ni-", "48/89/32", "rty", 999).toRowTable());
+        table1.addRow(new ModelStudent("bayad", "84/6/13", "asd", 999).toRowTable());
+        table1.addRow(new ModelStudent("bayad2", "56032095", "zxc", 999).toRowTable());
+        table1.addRow(new ModelStudent("bayat3", "12/78/15", "qwe", 999).toRowTable());
+        table1.addRow(new ModelStudent("bading3", "56/23/96", "fgh", 999).toRowTable());
+        table1.addRow(new ModelStudent("igasng2", "48/89/32", "rty", 999).toRowTable());
 
         
 //        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
