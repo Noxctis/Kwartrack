@@ -65,7 +65,7 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="com.raven.component.Profile" name="profile1">
+    <Component class="component.Profile" name="profile1">
     </Component>
   </SubComponents>
 </Form>
