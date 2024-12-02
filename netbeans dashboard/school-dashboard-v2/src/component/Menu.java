@@ -51,7 +51,7 @@ public class Menu extends PanelTransparent {
     }
 
     public void initMenuItem() {
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/1.png")), "Dashboard", "Home", "sean", "cyril", "john", "Accordions", "Modals"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/1.png")), "Dashboard", "Home", "Expenses", "Debts", "john", "Accordions", "Modals"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Charts", "Morris", "Flot", "Line"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Report", "Income", "Expense", "Profit"));
         //addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/4.png")), "Message", "Sender", "Inbox", "User"));

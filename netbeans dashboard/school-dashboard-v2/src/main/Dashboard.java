@@ -4,7 +4,8 @@ import component.Header;
 import component.Menu;
 import event.EventMenuSelected;
 import event.EventShowPopupMenu;
-import form.Form1;
+import form.DebtsPane;
+import form.ExpensesPane;
 import form.Form_Home;
 import form.MainForm;
 import swing.MenuItem;
@@ -49,7 +50,9 @@ public class Dashboard extends javax.swing.JFrame {
                     if (subMenuIndex == 0) {
                         main.showForm(new Form_Home());
                     } else if (subMenuIndex == 1) {
-                        main.showForm(new Form1());
+                        main.showForm(new ExpensesPane());
+                    } else if (subMenuIndex == 2) {
+                        main.showForm(new DebtsPane());
                     }
                 }
             }
