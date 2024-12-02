@@ -66,10 +66,10 @@ CREATE TABLE expenses (
 -- Debts table
 CREATE TABLE debts (
     debt_id INT AUTO_INCREMENT PRIMARY KEY,
-    debtor_id INT NOT NULL, -- The user who owes the debt
-    creditor_id INT NOT NULL, -- The user to whom the debt is owed
+    debtor_id INT NOT NULL,  -- The user who owes the debt
+    creditor_id INT NOT NULL,  -- The user to whom the debt is owed
     amount DECIMAL(10, 2) NOT NULL,
-    date_issued DATE NOT NULL,
+    date_issued DATE NOT NULL,  -- Use CURRENT_DATE
     date_due DATE,
     is_paid BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (debtor_id) REFERENCES users(user_id) ON DELETE CASCADE,
