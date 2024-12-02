@@ -223,7 +223,7 @@ private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {
     }
 
     // Get the debtor's ID from the session
-    int debtorId = SessionManager.getInstance().getUserId();
+    int debtorId = 1; //SessionManager.getInstance().getUserId(); hardcode for testing
 
     // SQL query to insert debt
     String insertDebtQuery = "INSERT INTO debts (debtor_id, creditor_id, amount, date_issued, date_due, is_paid) "
