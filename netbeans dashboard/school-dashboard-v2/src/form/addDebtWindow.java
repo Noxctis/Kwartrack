@@ -41,7 +41,6 @@ public class addDebtWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Debt");
-        setPreferredSize(new java.awt.Dimension(400, 290));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
