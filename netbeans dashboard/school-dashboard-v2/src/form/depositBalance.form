@@ -83,17 +83,17 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <Component id="addExpenseDateField" min="-2" max="-2" attributes="0"/>
+                                      <Component id="addBalanceDateField" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                                       <Component id="ayosButton" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="addExpenseMoneyField" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="addEBalanceMoneyField" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="68" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="addExpenseSourceField" min="-2" max="-2" attributes="0"/>
+                                  <Component id="addBalanceSourceField" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -109,18 +109,18 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="addExpenseSourceField" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="addBalanceSourceField" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="addExpenseDateField" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="addBalanceDateField" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="ayosButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="addExpenseMoneyField" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="addEBalanceMoneyField" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace pref="88" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -135,19 +135,19 @@
                 <Property name="text" type="java.lang.String" value="Source"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextArea" name="addExpenseMoneyField">
+            <Component class="javax.swing.JTextArea" name="addEBalanceMoneyField">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextArea" name="addExpenseDateField">
+            <Component class="javax.swing.JTextArea" name="addBalanceDateField">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextArea" name="addExpenseSourceField">
+            <Component class="javax.swing.JTextArea" name="addBalanceSourceField">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>

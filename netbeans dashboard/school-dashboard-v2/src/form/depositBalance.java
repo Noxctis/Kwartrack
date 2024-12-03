@@ -29,9 +29,9 @@ public class depositBalance extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        addExpenseMoneyField = new javax.swing.JTextArea();
-        addExpenseDateField = new javax.swing.JTextArea();
-        addExpenseSourceField = new javax.swing.JTextArea();
+        addEBalanceMoneyField = new javax.swing.JTextArea();
+        addBalanceDateField = new javax.swing.JTextArea();
+        addBalanceSourceField = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         ayosButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -48,14 +48,14 @@ public class depositBalance extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Source");
 
-        addExpenseMoneyField.setColumns(20);
-        addExpenseMoneyField.setRows(5);
+        addEBalanceMoneyField.setColumns(20);
+        addEBalanceMoneyField.setRows(5);
 
-        addExpenseDateField.setColumns(20);
-        addExpenseDateField.setRows(5);
+        addBalanceDateField.setColumns(20);
+        addBalanceDateField.setRows(5);
 
-        addExpenseSourceField.setColumns(20);
-        addExpenseSourceField.setRows(5);
+        addBalanceSourceField.setColumns(20);
+        addBalanceSourceField.setRows(5);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Date");
@@ -81,14 +81,14 @@ public class depositBalance extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(addExpenseDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(addBalanceDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(32, 32, 32)
                                 .addComponent(ayosButton))
-                            .addComponent(addExpenseMoneyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(addEBalanceMoneyField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 68, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(addExpenseSourceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addBalanceSourceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -99,17 +99,17 @@ public class depositBalance extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addExpenseSourceField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addBalanceSourceField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addExpenseDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addBalanceDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ayosButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addExpenseMoneyField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addEBalanceMoneyField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(88, Short.MAX_VALUE))
         );
 
@@ -144,8 +144,9 @@ public class depositBalance extends javax.swing.JFrame {
 
     private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayosButtonActionPerformed
         // TODO add your handling code here:
-        double balance = Double.parseDouble(addExpenseMoneyField.getText());
-        String balanceBate = addExpenseDateField.getText();
+        double balance = Double.parseDouble(addEBalanceMoneyField.getText());
+        String balanceDate = addBalanceDateField.getText();
+        String balanceSource = addBalanceSourceField.getText();
     }//GEN-LAST:event_ayosButtonActionPerformed
 
     /**
@@ -184,9 +185,9 @@ public class depositBalance extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea addExpenseDateField;
-    private javax.swing.JTextArea addExpenseMoneyField;
-    private javax.swing.JTextArea addExpenseSourceField;
+    private javax.swing.JTextArea addBalanceDateField;
+    private javax.swing.JTextArea addBalanceSourceField;
+    private javax.swing.JTextArea addEBalanceMoneyField;
     private javax.swing.JButton ayosButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
