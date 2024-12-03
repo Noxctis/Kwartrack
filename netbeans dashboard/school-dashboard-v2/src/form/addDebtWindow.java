@@ -1,9 +1,8 @@
 
 package form;
 
-import db.SessionManager;
-import db.UserDAO;
 import db.DatabaseConnection;
+import db.UserDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -53,7 +52,7 @@ public class addDebtWindow extends javax.swing.JFrame {
         jLabel1.setText("Amount");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Due Date");
+        jLabel2.setText("Debtor");
 
         amountTextField.setColumns(20);
         amountTextField.setRows(5);
@@ -74,7 +73,7 @@ public class addDebtWindow extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Debtor");
+        jLabel3.setText("Due Date");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

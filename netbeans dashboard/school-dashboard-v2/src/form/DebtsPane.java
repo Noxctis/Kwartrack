@@ -1,10 +1,23 @@
 package form;
 
+
+import db.SessionManager;
+import db.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+
+
 public class DebtsPane extends javax.swing.JPanel {
 
     public DebtsPane() {
         initComponents();
         setOpaque(false);
+        
+        // Call the method to load debt data when the panel is created
+        loadDebtData();
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -100,14 +113,60 @@ public class DebtsPane extends javax.swing.JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+    private void loadDebtData() {
+    // Get the logged-in user's ID from SessionManager
+    int userId = SessionManager.getInstance().getUserId();
+    
+    // SQL query to fetch debts where either debtor_id or creditor_id is the logged-in user's ID
+    String query = "SELECT debt_id, debtor_id, creditor_id, date_issued, date_due, amount, is_paid FROM debts " +
+                   "WHERE debtor_id = ? OR creditor_id = ?";
+    
+    try (Connection conn = DatabaseConnection.getConnection(); 
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        // Set the user ID as both the debtor_id and creditor_id in the query
+        stmt.setInt(1, userId);
+        stmt.setInt(2, userId);
+        
+        // Execute the query and get the result set
+        try (ResultSet rs = stmt.executeQuery()) {
+            // Get the table model
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            
+            // Clear any existing rows in the table
+            model.setRowCount(0);
+
+            // Process the result set and populate the table
+            while (rs.next()) {
+                // Create an array with the data for each row
+                Object[] row = {
+                    rs.getInt("debt_id"),
+                    rs.getInt("debtor_id"),
+                    rs.getInt("creditor_id"),
+                    rs.getDate("date_issued"),
+                    rs.getDate("date_due"),
+                    rs.getDouble("amount"),
+                    rs.getBoolean("is_paid")
+                };
+                
+                // Add the row to the table model
+                model.addRow(row);
+            }
+        }
+        
+    } catch (SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error loading debt data: " + e.getMessage(), 
+                                                  "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+}
 
     private void debtsPaneAddDebtbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debtsPaneAddDebtbuttonActionPerformed
         // TODO add your handling code here:
-        addExpense addExpenseWindow = new addExpense();
-        addExpenseWindow.setVisible(true);
-        addExpenseWindow.pack();
-        addExpenseWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        addExpenseWindow.setLocationRelativeTo(null);
+        addDebtWindow addDebt = new addDebtWindow();
+        addDebt.setVisible(true);
+        addDebt.pack();
+        addDebt.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addDebt.setLocationRelativeTo(null);
     }//GEN-LAST:event_debtsPaneAddDebtbuttonActionPerformed
 
     private void expensePaneRemoveExpenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expensePaneRemoveExpenseButtonActionPerformed
