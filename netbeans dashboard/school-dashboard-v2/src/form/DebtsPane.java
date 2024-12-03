@@ -1,13 +1,15 @@
 package form;
 
 
-import db.SessionManager;
 import db.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
 
 
 public class DebtsPane extends javax.swing.JPanel {
@@ -49,7 +51,7 @@ public class DebtsPane extends javax.swing.JPanel {
                 java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -62,6 +64,13 @@ public class DebtsPane extends javax.swing.JPanel {
         });
         jTable1.setPreferredSize(new java.awt.Dimension(525, 625));
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jTable1InputMethodTextChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         debtsPaneAddDebtbutton.setBackground(new java.awt.Color(204, 204, 204));
@@ -178,6 +187,14 @@ private void loadDebtData() {
                 // Add the row to the table model
                 model.addRow(row);
             }
+            
+            // Disable editing for the entire table except for the Paid and Date Due columns
+            jTable1.setDefaultEditor(Object.class, null);
+            
+            // Enable editing for specific columns (Paid and Date Due columns)
+            jTable1.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JTextField())); // Amount column (editable)
+            jTable1.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(new JCheckBox())); // Paid column (editable)
+            jTable1.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JTextField())); // Date Due column (editable)
 
         }
         
@@ -186,8 +203,58 @@ private void loadDebtData() {
         javax.swing.JOptionPane.showMessageDialog(this, "Error loading debt data: " + e.getMessage(), 
                                                   "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
+
+    // Add a table model listener to detect changes made to the table cells
+    jTable1.getModel().addTableModelListener(e -> {
+        int row = e.getFirstRow();
+        int column = e.getColumn();
+        
+        // Get updated data based on the cell change
+        Object updatedValue = jTable1.getValueAt(row, column);
+        int debtId = (int) jTable1.getValueAt(row, 0);  // Debt ID is in the first column
+
+        // Check which column was edited and update accordingly
+        if (column == 4) { // Date Due column (index 4)
+            // Date Due was updated
+            java.sql.Date updatedDate = java.sql.Date.valueOf(updatedValue.toString());
+            updateDebtDateDue(debtId, updatedDate);
+        } else if (column == 6) { // Paid checkbox column (index 6)
+            // Paid status was updated
+            boolean updatedPaidStatus = (boolean) updatedValue;
+            updateDebtPaidStatus(debtId, updatedPaidStatus);
+        }
+    });
 }
 
+// Update the "Date Due" field in the database
+private void updateDebtDateDue(int debtId, java.sql.Date newDateDue) {
+    String updateQuery = "UPDATE debts SET date_due = ? WHERE debt_id = ?";
+    
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+        stmt.setDate(1, newDateDue);
+        stmt.setInt(2, debtId);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error updating date due: " + e.getMessage(),
+                                                  "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+// Update the "Paid" status field in the database
+private void updateDebtPaidStatus(int debtId, boolean isPaid) {
+    String updateQuery = "UPDATE debts SET is_paid = ? WHERE debt_id = ?";
+    
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+        stmt.setBoolean(1, isPaid);
+        stmt.setInt(2, debtId);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error updating paid status: " + e.getMessage(),
+                                                  "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+}
 
 
     private void debtsPaneAddDebtbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debtsPaneAddDebtbuttonActionPerformed
@@ -202,6 +269,10 @@ private void loadDebtData() {
     private void expensePaneRemoveExpenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expensePaneRemoveExpenseButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_expensePaneRemoveExpenseButtonActionPerformed
+
+    private void jTable1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTable1InputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1InputMethodTextChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton debtsPaneAddDebtbutton;
