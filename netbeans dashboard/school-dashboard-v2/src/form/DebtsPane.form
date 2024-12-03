@@ -89,13 +89,13 @@
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="7" rowCount="4">
-                    <Column editable="true" title="Debt ID" type="java.lang.String"/>
-                    <Column editable="true" title="Debtor ID" type="java.lang.String"/>
-                    <Column editable="true" title="Creditor ID" type="java.lang.Object"/>
-                    <Column editable="true" title="Date Issued" type="java.lang.Object"/>
-                    <Column editable="true" title="Date Due" type="java.lang.Object"/>
-                    <Column editable="true" title="Amount" type="java.lang.Double"/>
-                    <Column editable="true" title="Paid" type="java.lang.Boolean"/>
+                    <Column editable="false" title="Debt ID" type="java.lang.String"/>
+                    <Column editable="false" title="Debtor ID" type="java.lang.String"/>
+                    <Column editable="false" title="Creditor ID" type="java.lang.Object"/>
+                    <Column editable="false" title="Date Issued" type="java.lang.Object"/>
+                    <Column editable="false" title="Date Due" type="java.lang.Object"/>
+                    <Column editable="false" title="Amount" type="java.lang.Double"/>
+                    <Column editable="false" title="Paid" type="java.lang.Boolean"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
