@@ -61,6 +61,7 @@ public class DebtsPane extends javax.swing.JPanel {
             }
         });
         jTable1.setPreferredSize(new java.awt.Dimension(525, 625));
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
 
         debtsPaneAddDebtbutton.setBackground(new java.awt.Color(204, 204, 204));
