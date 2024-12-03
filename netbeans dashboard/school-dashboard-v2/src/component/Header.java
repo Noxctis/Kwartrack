@@ -2,6 +2,9 @@ package component;
 
 import swing.PanelTransparent;
 import java.awt.event.ActionListener;
+import db.SessionManager;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 public class Header extends PanelTransparent {
 
@@ -106,9 +109,15 @@ public class Header extends PanelTransparent {
     }//GEN-LAST:event_cmdMenuActionPerformed
 
     private void mailBadgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailBadgeActionPerformed
-    /*SessionManager.getInstance().clearSession(); // Clear session data
-    new Login().setVisible(true); // Redirect to login
-    this.dispose(); // Close current form*/
+    SessionManager.getInstance().clearSession(); // Clear session data
+    //new Login().setVisible(true); // Redirect to login
+    // Get the parent JFrame and dispose of it
+    
+    //connect to message.java later to confirm logout.
+    java.awt.Window topLevelWindow = SwingUtilities.getWindowAncestor(this);
+    if (topLevelWindow instanceof JFrame) {
+        ((JFrame) topLevelWindow).dispose(); // Close the JFrame (Dashboard)
+    }
 
     }//GEN-LAST:event_mailBadgeActionPerformed
 

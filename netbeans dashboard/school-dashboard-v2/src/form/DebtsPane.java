@@ -33,7 +33,7 @@ public class DebtsPane extends javax.swing.JPanel {
         jRadioButtonMenuItem1.setSelected(true);
         jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 12));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -113,13 +113,18 @@ public class DebtsPane extends javax.swing.JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-    private void loadDebtData() {
+private void loadDebtData() {
     // Get the logged-in user's ID from SessionManager
-    int userId = SessionManager.getInstance().getUserId();
+    int userId = 1; //SessionManager.getInstance().getUserId(); //hardcode for testing
     
     // SQL query to fetch debts where either debtor_id or creditor_id is the logged-in user's ID
-    String query = "SELECT debt_id, debtor_id, creditor_id, date_issued, date_due, amount, is_paid FROM debts " +
-                   "WHERE debtor_id = ? OR creditor_id = ?";
+    // Joining the `debts` table with the `users` table to get usernames
+    String query = "SELECT debt_id, debts.debtor_id, debts.creditor_id, date_issued, date_due, amount, is_paid, " +
+                   "debtor.username AS debtor_username, creditor.username AS creditor_username " +
+                   "FROM debts " +
+                   "JOIN users AS debtor ON debts.debtor_id = debtor.user_id " +
+                   "JOIN users AS creditor ON debts.creditor_id = creditor.user_id " +
+                   "WHERE debts.debtor_id = ? OR debts.creditor_id = ?";
     
     try (Connection conn = DatabaseConnection.getConnection(); 
          PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -138,15 +143,28 @@ public class DebtsPane extends javax.swing.JPanel {
 
             // Process the result set and populate the table
             while (rs.next()) {
+                // Fetch the data for each debt record
+                int debtId = rs.getInt("debt_id");
+                int debtorId = rs.getInt("debtor_id");
+                int creditorId = rs.getInt("creditor_id");
+                java.sql.Date dateIssued = rs.getDate("date_issued");
+                java.sql.Date dateDue = rs.getDate("date_due");
+                double amount = rs.getDouble("amount");
+                boolean isPaid = rs.getBoolean("is_paid");
+                
+                // Get the debtor and creditor usernames
+                String debtorUsername = rs.getString("debtor_username");
+                String creditorUsername = rs.getString("creditor_username");
+
                 // Create an array with the data for each row
                 Object[] row = {
-                    rs.getInt("debt_id"),
-                    rs.getInt("debtor_id"),
-                    rs.getInt("creditor_id"),
-                    rs.getDate("date_issued"),
-                    rs.getDate("date_due"),
-                    rs.getDouble("amount"),
-                    rs.getBoolean("is_paid")
+                    debtId, 
+                    debtorUsername,  // Use debtor's username instead of debtor_id
+                    creditorUsername, // Use creditor's username instead of creditor_id
+                    dateIssued, 
+                    dateDue, 
+                    amount, 
+                    isPaid
                 };
                 
                 // Add the row to the table model
@@ -155,10 +173,13 @@ public class DebtsPane extends javax.swing.JPanel {
         }
         
     } catch (SQLException e) {
+        // Show error message if there is an issue with the database
         javax.swing.JOptionPane.showMessageDialog(this, "Error loading debt data: " + e.getMessage(), 
                                                   "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 }
+
+
 
     private void debtsPaneAddDebtbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debtsPaneAddDebtbuttonActionPerformed
         // TODO add your handling code here:
