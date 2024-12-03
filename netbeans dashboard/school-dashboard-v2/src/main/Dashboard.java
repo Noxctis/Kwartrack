@@ -47,7 +47,9 @@ public class Dashboard extends javax.swing.JFrame {
         this.dispose(); // Close the current dashboard
         return; // Stop further initialization
     }*/
-        layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10");
+        layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10"); // original code
+        //layout = new MigLayout("fill", "10[200!]10[800!, fill]10", "10[fill, top]10");
+
         bg.setLayout(layout);
         menu = new Menu();
         header = new Header();
