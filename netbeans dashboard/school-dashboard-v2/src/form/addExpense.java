@@ -37,7 +37,6 @@ public class addExpense extends javax.swing.JFrame {
         javax.swing.JComboBox<String> jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(410, 290));
 
         jPanel1.setBackground(new java.awt.Color(221, 224, 228));
         jPanel1.setPreferredSize(new java.awt.Dimension(410, 290));
@@ -56,7 +55,7 @@ public class addExpense extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Date");
 
-        addButton.setText("Ayos!");
+        addButton.setText("Add");
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
