@@ -87,3 +87,40 @@ CREATE TABLE transactions (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE SET NULL
 );
+
+DELIMITER //
+
+CREATE TRIGGER after_income_insert
+AFTER INSERT ON incomes
+FOR EACH ROW
+BEGIN
+    INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
+    VALUES (NEW.user_id, 'income', NEW.amount, NEW.date, NEW.category_id, NEW.income_id);
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER after_expense_insert
+AFTER INSERT ON expenses
+FOR EACH ROW
+BEGIN
+    INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
+    VALUES (NEW.user_id, 'expense', NEW.amount, NEW.date, NEW.category_id, NEW.expense_id);
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER after_debt_insert
+AFTER INSERT ON debts
+FOR EACH ROW
+BEGIN
+    INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
+    VALUES (NEW.debtor_id, 'debt', NEW.amount, NEW.date_issued, NULL, NEW.debt_id);
+END //
+
+DELIMITER ;
+
