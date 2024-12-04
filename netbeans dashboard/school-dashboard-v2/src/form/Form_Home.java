@@ -129,6 +129,64 @@ public class Form_Home extends javax.swing.JPanel {
         e.printStackTrace();
     }
 }
+    private String getDebtInfoById(int relatedId) {
+    String debtInfo = "Unknown Debt";  // Default value
+    try {
+        // Query to get debt details based on the related ID (this could reference a debt record)
+        String query = "SELECT debtor_id, creditor_id, amount FROM debts WHERE debt_id = ?";
+        PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(query);
+        statement.setInt(1, relatedId);
+
+        // Execute the query
+        ResultSet rs = statement.executeQuery();
+        if (rs.next()) {
+            int debtorId = rs.getInt("debtor_id");
+            int creditorId = rs.getInt("creditor_id");
+            double amount = rs.getDouble("amount");
+
+            // Retrieve debtor and creditor names
+            String debtorName = getUserNameById(debtorId);
+            String creditorName = getUserNameById(creditorId);
+
+            // Format the debt info (you can customize it as needed)
+            debtInfo = "Debtor: " + debtorName + " | Creditor: " + creditorName + " | Amount: " + amount;
+        }
+
+        // Close the resources
+        rs.close();
+        statement.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return debtInfo;
+}
+    
+    private String getUserNameById(int userId) {
+    String userName = "Unknown";  // Default value
+    try {
+        // Query to get the user's name by their ID
+        String query = "SELECT username FROM users WHERE user_id = ?";
+        PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(query);
+        statement.setInt(1, userId);
+
+        // Execute the query
+        ResultSet rs = statement.executeQuery();
+        if (rs.next()) {
+            userName = rs.getString("username");
+        }
+
+        // Close the resources
+        rs.close();
+        statement.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return userName;
+}
     
     private String getCategoryById(int categoryId) {
     String categoryName = "Unknown";  // Default value
