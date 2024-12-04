@@ -118,9 +118,15 @@ CREATE TRIGGER after_debt_insert
 AFTER INSERT ON debts
 FOR EACH ROW
 BEGIN
+    -- Record for the debtor (the person who owes the money)
     INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
     VALUES (NEW.debtor_id, 'debt', NEW.amount, NEW.date_issued, NULL, NEW.debt_id);
+    
+    -- Record for the creditor (the person to whom the debt is owed)
+    INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
+    VALUES (NEW.creditor_id, 'debt', NEW.amount, NEW.date_issued, NULL, NEW.debt_id);
 END //
 
 DELIMITER ;
+
 
