@@ -26,7 +26,6 @@ public class Header extends PanelTransparent {
         lbUserName = new javax.swing.JLabel();
         lbRole = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        buttonBadges1 = new swing.ButtonBadges();
         mailBadge = new swing.ButtonBadges();
 
         cmdMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu.png"))); // NOI18N
@@ -47,18 +46,9 @@ public class Header extends PanelTransparent {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        buttonBadges1.setForeground(new java.awt.Color(250, 49, 49));
-        buttonBadges1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/notification.png"))); // NOI18N
-        buttonBadges1.setBadges(12);
-        buttonBadges1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonBadges1ActionPerformed(evt);
-            }
-        });
-
-        mailBadge.setForeground(new java.awt.Color(63, 178, 232));
-        mailBadge.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/message.png"))); // NOI18N
-        mailBadge.setBadges(5);
+        mailBadge.setForeground(new java.awt.Color(255, 255, 255));
+        mailBadge.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/powersmall.png"))); // NOI18N
+        mailBadge.setBorderPainted(false);
         mailBadge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mailBadgeActionPerformed(evt);
@@ -72,11 +62,9 @@ public class Header extends PanelTransparent {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cmdMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
-                .addComponent(mailBadge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                .addComponent(mailBadge, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonBadges1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,7 +86,6 @@ public class Header extends PanelTransparent {
                     .addComponent(cmdMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1)
-                    .addComponent(buttonBadges1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mailBadge, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -121,12 +108,7 @@ public class Header extends PanelTransparent {
 
     }//GEN-LAST:event_mailBadgeActionPerformed
 
-    private void buttonBadges1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBadges1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonBadges1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swing.ButtonBadges buttonBadges1;
     private swing.Button cmdMenu;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbRole;
