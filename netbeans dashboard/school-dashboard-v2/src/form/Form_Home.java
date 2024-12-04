@@ -7,10 +7,16 @@ import model.ModelStudent;
 import swing.icon.GoogleMaterialDesignIcons;
 import swing.icon.IconFontSwing;
 import swing.noticeboard.ModelNoticeBoard;
-import swing.table.EventAction;
 import java.awt.Color;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import db.DatabaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Date;
+import java.sql.ResultSet;
+import db.SessionManager;
+import javax.swing.table.DefaultTableModel;
 
 
 
@@ -21,6 +27,7 @@ public class Form_Home extends javax.swing.JPanel {
         table1.fixTable(jScrollPane1);
         setOpaque(false);
         initData();
+        refreshTableData();  // Refresh the table with data
     }
 
     private void initData() {
@@ -85,6 +92,69 @@ public class Form_Home extends javax.swing.JPanel {
         Message obj = new Message(Dashboard.getFrames()[0], true);
         obj.showMessage(message);
     }
+    
+    private void refreshTableData() {
+    try {
+        // Get the database connection from DatabaseConnection
+        Connection connection = DatabaseConnection.getConnection();
+
+        // Query to get transactions for a specific user
+        int userId = 1; //SessionManager.getInstance().getUserId(); hardcode for testing // Replace with the actual user ID
+        String query = "SELECT * FROM transactions WHERE user_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, userId);
+        
+        // Execute the query
+        ResultSet rs = statement.executeQuery();
+        
+        // Get the table model and clear existing rows
+        DefaultTableModel model = (DefaultTableModel) table1.getModel();
+        model.setRowCount(0);
+
+        // Loop through the ResultSet and add rows to the table
+        while (rs.next()) {
+            int transactionId = rs.getInt("transaction_id");
+            String type = rs.getString("type");
+            double amount = rs.getDouble("amount");
+            Date date = rs.getDate("date");
+            String category = getCategoryById(rs.getInt("category_id")); // You can implement this
+            model.addRow(new Object[] { transactionId, userId, category, date, amount });
+        }
+
+        // Close the resources
+        rs.close();
+        statement.close();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+    
+    private String getCategoryById(int categoryId) {
+    String categoryName = "Unknown";  // Default value
+    try {
+        // Query to get category name by categoryId
+        String query = "SELECT category_name FROM categories WHERE category_id = ?";
+        PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(query);
+        statement.setInt(1, categoryId);
+        
+        // Execute the query
+        ResultSet rs = statement.executeQuery();
+        if (rs.next()) {
+            categoryName = rs.getString("category_name");
+        }
+
+        // Close the resources
+        rs.close();
+        statement.close();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return categoryName;
+}
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
