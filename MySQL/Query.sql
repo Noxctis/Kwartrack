@@ -24,6 +24,7 @@ VALUES (1, 2, 50.00, CURRENT_DATE, DATE_ADD(CURRENT_DATE, INTERVAL 30 DAY), TRUE
 #SET is_paid = 1;
 
 SELECT * FROM debts;
+SELECT * FROM expenses;
 
 SELECT 
     d.debt_id,
