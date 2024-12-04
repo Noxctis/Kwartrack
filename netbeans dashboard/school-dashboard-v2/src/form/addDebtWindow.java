@@ -14,6 +14,13 @@ import db.SessionManager;
  */
 public class addDebtWindow extends javax.swing.JFrame {
 
+    private DebtsPane deptsPane;  // Reference to ExpensesPane for refreshing the table
+    
+    public addDebtWindow(DebtsPane debtsPane) {
+        this.deptsPane = deptsPane;  // Store the reference
+        initComponents();
+    }
+    
     /**
      * Creates new form addDebtWindow
      */
@@ -232,6 +239,14 @@ public class addDebtWindow extends javax.swing.JFrame {
                 "Debt record added successfully!",
                 "Success",
                 javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            
+            // Refresh the Expenses table in ExpensesPane
+                    if (deptsPane != null) {
+                        deptsPane.loadDebtData();
+                    }
+
+                    // Close the AddExpense window
+                    this.dispose();
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, 
                 "Failed to add debt record.",

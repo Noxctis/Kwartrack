@@ -131,7 +131,7 @@ public class DebtsPane extends javax.swing.JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-private void loadDebtData() {
+public void loadDebtData() {
     // Get the logged-in user's ID from SessionManager
     int userId = 1; //SessionManager.getInstance().getUserId(); //hardcode for testing
     
@@ -260,7 +260,7 @@ private void updateDebtPaidStatus(int debtId, boolean isPaid) {
 
     private void debtsPaneAddDebtbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debtsPaneAddDebtbuttonActionPerformed
         // TODO add your handling code here:
-        addDebtWindow addDebt = new addDebtWindow();
+        addDebtWindow addDebt = new addDebtWindow(this);
         addDebt.setVisible(true);
         addDebt.pack();
         addDebt.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

@@ -109,7 +109,7 @@ public class ExpensesPane extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
-    private void loadExpenses() {
+    public void loadExpenses() {
         // Get user ID from the session
         int userId = 1;//SessionManager.getInstance().getUserId(); hardcode for testing
 

@@ -197,6 +197,15 @@ public class addExpense extends javax.swing.JFrame {
                         "Expense added successfully!", 
                         "Success", 
                         javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                
+                // Refresh the Expenses table in ExpensesPane
+                    if (expensesPane != null) {
+                        expensesPane.loadExpenses();
+                    }
+
+                    // Close the AddExpense window
+                    this.dispose();
+                    
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, 
                         "Failed to add expense. Please try again.", 
