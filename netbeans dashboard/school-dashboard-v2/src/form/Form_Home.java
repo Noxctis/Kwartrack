@@ -123,14 +123,14 @@ public class Form_Home extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Type", "Name", "Date", "Amount"
+                "Transaction ID", "User ID", "Category", "Date", "Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false
+                true, true, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
