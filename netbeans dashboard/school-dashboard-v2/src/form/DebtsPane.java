@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import db.SessionManager;
 
 
 public class DebtsPane extends javax.swing.JPanel {

@@ -16,6 +16,14 @@ import db.SessionManager;
  */
 public class addExpense extends javax.swing.JFrame {
 
+    
+    private ExpensesPane expensesPane;  // Reference to ExpensesPane for refreshing the table
+
+    public addExpense(ExpensesPane expensesPane) {
+        this.expensesPane = expensesPane;  // Store the reference
+        initComponents();
+    }
+    
     /**
      * Creates new form addExpense
      */
