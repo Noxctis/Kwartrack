@@ -4,6 +4,12 @@
  */
 package form;
 
+import db.DatabaseConnection;
+import db.UserDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import db.SessionManager;
 /**
  *
  * @author user
@@ -34,10 +40,9 @@ public class addExpense extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         addButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        javax.swing.JComboBox<String> jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(410, 290));
 
         jPanel1.setBackground(new java.awt.Color(221, 224, 228));
         jPanel1.setPreferredSize(new java.awt.Dimension(410, 290));
@@ -45,7 +50,7 @@ public class addExpense extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(221, 224, 228));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Amount");
+        jLabel1.setText("Date");
 
         addExpenseMoneyField.setColumns(20);
         addExpenseMoneyField.setRows(5);
@@ -54,7 +59,7 @@ public class addExpense extends javax.swing.JFrame {
         addExpenseDateField.setRows(5);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Date");
+        jLabel2.setText("Amount");
 
         addButton.setText("Ayos!");
         addButton.addActionListener(new java.awt.event.ActionListener() {
@@ -143,8 +148,66 @@ public class addExpense extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        double expense = Double.parseDouble(addExpenseMoneyField.getText());
-        String expenseDate = addExpenseDateField.getText();
+        try {
+        // Get the expense details
+        double expense = Double.parseDouble(addExpenseMoneyField.getText().trim());
+        String expenseDate = addExpenseDateField.getText().trim();
+        String selectedCategory = (String) jComboBox1.getSelectedItem();
+
+        // Validate inputs
+        if (expense <= 0 || selectedCategory == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Please fill all fields correctly.", 
+                    "Invalid Input", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Set current date if no date is provided
+        if (expenseDate.isEmpty()) {
+            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+            expenseDate = currentDate.toString();
+        }
+
+        // Insert into the database
+        String query = "INSERT INTO expenses (user_id, category_id, amount, date) " +
+                       "VALUES (?, (SELECT category_id FROM categories WHERE name = ?), ?, ?)";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            int userId = 1; // SessionManager.getInstance().getUserId(); // Fetch logged-in user's ID
+            stmt.setInt(1, userId);
+            stmt.setString(2, selectedCategory);
+            stmt.setDouble(3, expense);
+            stmt.setString(4, expenseDate);
+
+            // Execute the query
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                        "Expense added successfully!", 
+                        "Success", 
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                        "Failed to add expense. Please try again.", 
+                        "Error", 
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+                "Invalid expense amount. Please enter a valid number.", 
+                "Error", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+    } catch (SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+                "Error saving expense: " + e.getMessage(), 
+                "Database Error", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -190,6 +253,7 @@ public class addExpense extends javax.swing.JFrame {
     private javax.swing.JButton addButton;
     private javax.swing.JTextArea addExpenseDateField;
     private javax.swing.JTextArea addExpenseMoneyField;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
