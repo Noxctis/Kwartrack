@@ -64,35 +64,8 @@ public class Form_Home extends javax.swing.JPanel {
 //        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
 //        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
     }
-
-    private void initCardData() {
-        Icon icon1 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
-        card1.setData(new ModelCard("Total Balance", 5100, icon1));
-        Icon icon2 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
-        card2.setData(new ModelCard("Expense This Week", 2000, icon2));
-        //Icon icon3 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.SHOPPING_BASKET, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
-        //card3.setData(new ModelCard("Expense", 3000, icon3));
-//        Icon icon4 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.BUSINESS_CENTER, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
-//        card4.setData(new ModelCard("Other Income", 550, 95, icon4));
-    }
-
-    private void initNoticeBoard() {
-        noticeBoard.addDate("04/10/2021");
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(94, 49, 238), "Hidemode", "Now", "Sets the hide mode for the component. If the hide mode has been specified in the This hide mode can be overridden by the component constraint."));
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(218, 49, 238), "Tag", "2h ago", "Tags the component with metadata name that can be used by the layout engine. The tag can be used to explain for the layout manager what the components is showing, such as an OK or Cancel button."));
-        noticeBoard.addDate("03/10/2021");
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(32, 171, 43), "Further Reading", "12:30 PM", "There are more information to digest regarding MigLayout. The resources are all available at www.migcomponents.com"));
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(50, 93, 215), "Span", "10:30 AM", "Spans the current cell (merges) over a number of cells. Practically this means that this cell and the count number of cells will be treated as one cell and the component can use the space that all these cells have."));
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(27, 188, 204), "Skip ", "9:00 AM", "Skips a number of cells in the flow. This is used to jump over a number of cells before the next free cell is looked for. The skipping is done before this component is put in a cell and thus this cells is affected by it. \"count\" defaults to 1 if not specified."));
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(238, 46, 57), "Push", "7:15 AM", "Makes the row and/or column that the component is residing in grow with \"weight\". This can be used instead of having a \"grow\" keyword in the column/row constraints."));
-        noticeBoard.scrollToTop();
-    }
-
-    private void showMessage(String message) {
-        Message obj = new Message(Dashboard.getFrames()[0], true);
-        obj.showMessage(message);
-    }
     
+     
     private void refreshTableData() {
     try {
         // Get the database connection from DatabaseConnection
@@ -129,64 +102,6 @@ public class Form_Home extends javax.swing.JPanel {
         e.printStackTrace();
     }
 }
-    private String getDebtInfoById(int relatedId) {
-    String debtInfo = "Unknown Debt";  // Default value
-    try {
-        // Query to get debt details based on the related ID (this could reference a debt record)
-        String query = "SELECT debtor_id, creditor_id, amount FROM debts WHERE debt_id = ?";
-        PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(query);
-        statement.setInt(1, relatedId);
-
-        // Execute the query
-        ResultSet rs = statement.executeQuery();
-        if (rs.next()) {
-            int debtorId = rs.getInt("debtor_id");
-            int creditorId = rs.getInt("creditor_id");
-            double amount = rs.getDouble("amount");
-
-            // Retrieve debtor and creditor names
-            String debtorName = getUserNameById(debtorId);
-            String creditorName = getUserNameById(creditorId);
-
-            // Format the debt info (you can customize it as needed)
-            debtInfo = "Debtor: " + debtorName + " | Creditor: " + creditorName + " | Amount: " + amount;
-        }
-
-        // Close the resources
-        rs.close();
-        statement.close();
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
-    return debtInfo;
-}
-    
-    private String getUserNameById(int userId) {
-    String userName = "Unknown";  // Default value
-    try {
-        // Query to get the user's name by their ID
-        String query = "SELECT username FROM users WHERE user_id = ?";
-        PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(query);
-        statement.setInt(1, userId);
-
-        // Execute the query
-        ResultSet rs = statement.executeQuery();
-        if (rs.next()) {
-            userName = rs.getString("username");
-        }
-
-        // Close the resources
-        rs.close();
-        statement.close();
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
-    return userName;
-}
     
     private String getCategoryById(int categoryId) {
     String categoryName = "Unknown";  // Default value
@@ -213,6 +128,34 @@ public class Form_Home extends javax.swing.JPanel {
     return categoryName;
 }
 
+
+    private void initCardData() {
+        Icon icon1 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
+        card1.setData(new ModelCard("Total Balance", 5100, icon1));
+        Icon icon2 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
+        card2.setData(new ModelCard("Expense This Week", 2000, icon2));
+        //Icon icon3 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.SHOPPING_BASKET, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
+        //card3.setData(new ModelCard("Expense", 3000, icon3));
+//        Icon icon4 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.BUSINESS_CENTER, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
+//        card4.setData(new ModelCard("Other Income", 550, 95, icon4));
+    }
+
+    private void initNoticeBoard() {
+        noticeBoard.addDate("04/10/2021");
+        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(94, 49, 238), "Hidemode", "Now", "Sets the hide mode for the component. If the hide mode has been specified in the This hide mode can be overridden by the component constraint."));
+        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(218, 49, 238), "Tag", "2h ago", "Tags the component with metadata name that can be used by the layout engine. The tag can be used to explain for the layout manager what the components is showing, such as an OK or Cancel button."));
+        noticeBoard.addDate("03/10/2021");
+        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(32, 171, 43), "Further Reading", "12:30 PM", "There are more information to digest regarding MigLayout. The resources are all available at www.migcomponents.com"));
+        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(50, 93, 215), "Span", "10:30 AM", "Spans the current cell (merges) over a number of cells. Practically this means that this cell and the count number of cells will be treated as one cell and the component can use the space that all these cells have."));
+        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(27, 188, 204), "Skip ", "9:00 AM", "Skips a number of cells in the flow. This is used to jump over a number of cells before the next free cell is looked for. The skipping is done before this component is put in a cell and thus this cells is affected by it. \"count\" defaults to 1 if not specified."));
+        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(238, 46, 57), "Push", "7:15 AM", "Makes the row and/or column that the component is residing in grow with \"weight\". This can be used instead of having a \"grow\" keyword in the column/row constraints."));
+        noticeBoard.scrollToTop();
+    }
+
+    private void showMessage(String message) {
+        Message obj = new Message(Dashboard.getFrames()[0], true);
+        obj.showMessage(message);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
