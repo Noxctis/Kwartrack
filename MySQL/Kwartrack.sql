@@ -47,11 +47,10 @@ INSERT INTO categories (name) VALUES
 CREATE TABLE incomes (
     income_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    category_id INT,
+    source VARCHAR(255) NOT NULL,  -- User-defined source
     amount DECIMAL(10, 2) NOT NULL,
     date DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE SET NULL
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- Expenses table
@@ -88,7 +87,7 @@ CREATE TABLE transactions (
     category_id INT,
     related_id INT, -- References debt_id, income_id, or expense_id as applicable
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE SET NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE SET NULL
 );
 
 -- Trigger to update transactions after inserting into incomes
@@ -97,9 +96,9 @@ CREATE TRIGGER after_income_insert
 AFTER INSERT ON incomes
 FOR EACH ROW
 BEGIN
-    -- Insert a transaction record for the income
-    INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
-    VALUES (NEW.user_id, 'income', NEW.amount, NEW.date, NEW.category_id, NEW.income_id);
+    -- Insert corresponding transaction for the income
+    INSERT INTO transactions (user_id, type, amount, date, source, related_id)
+    VALUES (NEW.user_id, 'income', NEW.amount, NEW.date, NEW.source, NEW.income_id);
 END;
 //
 DELIMITER ;
