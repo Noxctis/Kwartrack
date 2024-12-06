@@ -66,20 +66,23 @@ public class Form_Home extends javax.swing.JPanel {
     }
     
      
-    private void refreshTableData() {
+private void refreshTableData() {
     try {
         // Get the database connection from DatabaseConnection
         Connection connection = DatabaseConnection.getConnection();
 
-        // Query to get transactions for a specific user
-        int userId = 1; //SessionManager.getInstance().getUserId(); hardcode for testing // Replace with the actual user ID
-        String query = "SELECT * FROM transactions WHERE user_id = ?";
+        // Query to get transactions for a specific user along with transaction type and category
+        int userId = 1; // SessionManager.getInstance().getUserId(); hardcode for testing, replace with the actual user ID
+        String query = "SELECT t.transaction_id, t.type, t.amount, t.date, t.category_id, u.username " +
+                       "FROM transactions t " +
+                       "JOIN users u ON t.user_id = u.user_id " +  // Join with users to get the username
+                       "WHERE t.user_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, userId);
-        
+
         // Execute the query
         ResultSet rs = statement.executeQuery();
-        
+
         // Get the table model and clear existing rows
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         model.setRowCount(0);
@@ -87,47 +90,55 @@ public class Form_Home extends javax.swing.JPanel {
         // Loop through the ResultSet and add rows to the table
         while (rs.next()) {
             int transactionId = rs.getInt("transaction_id");
-            String type = rs.getString("type");
+            String type = rs.getString("type");  // Type of transaction (income, debt, expense)
             double amount = rs.getDouble("amount");
             Date date = rs.getDate("date");
-            String category = getCategoryById(rs.getInt("category_id")); // You can implement this
-            model.addRow(new Object[] { transactionId, userId, category, date, amount });
+            String username = rs.getString("username");
+
+            // Get the transaction category name if required (can use the existing method)
+            String category = null;
+
+            if ("expense".equals(type)) {
+                category = getCategoryById(rs.getInt("category_id"));  // Only fetch category for expenses
+            }
+
+            // Add a row to the table with username, type (Income/Debt/Expense), category (if applicable), etc.
+            model.addRow(new Object[] { transactionId, username, type, category, date, amount });
         }
 
         // Close the resources
         rs.close();
         statement.close();
-        
+
     } catch (SQLException e) {
         e.printStackTrace();
     }
 }
-    
-    private String getCategoryById(int categoryId) {
+
+private String getCategoryById(int categoryId) {
     String categoryName = "Unknown";  // Default value
     try {
         // Query to get category name by categoryId
-        String query = "SELECT category_name FROM categories WHERE category_id = ?";
+        String query = "SELECT name FROM categories WHERE category_id = ?";
         PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(query);
         statement.setInt(1, categoryId);
-        
+
         // Execute the query
         ResultSet rs = statement.executeQuery();
         if (rs.next()) {
-            categoryName = rs.getString("category_name");
+            categoryName = rs.getString("name");
         }
 
         // Close the resources
         rs.close();
         statement.close();
-        
+
     } catch (SQLException e) {
         e.printStackTrace();
     }
-    
+
     return categoryName;
 }
-
 
     private void initCardData() {
         Icon icon1 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
@@ -194,14 +205,14 @@ public class Form_Home extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Transaction ID", "User ID", "Category", "Date", "Amount"
+                "Transaction ID", "User ID", "Type", "Category", "Date", "Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -212,6 +223,7 @@ public class Form_Home extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        table1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(table1);
         if (table1.getColumnModel().getColumnCount() > 0) {
             table1.getColumnModel().getColumn(1).setPreferredWidth(150);

@@ -13,6 +13,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- User sessions table
 CREATE TABLE user_sessions (
     session_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -27,6 +28,8 @@ CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
+
+-- Insert default categories
 INSERT INTO categories (name) VALUES
 ('Groceries'),
 ('Transport'),
@@ -75,7 +78,7 @@ CREATE TABLE debts (
     FOREIGN KEY (creditor_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
--- Transactions table (optional for tracking all financial transactions)
+-- Transactions table
 CREATE TABLE transactions (
     transaction_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -85,48 +88,84 @@ CREATE TABLE transactions (
     category_id INT,
     related_id INT, -- References debt_id, income_id, or expense_id as applicable
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE SET NULL
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE SET NULL,
 );
 
+-- Trigger to update transactions after inserting into incomes
 DELIMITER //
-
 CREATE TRIGGER after_income_insert
 AFTER INSERT ON incomes
 FOR EACH ROW
 BEGIN
+    -- Insert a transaction record for the income
     INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
     VALUES (NEW.user_id, 'income', NEW.amount, NEW.date, NEW.category_id, NEW.income_id);
-END //
-
+END;
+//
 DELIMITER ;
 
+-- Trigger to update transactions after inserting into expenses
 DELIMITER //
-
 CREATE TRIGGER after_expense_insert
 AFTER INSERT ON expenses
 FOR EACH ROW
 BEGIN
+    -- Insert a transaction record for the expense
     INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
     VALUES (NEW.user_id, 'expense', NEW.amount, NEW.date, NEW.category_id, NEW.expense_id);
-END //
-
+END;
+//
 DELIMITER ;
 
+-- Trigger to update transactions after inserting into debts
 DELIMITER //
-
 CREATE TRIGGER after_debt_insert
 AFTER INSERT ON debts
 FOR EACH ROW
 BEGIN
-    -- Record for the debtor (the person who owes the money)
+    -- Insert a transaction record for the debt
     INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
     VALUES (NEW.debtor_id, 'debt', NEW.amount, NEW.date_issued, NULL, NEW.debt_id);
-    
-    -- Record for the creditor (the person to whom the debt is owed)
-    INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
-    VALUES (NEW.creditor_id, 'debt', NEW.amount, NEW.date_issued, NULL, NEW.debt_id);
-END //
-
+END;
+//
 DELIMITER ;
 
+-- Trigger to update transactions after deleting from debts
+DELIMITER //
+CREATE TRIGGER after_debt_delete
+AFTER DELETE ON debts
+FOR EACH ROW
+BEGIN
+    UPDATE transactions
+    SET related_id = NULL
+    WHERE related_id = OLD.debt_id AND type = 'debt';
+END;
+//
+DELIMITER ;
+
+-- Trigger to update transactions after deleting from incomes
+DELIMITER //
+CREATE TRIGGER after_income_delete
+AFTER DELETE ON incomes
+FOR EACH ROW
+BEGIN
+    UPDATE transactions
+    SET related_id = NULL
+    WHERE related_id = OLD.income_id AND type = 'income';
+END;
+//
+DELIMITER ;
+
+-- Trigger to update transactions after deleting from expenses
+DELIMITER //
+CREATE TRIGGER after_expense_delete
+AFTER DELETE ON expenses
+FOR EACH ROW
+BEGIN
+    UPDATE transactions
+    SET related_id = NULL
+    WHERE related_id = OLD.expense_id AND type = 'expense';
+END;
+//
+DELIMITER ;
 

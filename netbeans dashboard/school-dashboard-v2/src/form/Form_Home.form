@@ -145,9 +145,10 @@
             <Component class="swing.table.Table" name="table1">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="0">
+                  <Table columnCount="6" rowCount="0">
                     <Column editable="false" title="Transaction ID" type="java.lang.Object"/>
                     <Column editable="false" title="User ID" type="java.lang.Object"/>
+                    <Column editable="false" title="Type" type="java.lang.Object"/>
                     <Column editable="false" title="Category" type="java.lang.Object"/>
                     <Column editable="false" title="Date" type="java.lang.String"/>
                     <Column editable="false" title="Amount" type="java.lang.Double"/>
@@ -180,10 +181,15 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                   </TableColumnModel>
                 </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                  <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
             </Component>
