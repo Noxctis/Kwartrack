@@ -168,3 +168,50 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+-- Trigger to update transactions after updating an income
+DELIMITER //
+CREATE TRIGGER after_income_update
+AFTER UPDATE ON incomes
+FOR EACH ROW
+BEGIN
+    -- Update the corresponding transaction for the income
+    UPDATE transactions 
+    SET amount = NEW.amount, date = NEW.date
+    WHERE related_id = OLD.income_id AND type = 'income';
+END;
+//
+DELIMITER ;
+
+-- Trigger to update transactions after updating an expense
+DELIMITER //
+CREATE TRIGGER after_expense_update
+AFTER UPDATE ON expenses
+FOR EACH ROW
+BEGIN
+    -- Update the corresponding transaction for the expense
+    UPDATE transactions 
+    SET amount = NEW.amount, date = NEW.date, category_id = NEW.category_id
+    WHERE related_id = OLD.expense_id AND type = 'expense';
+END;
+//
+DELIMITER ;
+
+-- Trigger to update transactions after updating a debt
+DELIMITER //
+CREATE TRIGGER after_debt_update
+AFTER UPDATE ON debts
+FOR EACH ROW
+BEGIN
+    -- Update the corresponding transaction for the debt (debtor)
+    UPDATE transactions 
+    SET amount = NEW.amount, date = NEW.date_issued
+    WHERE related_id = OLD.debt_id AND type = 'debt' AND user_id = NEW.debtor_id;
+
+    -- Update the corresponding transaction for the debt (creditor)
+    UPDATE transactions 
+    SET amount = NEW.amount, date = NEW.date_issued
+    WHERE related_id = OLD.debt_id AND type = 'debt' AND user_id = NEW.creditor_id;
+END;
+//
+DELIMITER ;

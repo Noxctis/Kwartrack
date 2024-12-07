@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.sql.ResultSet;
 import db.SessionManager;
+import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -223,16 +224,137 @@ private double getExpenseThisWeek(int userId) {
 }
 
     private void initNoticeBoard() {
-        noticeBoard.addDate("04/10/2021");
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(94, 49, 238), "Hidemode", "Now", "Sets the hide mode for the component. If the hide mode has been specified in the This hide mode can be overridden by the component constraint."));
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(218, 49, 238), "Tag", "2h ago", "Tags the component with metadata name that can be used by the layout engine. The tag can be used to explain for the layout manager what the components is showing, such as an OK or Cancel button."));
-        noticeBoard.addDate("03/10/2021");
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(32, 171, 43), "Further Reading", "12:30 PM", "There are more information to digest regarding MigLayout. The resources are all available at www.migcomponents.com"));
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(50, 93, 215), "Span", "10:30 AM", "Spans the current cell (merges) over a number of cells. Practically this means that this cell and the count number of cells will be treated as one cell and the component can use the space that all these cells have."));
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(27, 188, 204), "Skip ", "9:00 AM", "Skips a number of cells in the flow. This is used to jump over a number of cells before the next free cell is looked for. The skipping is done before this component is put in a cell and thus this cells is affected by it. \"count\" defaults to 1 if not specified."));
-        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(238, 46, 57), "Push", "7:15 AM", "Makes the row and/or column that the component is residing in grow with \"weight\". This can be used instead of having a \"grow\" keyword in the column/row constraints."));
-        noticeBoard.scrollToTop();
+    try {
+        // Get the database connection from DatabaseConnection
+        Connection connection = DatabaseConnection.getConnection();
+
+        // Get the user ID
+        int userId = 1;//SessionManager.getInstance().getUserId(); // Replace with actual user ID from SessionManager
+
+        // Query to get total income, expense, and debt data (same as before)
+        String incomeQuery = "SELECT SUM(amount) AS total_income FROM incomes WHERE user_id = ?";
+        PreparedStatement incomeStmt = connection.prepareStatement(incomeQuery);
+        incomeStmt.setInt(1, userId);
+        ResultSet incomeRs = incomeStmt.executeQuery();
+        double totalIncome = 0;
+        if (incomeRs.next()) {
+            totalIncome = incomeRs.getDouble("total_income");
+        }
+
+        String expenseQuery = "SELECT SUM(amount) AS total_expenses FROM expenses WHERE user_id = ?";
+        PreparedStatement expenseStmt = connection.prepareStatement(expenseQuery);
+        expenseStmt.setInt(1, userId);
+        ResultSet expenseRs = expenseStmt.executeQuery();
+        double totalExpenses = 0;
+        if (expenseRs.next()) {
+            totalExpenses = expenseRs.getDouble("total_expenses");
+        }
+
+        String debtQuery = "SELECT SUM(amount) AS total_debt FROM debts WHERE debtor_id = ? AND is_paid = FALSE";
+        PreparedStatement debtStmt = connection.prepareStatement(debtQuery);
+        debtStmt.setInt(1, userId);
+        ResultSet debtRs = debtStmt.executeQuery();
+        double totalDebtAsDebtor = 0;
+        if (debtRs.next()) {
+            totalDebtAsDebtor = debtRs.getDouble("total_debt");
+        }
+
+        String creditorDebtQuery = "SELECT SUM(amount) AS total_debt FROM debts WHERE creditor_id = ? AND is_paid = FALSE";
+        PreparedStatement creditorDebtStmt = connection.prepareStatement(creditorDebtQuery);
+        creditorDebtStmt.setInt(1, userId);
+        ResultSet creditorDebtRs = creditorDebtStmt.executeQuery();
+        double totalDebtAsCreditor = 0;
+        if (creditorDebtRs.next()) {
+            totalDebtAsCreditor = creditorDebtRs.getDouble("total_debt");
+        }
+
+        // Calculate the financial health score
+        double financialHealthScore = calculateFinancialHealthScore(totalIncome, totalExpenses, totalDebtAsDebtor);
+
+        // Create a notice entry for the financial health score
+        String formattedDate = new java.text.SimpleDateFormat("MM/dd/yyyy").format(new java.util.Date());
+
+        // Add the current financial health score to the noticeboard
+    noticeBoard.addNoticeBoard(new ModelNoticeBoard(
+        new Color(0, 123, 255),  // Color for the score card
+        "Current Financial Health Score",  // Title
+        formattedDate,  // Show the current date
+        "Your current financial health score is " + String.format("%.2f", financialHealthScore) + "%. Keep up the good work, or consider revising your budget."
+    ));
+
+    // Show total income information
+    noticeBoard.addNoticeBoard(new ModelNoticeBoard(
+        new Color(34, 193, 195),  // Color for income card
+        "Total Income",  // Title
+        formattedDate,  // Show the current date
+        "Your total income this month is $" + String.format("%.2f", totalIncome) + "."
+    ));
+
+    // Show total expenses information
+    noticeBoard.addNoticeBoard(new ModelNoticeBoard(
+        new Color(238, 77, 36),  // Color for expense card
+        "Total Expenses",  // Title
+        formattedDate,  // Show the current date
+        "Your total expenses this month are $" + String.format("%.2f", totalExpenses) + ". Consider reviewing your spending habits and cutting back on non-essential items."
+    ));
+
+    // Show total debt information
+    noticeBoard.addNoticeBoard(new ModelNoticeBoard(
+        new Color(50, 93, 215),  // Color for debt card
+        "Total Debt",  // Title
+        formattedDate,  // Show the current date
+        "Your total outstanding debt is $" + String.format("%.2f", totalDebtAsDebtor) + ". Prioritize paying down high-interest debt to improve your financial health."
+    ));
+
+    // Show tips based on the user's expenses
+    if (totalExpenses > totalIncome * 0.5) {
+        // If the total expense is more than 50% of income, suggest cutting back
+        noticeBoard.addNoticeBoard(new ModelNoticeBoard(
+            new Color(238, 46, 57),  // Color for expense tips
+            "Expense Management Tip",  // Title
+            formattedDate,  // Show the current date
+            "Your expenses this month are high compared to your income. Consider creating a budget to track and limit non-essential spending."
+        ));
+    } else {
+        // If the user is spending less than 50% of income, provide a different tip
+        noticeBoard.addNoticeBoard(new ModelNoticeBoard(
+            new Color(27, 188, 204),  // Color for savings tips
+            "Smart Spending",  // Title
+            formattedDate,  // Show the current date
+            "You're doing well at keeping your expenses in check! Keep reviewing your expenses and focus on increasing your savings."
+        ));
     }
+
+    // Optional: scroll to the top to show the new notice
+    noticeBoard.scrollToTop();
+        
+        // Close the resources
+        incomeRs.close();
+        expenseRs.close();
+        debtRs.close();
+        creditorDebtRs.close();
+        incomeStmt.close();
+        expenseStmt.close();
+        debtStmt.close();
+        creditorDebtStmt.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();  // Log or handle error appropriately
+    }
+    }
+    
+    // Example method to calculate the financial health score based on income, expenses, and debt
+private double calculateFinancialHealthScore(double income, double expenses, double debt) {
+    double score = 0;
+
+    // Example: Basic formula to calculate financial health score
+    if (income > 0) {
+        score = (income - expenses - debt) / income * 100;  // Adjust this formula as needed
+    }
+
+    // Clamp score between 0 and 100
+    return Math.min(Math.max(score, 0), 100);
+}
 
     private void showMessage(String message) {
         Message obj = new Message(Dashboard.getFrames()[0], true);
