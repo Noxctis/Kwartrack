@@ -224,6 +224,7 @@ private double getExpenseThisWeek(int userId) {
 }
 
     private void initNoticeBoard() {
+<<<<<<< HEAD
     try {
         // Get the database connection from DatabaseConnection
         Connection connection = DatabaseConnection.getConnection();
@@ -323,6 +324,17 @@ private double getExpenseThisWeek(int userId) {
             formattedDate,  // Show the current date
             "You're doing well at keeping your expenses in check! Keep reviewing your expenses and focus on increasing your savings."
         ));
+=======
+//        noticeBoard.addDate("04/10/2021");
+//        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(94, 49, 238), "Hidemode", "Now", "Sets the hide mode for the component. If the hide mode has been specified in the This hide mode can be overridden by the component constraint."));
+//        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(218, 49, 238), "Tag", "2h ago", "Tags the component with metadata name that can be used by the layout engine. The tag can be used to explain for the layout manager what the components is showing, such as an OK or Cancel button."));
+//        noticeBoard.addDate("03/10/2021");
+//        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(32, 171, 43), "Further Reading", "12:30 PM", "There are more information to digest regarding MigLayout. The resources are all available at www.migcomponents.com"));
+//        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(50, 93, 215), "Span", "10:30 AM", "Spans the current cell (merges) over a number of cells. Practically this means that this cell and the count number of cells will be treated as one cell and the component can use the space that all these cells have."));
+//        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(27, 188, 204), "Skip ", "9:00 AM", "Skips a number of cells in the flow. This is used to jump over a number of cells before the next free cell is looked for. The skipping is done before this component is put in a cell and thus this cells is affected by it. \"count\" defaults to 1 if not specified."));
+//        noticeBoard.addNoticeBoard(new ModelNoticeBoard(new Color(238, 46, 57), "Push", "7:15 AM", "Makes the row and/or column that the component is residing in grow with \"weight\". This can be used instead of having a \"grow\" keyword in the column/row constraints."));
+        noticeBoard.scrollToTop();
+>>>>>>> 30b56f4c1d3fb909cec5504efab8046a10267a99
     }
 
     // Optional: scroll to the top to show the new notice
