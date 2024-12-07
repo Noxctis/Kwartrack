@@ -164,7 +164,7 @@ public class BalancePane extends javax.swing.JPanel {
 
     private void BalancePaneRemoveBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BalancePaneRemoveBalanceButtonActionPerformed
         // TODO add your handling code here:
-        RemoveWindow removeWindow = new RemoveWindow(); // Pass the reference to ExpensesPane
+        RemoveWindow removeWindow = new RemoveWindow(this); // Pass the reference to ExpensesPane
         removeWindow.setVisible(true);
         removeWindow.pack();
         removeWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

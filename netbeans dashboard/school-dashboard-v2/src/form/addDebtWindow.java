@@ -14,10 +14,10 @@ import db.SessionManager;
  */
 public class addDebtWindow extends javax.swing.JFrame {
 
-    private DebtsPane deptsPane;  // Reference to ExpensesPane for refreshing the table
+    private DebtsPane debtsPane;  // Reference to ExpensesPane for refreshing the table
     
     public addDebtWindow(DebtsPane debtsPane) {
-        this.deptsPane = deptsPane;  // Store the reference
+        this.debtsPane = debtsPane;  // Store the reference
         initComponents();
     }
     
@@ -241,8 +241,8 @@ public class addDebtWindow extends javax.swing.JFrame {
                 javax.swing.JOptionPane.INFORMATION_MESSAGE);
             
             // Refresh the Expenses table in ExpensesPane
-                    if (deptsPane != null) {
-                        deptsPane.loadDebtData();
+                    if (debtsPane != null) {
+                        debtsPane.loadDebtData();
                     }
                     
                     // Close the AddExpense window

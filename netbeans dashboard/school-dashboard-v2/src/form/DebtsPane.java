@@ -130,30 +130,29 @@ public class DebtsPane extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 public void loadDebtData() {
-    // Get the logged-in user's ID from SessionManager
-    int userId = 1; //SessionManager.getInstance().getUserId(); //hardcode for testing
-    
+        // Get the logged-in user's ID from SessionManager
+    int userId = 1; // SessionManager.getInstance().getUserId(); // hardcode for testing
+
     // SQL query to fetch debts where either debtor_id or creditor_id is the logged-in user's ID
-    // Joining the `debts` table with the `users` table to get usernames
-    String query = "SELECT debt_id, debts.debtor_id, debts.creditor_id, date_issued, date_due, amount, is_paid, " +
-                   "debtor.username AS debtor_username, creditor.username AS creditor_username " +
-                   "FROM debts " +
-                   "JOIN users AS debtor ON debts.debtor_id = debtor.user_id " +
-                   "JOIN users AS creditor ON debts.creditor_id = creditor.user_id " +
-                   "WHERE debts.debtor_id = ? OR debts.creditor_id = ?";
-    
+    String query = "SELECT debt_id, debts.debtor_id, debts.creditor_id, date_issued, date_due, amount, is_paid, "
+                 + "debtor.username AS debtor_username, creditor.username AS creditor_username "
+                 + "FROM debts "
+                 + "JOIN users AS debtor ON debts.debtor_id = debtor.user_id "
+                 + "JOIN users AS creditor ON debts.creditor_id = creditor.user_id "
+                 + "WHERE debts.debtor_id = ? OR debts.creditor_id = ?";
+
     try (Connection conn = DatabaseConnection.getConnection(); 
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Set the user ID as both the debtor_id and creditor_id in the query
         stmt.setInt(1, userId);
         stmt.setInt(2, userId);
-        
+
         // Execute the query and get the result set
         try (ResultSet rs = stmt.executeQuery()) {
             // Get the table model
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            
+
             // Clear any existing rows in the table
             model.setRowCount(0);
 
@@ -161,16 +160,12 @@ public void loadDebtData() {
             while (rs.next()) {
                 // Fetch the data for each debt record
                 int debtId = rs.getInt("debt_id");
-                int debtorId = rs.getInt("debtor_id");
-                int creditorId = rs.getInt("creditor_id");
+                String debtorUsername = rs.getString("debtor_username");
+                String creditorUsername = rs.getString("creditor_username");
                 java.sql.Date dateIssued = rs.getDate("date_issued");
                 java.sql.Date dateDue = rs.getDate("date_due");
                 double amount = rs.getDouble("amount");
                 boolean isPaid = rs.getBoolean("is_paid");
-                
-                // Get the debtor and creditor usernames
-                String debtorUsername = rs.getString("debtor_username");
-                String creditorUsername = rs.getString("creditor_username");
 
                 // Create an array with the data for each row
                 Object[] row = {
@@ -182,75 +177,117 @@ public void loadDebtData() {
                     amount, 
                     isPaid
                 };
-                
+
                 // Add the row to the table model
                 model.addRow(row);
             }
-            
+
+            // If the table is empty, prevent any further processing
+            if (model.getRowCount() == 0) {
+                return;  // Exit if no data is available
+            }
+
             // Disable editing for the entire table except for the Paid and Date Due columns
             jTable1.setDefaultEditor(Object.class, null);
-            
-            // Enable editing for specific columns (Paid and Date Due columns)
+
+            // Enable editing for specific columns (Amount, Paid, and Date Due)
             jTable1.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JTextField())); // Amount column (editable)
             jTable1.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(new JCheckBox())); // Paid column (editable)
             jTable1.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JTextField())); // Date Due column (editable)
 
         }
-        
+
     } catch (SQLException e) {
         // Show error message if there is an issue with the database
-        javax.swing.JOptionPane.showMessageDialog(this, "Error loading debt data: " + e.getMessage(), 
+        javax.swing.JOptionPane.showMessageDialog(this, "Error loading debt data: " + e.getMessage(),
                                                   "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 
     // Add a table model listener to detect changes made to the table cells
     jTable1.getModel().addTableModelListener(e -> {
-        int row = e.getFirstRow();
-        int column = e.getColumn();
-        
-        // Get updated data based on the cell change
-        Object updatedValue = jTable1.getValueAt(row, column);
-        int debtId = (int) jTable1.getValueAt(row, 0);  // Debt ID is in the first column
+    int row = e.getFirstRow();
+    int column = e.getColumn();
 
-        // Check which column was edited and update accordingly
-        if (column == 4) { // Date Due column (index 4)
-            // Date Due was updated
-            java.sql.Date updatedDate = java.sql.Date.valueOf(updatedValue.toString());
-            updateDebtDateDue(debtId, updatedDate);
-        } else if (column == 6) { // Paid checkbox column (index 6)
-            // Paid status was updated
-            boolean updatedPaidStatus = (boolean) updatedValue;
-            updateDebtPaidStatus(debtId, updatedPaidStatus);
+    // Ensure the row index is valid and within bounds
+    if (row >= 0 && row < jTable1.getRowCount()) {
+        // Ensure the column index is valid
+        if (column >= 0 && column < jTable1.getColumnCount()) {
+            // Get updated data based on the cell change
+            Object updatedValue = jTable1.getValueAt(row, column);
+            int debtId = (int) jTable1.getValueAt(row, 0);  // Debt ID is in the first column
+
+            // Check which column was edited and update accordingly
+            if (column == 4) { // Date Due column (index 4)
+                // Date Due was updated
+                try {
+                    java.sql.Date updatedDate = java.sql.Date.valueOf(updatedValue.toString());
+                    updateDebtDateDue(debtId, updatedDate);
+                } catch (Exception ex) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Invalid date format.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+            } else if (column == 6) { // Paid checkbox column (index 6)
+                // Paid status was updated
+                boolean updatedPaidStatus = (boolean) updatedValue;
+                updateDebtPaidStatus(debtId, updatedPaidStatus);
+            } else if (column == 5) { // Amount column (index 5)
+                // Amount was updated
+                try {
+                    double updatedAmount = Double.parseDouble(updatedValue.toString());
+                    updateDebtAmount(debtId, updatedAmount);
+                } catch (NumberFormatException ex) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Invalid amount format.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
-    });
+    }
+});
 }
 
-// Update the "Date Due" field in the database
-private void updateDebtDateDue(int debtId, java.sql.Date newDateDue) {
-    String updateQuery = "UPDATE debts SET date_due = ? WHERE debt_id = ?";
-    
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
-        stmt.setDate(1, newDateDue);
+// Method to update the debt's Date Due
+private void updateDebtDateDue(int debtId, java.sql.Date updatedDate) {
+    String query = "UPDATE debts SET date_due = ? WHERE debt_id = ?";
+    try (Connection conn = DatabaseConnection.getConnection(); 
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+        
+        stmt.setDate(1, updatedDate);
         stmt.setInt(2, debtId);
         stmt.executeUpdate();
+
     } catch (SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error updating date due: " + e.getMessage(),
+        javax.swing.JOptionPane.showMessageDialog(this, "Error updating debt's due date: " + e.getMessage(),
                                                   "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 }
 
-// Update the "Paid" status field in the database
-private void updateDebtPaidStatus(int debtId, boolean isPaid) {
-    String updateQuery = "UPDATE debts SET is_paid = ? WHERE debt_id = ?";
-    
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
-        stmt.setBoolean(1, isPaid);
+
+// Method to update the debt's Paid status
+private void updateDebtPaidStatus(int debtId, boolean updatedPaidStatus) {
+    String query = "UPDATE debts SET is_paid = ? WHERE debt_id = ?";
+    try (Connection conn = DatabaseConnection.getConnection(); 
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+        
+        stmt.setBoolean(1, updatedPaidStatus);
         stmt.setInt(2, debtId);
         stmt.executeUpdate();
+
     } catch (SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error updating paid status: " + e.getMessage(),
+        javax.swing.JOptionPane.showMessageDialog(this, "Error updating debt's paid status: " + e.getMessage(),
+                                                  "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+// Method to update the debt's Amount
+private void updateDebtAmount(int debtId, double updatedAmount) {
+    String query = "UPDATE debts SET amount = ? WHERE debt_id = ?";
+    try (Connection conn = DatabaseConnection.getConnection(); 
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+        
+        stmt.setDouble(1, updatedAmount);
+        stmt.setInt(2, debtId);
+        stmt.executeUpdate();
+
+    } catch (SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error updating debt's amount: " + e.getMessage(),
                                                   "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 }
@@ -267,7 +304,7 @@ private void updateDebtPaidStatus(int debtId, boolean isPaid) {
 
     private void expensePaneRemoveExpenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expensePaneRemoveExpenseButtonActionPerformed
         // TODO add your handling code here:
-        RemoveWindow removeWindow = new RemoveWindow(); // Pass the reference to ExpensesPane
+        RemoveWindow removeWindow = new RemoveWindow(this); // Pass the reference to ExpensesPane
         removeWindow.setVisible(true);
         removeWindow.pack();
         removeWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
