@@ -1,4 +1,4 @@
-package chart.blankchart;
+package blankchart;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
