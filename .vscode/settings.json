@@ -6,7 +6,16 @@
         "c:\\Users\\Chrys Sean Sevilla\\Documents\\Kwartrack\\Kwartrack\\lib\\jBCrypt-0.4.1.jar",
         "c:\\Users\\Chrys Sean Sevilla\\Documents\\Kwartrack\\Kwartrack\\lib\\javax.mail.jar",
         "c:\\Users\\Chrys Sean Sevilla\\Documents\\Kwartrack\\Kwartrack\\lib\\miglayout-4.0.jar",
-        "c:\\Users\\Chrys Sean Sevilla\\Documents\\Kwartrack\\Kwartrack\\lib\\mysql-connector-j-9.1.0.jar"
+        "c:\\Users\\Chrys Sean Sevilla\\Documents\\Kwartrack\\Kwartrack\\lib\\mysql-connector-j-9.1.0.jar",
+        "Kwartrack/lib/activation-1.1.jar",
+        "Kwartrack/lib/javax.mail.jar",
+        "Kwartrack/lib/jBCrypt-0.4.1.jar",
+        "Kwartrack/lib/jbcrypt-0.4.jar",
+        "Kwartrack/lib/jna-5.5.0.jar",
+        "Kwartrack/lib/jna-platform-5.5.0.jar",
+        "Kwartrack/lib/miglayout-4.0.jar",
+        "Kwartrack/lib/mysql-connector-j-9.1.0.jar",
+        "Kwartrack/lib/TimingFramework-0.55.jar"
     ],
     "sqltools.connections": [
         {
