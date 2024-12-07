@@ -1,4 +1,4 @@
-package blankchart;
+package chart.blankchart;
 
 public class SeriesSize {
 
