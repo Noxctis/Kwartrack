@@ -25,7 +25,7 @@ public class ExpensesChartPane extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(221, 224, 228));
 
-        jLabel1.setText("Expense");
+        jLabel1.setText("asdasdasd");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
