@@ -244,7 +244,7 @@ public class addDebtWindow extends javax.swing.JFrame {
                     if (deptsPane != null) {
                         deptsPane.loadDebtData();
                     }
-
+                    
                     // Close the AddExpense window
                     this.dispose();
         } else {

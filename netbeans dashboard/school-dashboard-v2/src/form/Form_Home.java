@@ -141,15 +141,86 @@ private String getCategoryById(int categoryId) {
 }
 
     private void initCardData() {
-        Icon icon1 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
-        card1.setData(new ModelCard("Total Balance", 5100, icon1));
-        Icon icon2 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
-        card2.setData(new ModelCard("Expense This Week", 2000, icon2));
+        int userId = 1; // Replace with SessionManager.getInstance().getUserId() for dynamic user ID
+
+    // Query for Total Balance (Income - Expense)
+    double totalBalance = getTotalBalance(userId);
+    
+    // Query for Expense This Week
+    double expenseThisWeek = getExpenseThisWeek(userId);
+    
+    // Set the Total Balance card data
+    Icon icon1 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
+    card1.setData(new ModelCard("Total Balance", totalBalance, icon1));
+    
+    // Set the Expense This Week card data
+    Icon icon2 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
+    card2.setData(new ModelCard("Expense This Week", expenseThisWeek, icon2));
+
+        //Icon icon1 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
+        //card1.setData(new ModelCard("Total Balance", 5100, icon1));
+        //Icon icon2 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.MONETIZATION_ON, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
+        //card2.setData(new ModelCard("Expense This Week", 2000, icon2));
         //Icon icon3 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.SHOPPING_BASKET, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
         //card3.setData(new ModelCard("Expense", 3000, icon3));
 //        Icon icon4 = IconFontSwing.buildIcon(GoogleMaterialDesignIcons.BUSINESS_CENTER, 60, new Color(255, 255, 255, 100), new Color(255, 255, 255, 15));
 //        card4.setData(new ModelCard("Other Income", 550, 95, icon4));
     }
+    
+    private double getTotalBalance(int userId) {
+    double totalBalance = 0.0;
+    try (Connection connection = DatabaseConnection.getConnection()) {
+        // Query to get total income and total expense for the user
+        String incomeQuery = "SELECT SUM(amount) FROM incomes WHERE user_id = ?";
+        PreparedStatement incomeStmt = connection.prepareStatement(incomeQuery);
+        incomeStmt.setInt(1, userId);
+        ResultSet incomeRs = incomeStmt.executeQuery();
+        if (incomeRs.next()) {
+            totalBalance += incomeRs.getDouble(1);  // Total Income
+        }
+        
+        String expenseQuery = "SELECT SUM(amount) FROM expenses WHERE user_id = ?";
+        PreparedStatement expenseStmt = connection.prepareStatement(expenseQuery);
+        expenseStmt.setInt(1, userId);
+        ResultSet expenseRs = expenseStmt.executeQuery();
+        if (expenseRs.next()) {
+            totalBalance -= expenseRs.getDouble(1);  // Subtract Total Expense
+        }
+        
+        incomeRs.close();
+        expenseRs.close();
+        incomeStmt.close();
+        expenseStmt.close();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return totalBalance;
+}
+
+private double getExpenseThisWeek(int userId) {
+    double expenseThisWeek = 0.0;
+    try (Connection connection = DatabaseConnection.getConnection()) {
+        // Query to get the total expense for this week
+        String query = "SELECT SUM(amount) FROM expenses WHERE user_id = ? AND YEARWEEK(date, 1) = YEARWEEK(CURDATE(), 1)";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, userId);
+        ResultSet rs = stmt.executeQuery();
+        
+        if (rs.next()) {
+            expenseThisWeek = rs.getDouble(1);
+        }
+        
+        rs.close();
+        stmt.close();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return expenseThisWeek;
+}
 
     private void initNoticeBoard() {
         noticeBoard.addDate("04/10/2021");
@@ -378,6 +449,7 @@ private String getCategoryById(int categoryId) {
         depositBalanceWindow.addWindowListener(new java.awt.event.WindowAdapter() {
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add expense window is closed
+            initCardData();
         }
     });
     }//GEN-LAST:event_dashboardBalanceButtonActionPerformed
@@ -393,6 +465,7 @@ private String getCategoryById(int categoryId) {
         addExpenseWindow.addWindowListener(new java.awt.event.WindowAdapter() {
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add expense window is closed
+            initCardData();
         }
     });
     }//GEN-LAST:event_dashboardExpenseButtonActionPerformed
@@ -408,6 +481,7 @@ private String getCategoryById(int categoryId) {
     addDebtWindow.addWindowListener(new java.awt.event.WindowAdapter() {
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add debt window is closed
+            initCardData();
         }
     }); 
     }//GEN-LAST:event_dashboardDebtButtonActionPerformed
