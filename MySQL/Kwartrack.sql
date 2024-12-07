@@ -136,8 +136,8 @@ CREATE TRIGGER after_debt_delete
 AFTER DELETE ON debts
 FOR EACH ROW
 BEGIN
-    UPDATE transactions
-    SET related_id = NULL
+    -- Delete related transactions for the deleted debt
+    DELETE FROM transactions
     WHERE related_id = OLD.debt_id AND type = 'debt';
 END;
 //
@@ -149,8 +149,8 @@ CREATE TRIGGER after_income_delete
 AFTER DELETE ON incomes
 FOR EACH ROW
 BEGIN
-    UPDATE transactions
-    SET related_id = NULL
+    -- Delete related transactions for the deleted income
+    DELETE FROM transactions
     WHERE related_id = OLD.income_id AND type = 'income';
 END;
 //
@@ -162,8 +162,8 @@ CREATE TRIGGER after_expense_delete
 AFTER DELETE ON expenses
 FOR EACH ROW
 BEGIN
-    UPDATE transactions
-    SET related_id = NULL
+    -- Delete related transactions for the deleted expense
+    DELETE FROM transactions
     WHERE related_id = OLD.expense_id AND type = 'expense';
 END;
 //
