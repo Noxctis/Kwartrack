@@ -8,6 +8,9 @@ import form.DebtsPane;
 import form.ExpensesPane;
 import form.BalancePane;
 import form.Form_Home;
+import form.DebtsChartPane;
+import form.ExpensesChartPane;
+import form.BalanceChartPane;
 import form.MainForm;
 import swing.MenuItem;
 import swing.PopupMenu;
@@ -22,6 +25,9 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import swingacrylic.SwingAcrylic;
 import db.SessionManager;
+import form.BalanceChartPane;
+import form.DebtsChartPane;
+import form.ExpensesChartPane;
 
 public class Dashboard extends javax.swing.JFrame {
 
@@ -69,6 +75,14 @@ public class Dashboard extends javax.swing.JFrame {
                         main.showForm(new DebtsPane());
                     } else if (subMenuIndex == 3) {
                         main.showForm(new BalancePane());
+                    }
+                } else if (menuIndex == 1) {
+                    if (subMenuIndex == 0) {
+                        main.showForm(new ExpensesChartPane());
+                    } else if (subMenuIndex == 1) {
+                        main.showForm(new DebtsChartPane());
+                    } else if (subMenuIndex == 2) {
+                        main.showForm(new BalanceChartPane());
                     }
                 }
             }
