@@ -54,7 +54,7 @@ public class Header extends PanelTransparent {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cmdMenu = new swing.Button();
+        cmdMenu = new swing.Button2();
         pic = new swing.ImageAvatar();
         lbUserName = new javax.swing.JLabel();
         lbRole = new javax.swing.JLabel();
@@ -142,7 +142,7 @@ public class Header extends PanelTransparent {
     }//GEN-LAST:event_mailBadgeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swing.Button cmdMenu;
+    private swing.Button2 cmdMenu;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbRole;
     private javax.swing.JLabel lbUserName;

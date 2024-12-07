@@ -62,8 +62,8 @@ public class Message extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         lbMessage = new javax.swing.JLabel();
-        button2 = new swing.Button();
-        button1 = new swing.Button();
+        button2 = new swing.Button2();
+        button1 = new swing.Button2();
         lbIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -158,8 +158,8 @@ public class Message extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swing.Button button1;
-    private swing.Button button2;
+    private swing.Button2 button1;
+    private swing.Button2 button2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbIcon;
     private javax.swing.JLabel lbMessage;
