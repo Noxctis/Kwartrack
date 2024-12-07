@@ -581,6 +581,7 @@ private double calculateFinancialHealthScore(double income, double expenses, dou
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add expense window is closed
             initCardData();
+            initNoticeBoard();
         }
     });
     }//GEN-LAST:event_dashboardBalanceButtonActionPerformed
@@ -597,6 +598,7 @@ private double calculateFinancialHealthScore(double income, double expenses, dou
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add expense window is closed
             initCardData();
+            initNoticeBoard();
         }
     });
     }//GEN-LAST:event_dashboardExpenseButtonActionPerformed
@@ -613,6 +615,8 @@ private double calculateFinancialHealthScore(double income, double expenses, dou
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add debt window is closed
             initCardData();
+            initNoticeBoard();
+            
         }
     }); 
     }//GEN-LAST:event_dashboardDebtButtonActionPerformed
