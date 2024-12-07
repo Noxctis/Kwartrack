@@ -97,11 +97,12 @@ AFTER INSERT ON incomes
 FOR EACH ROW
 BEGIN
     -- Insert corresponding transaction for the income
-    INSERT INTO transactions (user_id, type, amount, date, source, related_id)
-    VALUES (NEW.user_id, 'income', NEW.amount, NEW.date, NEW.source, NEW.income_id);
+    INSERT INTO transactions (user_id, type, amount, date, related_id)
+    VALUES (NEW.user_id, 'income', NEW.amount, NEW.date, NEW.income_id);
 END;
 //
 DELIMITER ;
+
 
 -- Trigger to update transactions after inserting into expenses
 DELIMITER //
@@ -117,15 +118,14 @@ END;
 DELIMITER ;
 
 -- Trigger to update transactions after inserting into debts
--- Trigger to update transactions after inserting into incomes
 DELIMITER //
-CREATE TRIGGER after_income_insert
-AFTER INSERT ON incomes
+CREATE TRIGGER after_debt_insert
+AFTER INSERT ON debts
 FOR EACH ROW
 BEGIN
-    -- Insert corresponding transaction for the income
-    INSERT INTO transactions (user_id, type, amount, date, related_id)
-    VALUES (NEW.user_id, 'income', NEW.amount, NEW.date, NEW.income_id);
+    -- Insert a transaction record for the debt
+    INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
+    VALUES (NEW.debtor_id, 'debt', NEW.amount, NEW.date_issued, NULL, NEW.debt_id);
 END;
 //
 DELIMITER ;
@@ -168,4 +168,3 @@ BEGIN
 END;
 //
 DELIMITER ;
-
