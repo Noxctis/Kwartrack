@@ -5,12 +5,45 @@ import java.awt.event.ActionListener;
 import db.SessionManager;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import db.DatabaseConnection;
+import db.UserDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import db.SessionManager;
+
 
 public class Header extends PanelTransparent {
 
     public Header() {
         initComponents();
         setTransparent(0.5f);
+        displayUserName();  // Set the username when the Header is initialized
+    }
+    
+    private void displayUserName() {
+        try {
+            // Get the logged-in user's ID from the SessionManager
+            int userId = 1;//SessionManager.getInstance().getUserId();
+            
+            // Fetch the username from the database using the userId
+            String query = "SELECT username FROM users WHERE user_id = ?";
+            try (Connection conn = DatabaseConnection.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, userId);
+                
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        // Set the username in the lbUserName label
+                        String username = rs.getString("username");
+                        lbUserName.setText(username);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  // Log or handle error appropriately
+        }
     }
 
     public void addMenuEvent(ActionListener event) {

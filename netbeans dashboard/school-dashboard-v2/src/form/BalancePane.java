@@ -1,10 +1,21 @@
 package form;
 
+import db.DatabaseConnection;
+import db.UserDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import db.SessionManager;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Date;
+
 public class BalancePane extends javax.swing.JPanel {
 
     public BalancePane() {
         initComponents();
         setOpaque(false);
+        refreshIncomeTable();  // Refresh the income table when the panel is created
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -98,14 +109,57 @@ public class BalancePane extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    // Function to refresh income table data
+    public void refreshIncomeTable() {
+    try {
+        // Get the database connection from DatabaseConnection
+        Connection connection = DatabaseConnection.getConnection();
+
+        // Query to get incomes for a specific user along with username
+        int userId = 1; //SessionManager.getInstance().getUserId(); // Replace with actual user ID from SessionManager
+        String query = "SELECT i.income_id, i.source, i.date, i.amount, u.username " +
+                       "FROM incomes i " +
+                       "JOIN users u ON i.user_id = u.user_id " +
+                       "WHERE i.user_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, userId);
+        
+        // Execute the query
+        ResultSet rs = statement.executeQuery();
+        
+        // Get the table model and clear existing rows
+        DefaultTableModel model = (DefaultTableModel) DebtsPaneTable.getModel();
+        model.setRowCount(0);
+
+        // Loop through the ResultSet and add rows to the table
+        while (rs.next()) {
+            int incomeId = rs.getInt("income_id");
+            String source = rs.getString("source");
+            Date date = rs.getDate("date");
+            double amount = rs.getDouble("amount");
+            String username = rs.getString("username");  // Retrieve the username from the query
+            model.addRow(new Object[] { incomeId, username, source, date, amount });
+        }
+
+        // Close the resources
+        rs.close();
+        statement.close();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();  // Log or handle error appropriately
+    }
+}
+    
     private void BalancePaneAddBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BalancePaneAddBalanceButtonActionPerformed
         //TODO add your handling code here:
 
-        depositBalance depositBalanceWindow = new depositBalance();
+        depositBalance depositBalanceWindow = new depositBalance(this);
         depositBalanceWindow.setVisible(true);
         depositBalanceWindow.pack();
         depositBalanceWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         depositBalanceWindow.setLocationRelativeTo(null);
+        
+       
     }//GEN-LAST:event_BalancePaneAddBalanceButtonActionPerformed
 
     private void BalancePaneRemoveBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BalancePaneRemoveBalanceButtonActionPerformed

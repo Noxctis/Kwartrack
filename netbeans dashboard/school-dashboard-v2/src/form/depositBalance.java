@@ -4,12 +4,26 @@
  */
 package form;
 
+import db.DatabaseConnection;
+import db.UserDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import db.SessionManager;
+
 /**
  *
  * @author user
  */
 public class depositBalance extends javax.swing.JFrame {
 
+    private BalancePane balancePane;
+    
+    public depositBalance(BalancePane balancePane) {
+    this.balancePane = balancePane;
+    initComponents();
+    }
+    
     /**
      * Creates new form depositBalance
      */
@@ -144,9 +158,62 @@ public class depositBalance extends javax.swing.JFrame {
 
     private void ayosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayosButtonActionPerformed
         // TODO add your handling code here:
-        double balance = Double.parseDouble(addEBalanceMoneyField.getText());
-        String balanceDate = addBalanceDateField.getText();
-        String balanceSource = addBalanceSourceField.getText();
+       // Get the income details from the input fields
+    double balance = Double.parseDouble(addEBalanceMoneyField.getText().trim());
+    String balanceDate = addBalanceDateField.getText().trim();
+    String balanceSource = addBalanceSourceField.getText().trim();
+    
+    // If no date is provided, set the current date as the default
+    if (balanceDate.isEmpty()) {
+        balanceDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());  // Current date in yyyy-MM-dd format
+    }
+
+    // Validate other inputs
+    if (balance <= 0 || balanceSource.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+                "Please fill all fields correctly.", 
+                "Invalid Input", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try (Connection conn = DatabaseConnection.getConnection()) {
+        // Prepare SQL query to insert the new income into the incomes table
+        String query = "INSERT INTO incomes (user_id, source, amount, date) VALUES (?, ?, ?, ?)";
+        
+        // Set up the prepared statement
+        PreparedStatement stmt = conn.prepareStatement(query);
+        int userId = 1;//SessionManager.getInstance().getUserId();  // Fetch the logged-in user's ID
+        stmt.setInt(1, userId);
+        stmt.setString(2, balanceSource);
+        stmt.setDouble(3, balance);
+        stmt.setString(4, balanceDate);  // Insert the date, either provided or default to current date
+        
+        // Execute the query
+        int rowsInserted = stmt.executeUpdate();
+        if (rowsInserted > 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Income added successfully!", 
+                    "Success", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            
+            // Optionally, refresh the table or perform other actions here (like calling refreshTableData)
+            if (balancePane != null) {
+            balancePane.refreshIncomeTable(); // Refresh table data to show the newly added income
+            }
+            this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Failed to add income. Please try again.", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+                "Error saving income: " + e.getMessage(), 
+                "Database Error", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_ayosButtonActionPerformed
 
     /**

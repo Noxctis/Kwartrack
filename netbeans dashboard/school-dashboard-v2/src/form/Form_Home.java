@@ -374,6 +374,12 @@ private String getCategoryById(int categoryId) {
         depositBalanceWindow.pack();
         depositBalanceWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         depositBalanceWindow.setLocationRelativeTo(null);
+        // Refresh the table data after adding the expense
+        depositBalanceWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+        public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+            refreshTableData();  // Refresh table data when the add expense window is closed
+        }
+    });
     }//GEN-LAST:event_dashboardBalanceButtonActionPerformed
 
     private void dashboardExpenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardExpenseButtonActionPerformed
@@ -383,6 +389,12 @@ private String getCategoryById(int categoryId) {
         addExpenseWindow.pack();
         addExpenseWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addExpenseWindow.setLocationRelativeTo(null);
+        // Refresh the table data after adding the expense
+        addExpenseWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+        public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+            refreshTableData();  // Refresh table data when the add expense window is closed
+        }
+    });
     }//GEN-LAST:event_dashboardExpenseButtonActionPerformed
 
     private void dashboardDebtButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardDebtButtonActionPerformed
@@ -392,8 +404,12 @@ private String getCategoryById(int categoryId) {
         addDebtWindow.pack();
         addDebtWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addDebtWindow.setLocationRelativeTo(null);
-        
-        
+        // Refresh the table data after adding the debt
+    addDebtWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+        public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+            refreshTableData();  // Refresh table data when the add debt window is closed
+        }
+    }); 
     }//GEN-LAST:event_dashboardDebtButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
