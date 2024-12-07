@@ -1,8 +1,8 @@
 package chart;
 
-import chart.blankchart.BlankPlotChart;
-import chart.blankchart.BlankPlotChatRender;
-import chart.blankchart.SeriesSize;
+import blankchart.BlankPlotChart;
+import blankchart.BlankPlotChatRender;
+import blankchart.SeriesSize;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -168,7 +168,7 @@ public class LineChart extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        blankPlotChart = new chart.blankchart.BlankPlotChart();
+        blankPlotChart = new blankchart.BlankPlotChart();
         panelLegend = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -199,7 +199,7 @@ public class LineChart extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private chart.blankchart.BlankPlotChart blankPlotChart;
+    private blankchart.BlankPlotChart blankPlotChart;
     private javax.swing.JPanel panelLegend;
     // End of variables declaration//GEN-END:variables
 }

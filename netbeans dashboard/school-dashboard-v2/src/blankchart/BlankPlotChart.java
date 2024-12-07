@@ -1,4 +1,4 @@
-package chart.blankchart;
+package blankchart;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
