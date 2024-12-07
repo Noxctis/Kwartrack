@@ -165,7 +165,7 @@ public class ExpensesPane extends javax.swing.JPanel {
     private void expensePaneRemoveExpenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expensePaneRemoveExpenseButtonActionPerformed
         // TODO add your handling code here:
         //new RemoveWindow().setVisible(true);
-        RemoveWindow removeWindow = new RemoveWindow(); // Pass the reference to ExpensesPane
+        RemoveWindow removeWindow = new RemoveWindow(this); // Pass the reference to ExpensesPane
         removeWindow.setVisible(true);
         removeWindow.pack();
         removeWindow.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

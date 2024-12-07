@@ -3,13 +3,37 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package form;
-
+import db.DatabaseConnection;
+import db.UserDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import db.SessionManager;
+import javax.swing.JOptionPane;
 /**
  *
  * @author user
  */
 public class RemoveWindow extends javax.swing.JFrame {
 
+    private DebtsPane debtsPane;  // Reference to ExpensesPane for refreshing the table
+    private BalancePane balancePane;  // Reference to ExpensesPane for refreshing the table
+    private ExpensesPane expensesPane;  // Reference to ExpensesPane for refreshing the table
+    
+    public RemoveWindow(DebtsPane debtsPane){
+        this.debtsPane = debtsPane;  // Store the reference
+        initComponents();
+    }
+    
+    public RemoveWindow(BalancePane balancePane){
+        this.balancePane = balancePane;   // Store the reference
+        initComponents();
+    }
+    
+    public RemoveWindow(ExpensesPane expensesPane){
+        this.expensesPane = expensesPane;  // Store the reference
+        initComponents();
+    }
     /**
      * Creates new form RemoveWindow
      */
@@ -122,10 +146,77 @@ public class RemoveWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void RemoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveButtonActionPerformed
-        // TODO add your handling code here:
-        //double balance = Double.parseDouble(addEBalanceMoneyField.getText());
-        //String balanceDate = addBalanceDateField.getText();
-        String RemoveId = RemoveIdField.getText();
+        // Get the selected type from JComboBox
+    String selectedType = (String) jComboBox1.getSelectedItem();
+    // Get the Remove ID (Expense ID, Income ID, or Debt ID)
+    String removeId = RemoveIdField.getText().trim();
+
+    if (removeId.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid ID to remove.");
+        return; // Exit method if no ID is entered
+    }
+
+    // Convert the ID to an integer (assuming the ID is a valid number)
+    try {
+        int id = Integer.parseInt(removeId);
+
+        // Get the current user's ID (this should come from session or login context)
+        int currentUserId = 1;//SessionManager.getInstance().getUserId(); // Assuming you have a method to get the logged-in user ID
+
+        // Create a connection to the database
+        try (Connection connection = DatabaseConnection.getConnection()) { // Use try-with-resources for automatic closing
+            String query = "";
+            switch (selectedType) {
+                case "Debts":
+                    // SQL query to remove a debt only if the current user is the debtor
+                    query = "DELETE FROM debts WHERE debt_id = ? AND debtor_id = ?";
+                    break;
+                case "Expenses":
+                    // SQL query to remove an expense only if the current user is the owner
+                    query = "DELETE FROM expenses WHERE expense_id = ? AND user_id = ?";
+                    break;
+                case "Balance":
+                    // SQL query to remove an income only if the current user is the owner
+                    query = "DELETE FROM incomes WHERE income_id = ? AND user_id = ?";
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(this, "Invalid selection.");
+                    return;
+            }
+
+            // Prepare and execute the query
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, id); // Set the ID to be deleted
+                statement.setInt(2, currentUserId); // Ensure the current user is the owner of the record
+                int rowsAffected = statement.executeUpdate();
+
+                // Check if the delete was successful
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(this, "Successfully removed " + selectedType.toLowerCase() + " with ID " + id);
+                    if (expensesPane != null) {
+                        expensesPane.loadExpenses();
+                    }
+                    if (balancePane != null) {
+                    balancePane.refreshIncomeTable(); // Refresh table data to show the newly added income
+                    }
+                     if (debtsPane != null) {
+                        debtsPane.loadDebtData();
+                    }
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "You do not have permission to remove this " + selectedType.toLowerCase() + " or the record does not exist.");
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error while deleting: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Database connection error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid numerical ID.");
+    }
     }//GEN-LAST:event_RemoveButtonActionPerformed
 
     /**
