@@ -117,14 +117,15 @@ END;
 DELIMITER ;
 
 -- Trigger to update transactions after inserting into debts
+-- Trigger to update transactions after inserting into incomes
 DELIMITER //
-CREATE TRIGGER after_debt_insert
-AFTER INSERT ON debts
+CREATE TRIGGER after_income_insert
+AFTER INSERT ON incomes
 FOR EACH ROW
 BEGIN
-    -- Insert a transaction record for the debt
-    INSERT INTO transactions (user_id, type, amount, date, category_id, related_id)
-    VALUES (NEW.debtor_id, 'debt', NEW.amount, NEW.date_issued, NULL, NEW.debt_id);
+    -- Insert corresponding transaction for the income
+    INSERT INTO transactions (user_id, type, amount, date, related_id)
+    VALUES (NEW.user_id, 'income', NEW.amount, NEW.date, NEW.income_id);
 END;
 //
 DELIMITER ;
