@@ -270,7 +270,7 @@ private double getExpenseThisWeek(int userId) {
 
         // Calculate the financial health score
         double financialHealthScore = calculateFinancialHealthScore(totalIncome, totalExpenses, totalDebtAsDebtor);
-
+        
         // Create a notice entry for the financial health score
         String formattedDate = new java.text.SimpleDateFormat("MM/dd/yyyy").format(new java.util.Date());
 
@@ -581,7 +581,6 @@ private double calculateFinancialHealthScore(double income, double expenses, dou
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add expense window is closed
             initCardData();
-            initNoticeBoard();
         }
     });
     }//GEN-LAST:event_dashboardBalanceButtonActionPerformed
@@ -598,7 +597,6 @@ private double calculateFinancialHealthScore(double income, double expenses, dou
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add expense window is closed
             initCardData();
-            initNoticeBoard();
         }
     });
     }//GEN-LAST:event_dashboardExpenseButtonActionPerformed
@@ -615,8 +613,6 @@ private double calculateFinancialHealthScore(double income, double expenses, dou
         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
             refreshTableData();  // Refresh table data when the add debt window is closed
             initCardData();
-            initNoticeBoard();
-            
         }
     }); 
     }//GEN-LAST:event_dashboardDebtButtonActionPerformed
