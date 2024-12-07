@@ -35,8 +35,8 @@ public class Action extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cmdEdit = new swing.Button();
-        cmdDelete = new swing.Button();
+        cmdEdit = new swing.Button2();
+        cmdDelete = new swing.Button2();
 
         cmdEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/edit.png"))); // NOI18N
         cmdEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -83,7 +83,7 @@ public class Action extends javax.swing.JPanel {
     }//GEN-LAST:event_cmdEditActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swing.Button cmdDelete;
-    private swing.Button cmdEdit;
+    private swing.Button2 cmdDelete;
+    private swing.Button2 cmdEdit;
     // End of variables declaration//GEN-END:variables
 }
