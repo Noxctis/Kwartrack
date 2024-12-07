@@ -216,7 +216,7 @@ public void loadDebtData() {
             Object updatedValue = jTable1.getValueAt(row, column);
             int debtId = (int) jTable1.getValueAt(row, 0);  // Debt ID is in the first column
 
-            // Check which column was edited and update accordingly
+            // Check which column was edited and update accordinglyok
             if (column == 4) { // Date Due column (index 4)
                 // Date Due was updated
                 try {
