@@ -52,7 +52,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="BalanceLineChart" min="-2" pref="880" max="-2" attributes="0"/>
+                          <Component id="ExpensesLineChart" min="-2" pref="880" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="expenseChartAddExpenseButton" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
@@ -71,7 +71,7 @@
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="BalanceLineChart" min="-2" pref="535" max="-2" attributes="0"/>
+                      <Component id="ExpensesLineChart" min="-2" pref="535" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="expenseChartAddExpenseButton" min="-2" pref="40" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -92,7 +92,7 @@
             <Property name="text" type="java.lang.String" value="Your Expense Trend"/>
           </Properties>
         </Component>
-        <Component class="chart.LineChart" name="BalanceLineChart">
+        <Component class="chart.LineChart" name="ExpensesLineChart">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
