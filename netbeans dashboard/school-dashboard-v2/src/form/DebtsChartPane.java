@@ -6,14 +6,19 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import db.SessionManager;
+import java.awt.Color;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import chart.ModelChart;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DebtsChartPane extends javax.swing.JPanel {
 
     public DebtsChartPane() {
         initComponents();
         setOpaque(false);
+        loadDebtsData();
         //loadExpenses();
     }
     @SuppressWarnings("unchecked")
@@ -22,7 +27,7 @@ public class DebtsChartPane extends javax.swing.JPanel {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        BalanceLineChart = new chart.LineChart();
+        DebtsLineChart = new chart.LineChart();
         DebtsChartAddDebtbutton = new javax.swing.JButton();
         DebtsChartRemoveExpenseButton = new javax.swing.JButton();
 
@@ -34,10 +39,10 @@ public class DebtsChartPane extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Your Debts Overview");
 
-        BalanceLineChart.setToolTipText("");
-        BalanceLineChart.setFocusTraversalPolicyProvider(true);
-        BalanceLineChart.setFocusable(false);
-        BalanceLineChart.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        DebtsLineChart.setToolTipText("");
+        DebtsLineChart.setFocusTraversalPolicyProvider(true);
+        DebtsLineChart.setFocusable(false);
+        DebtsLineChart.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
 
         DebtsChartAddDebtbutton.setBackground(new java.awt.Color(204, 204, 204));
         DebtsChartAddDebtbutton.setText("Add Debt");
@@ -64,7 +69,7 @@ public class DebtsChartPane extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(BalanceLineChart, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(DebtsLineChart, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(DebtsChartAddDebtbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -77,7 +82,7 @@ public class DebtsChartPane extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BalanceLineChart, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DebtsLineChart, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(DebtsChartAddDebtbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -117,6 +122,62 @@ public class DebtsChartPane extends javax.swing.JPanel {
         removeWindow.setLocationRelativeTo(null);
     }//GEN-LAST:event_DebtsChartRemoveExpenseButtonActionPerformed
     
+    private void loadDebtsData() {
+    int userId = 1; // Replace with SessionManager.getInstance().getUserId()
+
+    // SQL query to get debt data for the last 6 months
+    String query = "SELECT d.date_issued, d.amount, u1.username AS debtor_username, u2.username AS creditor_username " +
+                   "FROM debts d " +
+                   "JOIN users u1 ON d.debtor_id = u1.user_id " +
+                   "JOIN users u2 ON d.creditor_id = u2.user_id " +
+                   "WHERE d.debtor_id = ? OR d.creditor_id = ? " +
+                   "AND d.date_issued >= CURDATE() - INTERVAL 6 MONTH " +  // Last 6 months
+                   "ORDER BY d.date_issued ASC";  // Order by date
+
+    List<ModelChart> chartData = new ArrayList<>();
+    
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        stmt.setInt(1, userId); // Set user ID as parameter
+        stmt.setInt(2, userId); // Set user ID as parameter for both debtor and creditor
+        
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                java.sql.Date dateIssued = rs.getDate("date_issued");
+                double amount = rs.getDouble("amount");
+                String label = new java.text.SimpleDateFormat("MMM yyyy").format(dateIssued); // Format as "Month Year"
+
+                // Add the debt data for this specific record
+                ModelChart chartModel = new ModelChart(label, new double[]{amount});
+                chartData.add(chartModel);
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    // Add the debt data to the chart
+    addDebtDataToChart(chartData);
+}
+
+    private void addDebtDataToChart(List<ModelChart> chartData) {
+    // Clear any previous data
+    DebtsLineChart.clear();
+
+    // Add legend for debts
+    DebtsLineChart.addLegend("Debts", new Color(12, 84, 175), new Color(0, 108, 247));
+    
+    // Add the fetched data to the chart
+    for (ModelChart data : chartData) {
+        DebtsLineChart.addData(data);
+    }
+
+    // Start the animation to display the data on the chart
+    DebtsLineChart.start();
+}
+
 //    public void loadExpenses() {
 //        // Get user ID from the session
 //        int userId = 1;//SessionManager.getInstance().getUserId(); hardcode for testing
@@ -163,9 +224,9 @@ public class DebtsChartPane extends javax.swing.JPanel {
 //    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private chart.LineChart BalanceLineChart;
     private javax.swing.JButton DebtsChartAddDebtbutton;
     private javax.swing.JButton DebtsChartRemoveExpenseButton;
+    private chart.LineChart DebtsLineChart;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

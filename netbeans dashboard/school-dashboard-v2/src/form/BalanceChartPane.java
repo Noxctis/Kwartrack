@@ -8,12 +8,17 @@ import java.sql.ResultSet;
 import db.SessionManager;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import chart.ModelChart;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BalanceChartPane extends javax.swing.JPanel {
 
     public BalanceChartPane() {
         initComponents();
         setOpaque(false);
+        loadIncomeData();
         //loadExpenses();
     }
     @SuppressWarnings("unchecked")
@@ -120,6 +125,71 @@ public class BalanceChartPane extends javax.swing.JPanel {
 
     }//GEN-LAST:event_BalanceChartAddBalanceButtonActionPerformed
     
+    private void loadIncomeData() {
+    int userId = 1; // Replace with SessionManager.getInstance().getUserId()
+
+    // SQL query to get individual income records for the last 6 months from the incomes table
+    String query = "SELECT date, amount " +
+                   "FROM incomes " +
+                   "WHERE user_id = ? " +
+                   "AND date >= CURDATE() - INTERVAL 6 MONTH " +
+                   "ORDER BY date ASC"; // Order by date ascending
+
+    List<ModelChart> chartData = new ArrayList<>();
+    
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        stmt.setInt(1, userId); // Set user ID in query
+        
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                java.sql.Date date = rs.getDate("date");
+                double amount = rs.getDouble("amount");
+
+                // Convert the date to month-year format
+                String label = new java.text.SimpleDateFormat("MMM yyyy").format(date);
+
+                // Add the income data for this specific record
+                ModelChart chartModel = new ModelChart(label, new double[]{amount});
+                chartData.add(chartModel);
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    // Add the income data to the chart
+    addIncomeDataToChart(chartData);
+}
+
+
+
+// Method to add individual income data to the chart
+private void addIncomeDataToChart(List<ModelChart> chartData) {
+    // Clear previous data
+    BalanceLineChart.clear();
+
+    // Add legend for income
+    BalanceLineChart.addLegend("Income", new Color(12, 84, 175), new Color(0, 108, 247));
+
+    // Add each income data as a separate point
+    for (ModelChart data : chartData) {
+        BalanceLineChart.addData(data);
+    }
+
+    // Start the animation (chart display)
+    BalanceLineChart.start();
+}
+
+
+// Convert month number to month name
+private String getMonthName(int month) {
+    String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    return months[month - 1];
+}
+
 //    public void loadExpenses() {
 //        // Get user ID from the session
 //        int userId = 1;//SessionManager.getInstance().getUserId(); hardcode for testing

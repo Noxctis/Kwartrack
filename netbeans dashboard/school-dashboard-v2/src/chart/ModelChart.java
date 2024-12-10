@@ -26,8 +26,8 @@ public class ModelChart {
     public ModelChart() {
     }
 
-    private String label;
-    private double values[];
+        private String label;
+    private double[] values;
 
     public double getMaxValues() {
         double max = 0;

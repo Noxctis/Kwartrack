@@ -52,7 +52,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="BalanceLineChart" min="-2" pref="880" max="-2" attributes="0"/>
+                          <Component id="DebtsLineChart" min="-2" pref="880" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="DebtsChartAddDebtbutton" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
@@ -70,7 +70,7 @@
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="BalanceLineChart" min="-2" pref="535" max="-2" attributes="0"/>
+                      <Component id="DebtsLineChart" min="-2" pref="535" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="DebtsChartAddDebtbutton" min="-2" pref="40" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -91,7 +91,7 @@
             <Property name="text" type="java.lang.String" value="Your Debts Overview"/>
           </Properties>
         </Component>
-        <Component class="chart.LineChart" name="BalanceLineChart">
+        <Component class="chart.LineChart" name="DebtsLineChart">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
