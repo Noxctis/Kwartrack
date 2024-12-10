@@ -33,10 +33,16 @@ public class LineChart extends javax.swing.JPanel {
     private float animate;
     private String showLabel;
     private Point labelLocation = new Point();
+    
+//    public void updateBackgroundColor(Color color) {
+//    setBackground(color);
+//    repaint();
+//}
 
     public LineChart() {
         initComponents();
-        setOpaque(false);
+        //setBackground(new java.awt.Color(173, 216, 230)); // light blue daw
+        setOpaque(true); // originally false
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -173,6 +179,11 @@ public class LineChart extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
+        blankPlotChart.setBackground(new java.awt.Color(153, 153, 153));
+        blankPlotChart.setForeground(new java.awt.Color(0, 0, 0));
+        blankPlotChart.setToolTipText("");
+
+        panelLegend.setBackground(new java.awt.Color(204, 204, 204));
         panelLegend.setOpaque(false);
         panelLegend.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
 
