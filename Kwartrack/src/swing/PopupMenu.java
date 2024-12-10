@@ -23,7 +23,7 @@ public class PopupMenu extends javax.swing.JDialog {
         panel.setLayout(new MigLayout("fill, wrap", "8[fill, 120]0", "0[35, fill]0[35, fill]0"));
         int subMenuIndex = -1;
         for (String st : subMenu) {
-            MenuButton item = new MenuButton(st, true);
+            MenuButton item = new MenuButton(st, false);
             item.setIndex(++subMenuIndex);
             item.addActionListener(new ActionListener() {
                 @Override

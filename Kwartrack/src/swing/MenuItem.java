@@ -1,4 +1,4 @@
-package swing;
+    package swing;
 
 import event.EventMenu;
 import event.EventMenuSelected;
@@ -54,8 +54,8 @@ public class MenuItem extends javax.swing.JPanel {
         this.eventSelected = eventSelected;
         this.index = index;
         setOpaque(false);
-        setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "[fill, 40!]0[fill, 35!]"));
-        MenuButton firstItem = new MenuButton(menu.getIcon(), "     " + menu.getMenuName());
+        setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "[fill, 40!]0[fill, 35!]")); //menu alignment
+        MenuButton firstItem = new MenuButton(menu.getIcon(), "     " + menu.getMenuName()); // menuname
         firstItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

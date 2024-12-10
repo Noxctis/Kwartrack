@@ -1,69 +1,57 @@
 package model;
 
-import db.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import db.DatabaseConnection;
 
 public class AddDebt {
-    private int debtorId; // The user who owes the debt
-    private int creditorId; // The user to whom the debt is owed
-    private double amount;
-    private String dateIssued;
-    private String dateDue;
-    private boolean isPaid;
+    private int debtorId;
+    private int creditorId;
+    private double debtAmount;
+    private String dueDate;
 
-    // Constructor
-    public AddDebt(int debtorId, int creditorId, double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount cannot be negative.");
-        }
-
+    public AddDebt(int debtorId, int creditorId, double debtAmount, String dueDate) {
         this.debtorId = debtorId;
         this.creditorId = creditorId;
-        this.amount = amount;
-        this.dateIssued = java.time.LocalDate.now().toString(); // Set current date as dateIssued
-        this.dateDue = null; // Default to null
-        this.isPaid = false; // Default to unpaid
+        this.debtAmount = debtAmount;
+        this.dueDate = dueDate;
     }
 
-    // Utility method to validate the date format (YYYY-MM-DD)
-    private boolean isValidDate(String date) {
-        return date.matches("\\d{4}-\\d{2}-\\d{2}");
-    }
-
-    // Save debt to the database
     public boolean saveToDatabase() {
-        String insertQuery = "INSERT INTO debts (debtor_id, creditor_id, amount, date_issued, is_paid) " +
-                             "VALUES (?, ?, ?, ?, ?)";
+        Connection connection = null;
+        PreparedStatement ps = null;
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
+        try {
+            // Get a valid database connection
+            connection = DatabaseConnection.getConnection();
 
-            stmt.setInt(1, this.debtorId);
-            stmt.setInt(2, this.creditorId);
-            stmt.setDouble(3, this.amount);
-            stmt.setString(4, this.dateIssued);
-            stmt.setBoolean(5, this.isPaid);
+            // SQL query to insert a new debt record
+            String sql = "INSERT INTO debts (debtor_id, creditor_id, debt_amount, due_date) VALUES (?, ?, ?, ?)";
 
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+            // Prepare the statement
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, debtorId);       // Set debtor's ID
+            ps.setInt(2, creditorId);     // Set creditor's ID
+            ps.setDouble(3, debtAmount);  // Set debt amount
+            ps.setString(4, dueDate);     // Set due date
+
+            // Execute the query
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;  // Return true if at least one row was inserted
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+            System.err.println("Error saving debt to the database: " + e.getMessage());
+            return false; // Return false if an error occurred
 
-    @Override
-    public String toString() {
-        return "AddDebt{" +
-                "debtorId=" + debtorId +
-                ", creditorId=" + creditorId +
-                ", amount=" + amount +
-                ", dateIssued='" + dateIssued + '\'' +
-                ", dateDue='" + dateDue + '\'' +
-                ", isPaid=" + isPaid +
-                '}';
+        } finally {
+            // Close resources
+            try {
+                if (ps != null) ps.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing resources: " + e.getMessage());
+            }
+        }
     }
 }

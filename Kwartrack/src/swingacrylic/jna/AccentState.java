@@ -1,4 +1,4 @@
-package ru.krlvm.swingacrylic.jna;
+package swingacrylic.jna;
 
 public interface AccentState {
     int ACCENT_DISABLED = 0;

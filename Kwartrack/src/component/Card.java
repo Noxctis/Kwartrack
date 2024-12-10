@@ -26,6 +26,7 @@ public class Card extends javax.swing.JPanel {
         setOpaque(false);
         setBackground(new Color(112, 69, 246));
         colorGradient = new Color(255, 255, 255);
+        //setPreferredSize(new java.awt.Dimension(248, 114)); // Adjust the size as needed
         //pro.setBackground(new Color(255, 255, 255, 100)); //percentage bar in balance card
         //pro.setForeground(Color.WHITE);
     }

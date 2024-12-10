@@ -38,7 +38,7 @@ public class PanelCover extends javax.swing.JPanel {
     private void init() {
         
         // Logo
-        JLabel logo = new JLabel(new ImageIcon(getClass().getResource("/icon/logo.png"))); // Replace with your logo path
+        JLabel logo = new JLabel(new ImageIcon(getClass().getResource("/icon/logo2.png"))); // Replace with your logo path
         add(logo, "wrap, center");
         
         title = new JLabel("Welcome Back!");
@@ -128,7 +128,7 @@ public class PanelCover extends javax.swing.JPanel {
     private void login(boolean login) {
         if (this.isLogin != login) {
             if (login) {
-                title.setText("hello, Friend!");
+                title.setText("Welcome to Kwartrack!");
                 description.setText("Enter your personal details");
                 description1.setText("and start journey with us");
                 button.setText("SIGN UP");
