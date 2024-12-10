@@ -1,13 +1,6 @@
 package swing;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
@@ -22,22 +15,6 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 public class ButtonBadges extends JButton {
 
-    public int getBadges() {
-        return badges;
-    }
-
-    public void setBadges(int badges) {
-        this.badges = badges;
-    }
-
-    public Color getEffectColor() {
-        return effectColor;
-    }
-
-    public void setEffectColor(Color effectColor) {
-        this.effectColor = effectColor;
-    }
-
     private Animator animator;
     private int targetSize;
     private float animatSize;
@@ -51,6 +28,20 @@ public class ButtonBadges extends JButton {
         setBorder(new EmptyBorder(5, 5, 5, 5));
         setBackground(Color.WHITE);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        TimingTarget target = new TimingTargetAdapter() {
+            @Override
+            public void timingEvent(float fraction) {
+                if (fraction > 0.5f) {
+                    alpha = 1 - fraction;
+                }
+                animatSize = fraction * targetSize;
+                repaint();
+            }
+        };
+        animator = new Animator(400, target);
+        animator.setResolution(0);
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -64,18 +55,23 @@ public class ButtonBadges extends JButton {
                 animator.start();
             }
         });
-        TimingTarget target = new TimingTargetAdapter() {
-            @Override
-            public void timingEvent(float fraction) {
-                if (fraction > 0.5f) {
-                    alpha = 1 - fraction;
-                }
-                animatSize = fraction * targetSize;
-                repaint();
-            }
-        };
-        animator = new Animator(400, target);
-        animator.setResolution(0);
+    }
+
+    public int getBadges() {
+        return badges;
+    }
+
+    public void setBadges(int badges) {
+        this.badges = badges;
+        repaint(); // Ensure UI updates when badges change
+    }
+
+    public Color getEffectColor() {
+        return effectColor;
+    }
+
+    public void setEffectColor(Color effectColor) {
+        this.effectColor = effectColor;
     }
 
     @Override
@@ -85,11 +81,18 @@ public class ButtonBadges extends JButton {
         Graphics2D g2 = (Graphics2D) grphcs;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
+        g2.fill(new RoundRectangle2D.Double(0, 0, width, height, height, height));
+
         if (pressedPoint != null) {
             Area area = new Area(new RoundRectangle2D.Double(0, 0, width, height, height, height));
             g2.setColor(effectColor);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
-            area.intersect(new Area(new Ellipse2D.Double((pressedPoint.x - animatSize / 2), (pressedPoint.y - animatSize / 2), animatSize, animatSize)));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            area.intersect(new Area(new Ellipse2D.Double(
+                pressedPoint.x - animatSize / 2,
+                pressedPoint.y - animatSize / 2,
+                animatSize,
+                animatSize
+            )));
             g2.fill(area);
         }
         g2.setComposite(AlphaComposite.SrcOver);
@@ -100,7 +103,7 @@ public class ButtonBadges extends JButton {
     public void paint(Graphics grphcs) {
         super.paint(grphcs);
         if (badges > 0) {
-            String value = badges > 9 ? "+9" : badges + "";
+            String value = badges > 9 ? "+9" : String.valueOf(badges);
             int width = getWidth();
             Graphics2D g2 = (Graphics2D) grphcs;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -110,13 +113,11 @@ public class ButtonBadges extends JButton {
             int fh = (int) r2.getHeight();
             g2.setColor(getForeground());
             int size = Math.max(fw, fh) + 4;
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.8f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
             g2.fillOval(width - size, 0, size, size);
             int x = (size - fw) / 2;
             g2.setColor(Color.WHITE);
-            g2.setComposite(AlphaComposite.SrcOver);
             g2.drawString(value, width - size + x, ft.getAscent() + 1);
-            g2.dispose();
         }
     }
 }

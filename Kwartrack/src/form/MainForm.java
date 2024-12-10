@@ -8,9 +8,9 @@ public class MainForm extends javax.swing.JPanel {
 
     public MainForm() {
         initComponents();
-        setOpaque(true);
+        setOpaque(false);
         setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(10, 20, 10, 20));
+        //setBorder(new EmptyBorder(10, 20, 10, 20)); //it fixed header cut off
     }
 
     public void showForm(Component form) {

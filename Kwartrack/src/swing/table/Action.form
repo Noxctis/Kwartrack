@@ -39,19 +39,25 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="com.raven.swing.Button2" name="cmdEdit">
+    <Component class="com.raven.swing.Button" name="cmdEdit">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/com/raven/icon/edit.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdEditActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="com.raven.swing.Button2" name="cmdDelete">
+    <Component class="com.raven.swing.Button" name="cmdDelete">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/com/raven/icon/delete.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdDeleteActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

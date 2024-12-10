@@ -1,16 +1,20 @@
 package model;
 
-import javax.swing.Icon;
+//import swing.table.EventAction;
+//import swing.table.ModelAction;
+import swing.table.ModelProfile;
+import java.text.DecimalFormat;
+//import javax.swing.Icon;
 
 public class ModelStudent {
 
-    public Icon getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Icon icon) {
-        this.icon = icon;
-    }
+//    public Icon getIcon() {
+//        return icon;
+//    }
+                                        //plus or minus for later
+//    public void setIcon(Icon icon) {
+//        this.icon = icon;
+//    }
 
     public String getName() {
         return name;
@@ -19,50 +23,60 @@ public class ModelStudent {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getGender() {
-        return gender;
+    
+    public String getType() {
+        return type;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getCourse() {
-        return course;
+    public String getdate() {
+        return date;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setdate(String date) {
+        this.date = date;
     }
 
-    public double getFees() {
-        return fees;
+//    public String getCourse() {
+//        return course;
+//    }
+//
+//    public void setCourse(String course) {
+//        this.course = course;
+//    }
+
+    public double getAmount() {
+        return amount;
     }
 
-    public void setFees(double fees) {
-        this.fees = fees;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public ModelStudent(Icon icon, String name, String gender, String course, double fees) {
-        this.icon = icon;
+    public ModelStudent(String type, String name, String date, double amount) {
+        //this.icon = icon;
+        this.type = type;
         this.name = name;
-        this.gender = gender;
-        this.course = course;
-        this.fees = fees;
+        this.date = date;
+        this.amount = amount;
+        //this.fees = fees;
     }
 
     public ModelStudent() {
     }
-
-    private Icon icon;
+    private String type;
     private String name;
-    private String gender;
-    private String course;
-    private double fees;
+    private String date;
+    private double amount;
+   
 
-    public Object[] toRowTable(EventAction event) {
+    public Object[] toRowTable(/*EventAction event*/) {
         DecimalFormat df = new DecimalFormat("$#,##0.00");
-        return new Object[]{new ModelProfile(icon, name), gender, course, df.format(fees), new ModelAction(this, event)};
+        //return new Object[]{new ModelProfile(/*icon,*/name), date, df.format(amount)/*, new ModelAction(this, event)*/};
+        //return new Object[]{type, new ModelProfile(name), date, df.format(amount)}; //with icon thing
+        return new Object[]{type, name, date, df.format(amount)};
     }
 }

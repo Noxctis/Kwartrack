@@ -28,7 +28,7 @@ public class ModelMenu {
         this.subMenu = subMenu;
     }
 
-    public ModelMenu(Icon icon, String menuName, String... subMenu) {
+    public ModelMenu(Icon icon, String menuName, String... subMenu) { //gets called in menu.java
         this.icon = icon;
         this.menuName = menuName;
         this.subMenu = subMenu;

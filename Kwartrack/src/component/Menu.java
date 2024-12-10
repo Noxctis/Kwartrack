@@ -51,19 +51,19 @@ public class Menu extends PanelTransparent {
     }
 
     public void initMenuItem() {
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/1.png")), "Dashboard", "Home", "sean", "cyril", "john", "Accordions", "Modals"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Charts", "Morris", "Flot", "Line"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Report", "Income", "Expense", "Profit"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/1.png")), "Dashboard", "Home", "Expenses", "Debts", "Income"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Charts", "Expenses", "Debts", "Income"));
+       // addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Report", "Income", "Expense", "Profit"));
         //addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/4.png")), "Message", "Sender", "Inbox", "User"));
         //addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Staff", "Sender", "Inbox", "User"));
         //addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/6.png")), "Student", "Menu 001", "Menu 002", "Menu 003"));
         //addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/7.png")), "Library", "Menu 001", "Menu 002", "Menu 003"));
         //addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/9.png")), "Calendar", "Menu 001", "Menu 002", "Menu 003"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/11.png")), "Contact", "Menu 001", "Menu 002", "Menu 003"));
+       // addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/11.png")), "Contact", "Menu 001", "Menu 002", "Menu 003"));
     }
 
     private void addMenu(ModelMenu menu) {
-        panel.add(new MenuItem(menu, getEventMenu(), event, panel.getComponentCount()), "h 40!");
+        panel.add(new MenuItem(menu, getEventMenu(), event, panel.getComponentCount()), "h 30!"); //too high can cut or "remove" navigation buttons
     }
 
     private EventMenu getEventMenu() {

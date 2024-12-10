@@ -4,8 +4,13 @@ import component.Header;
 import component.Menu;
 import event.EventMenuSelected;
 import event.EventShowPopupMenu;
-import form.Form1;
+import form.DebtsPane;
+import form.ExpensesPane;
+import form.BalancePane;
 import form.Form_Home;
+import form.DebtsChartPane;
+import form.ExpensesChartPane;
+import form.BalanceChartPane;
 import form.MainForm;
 import swing.MenuItem;
 import swing.PopupMenu;
@@ -19,6 +24,10 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import swingacrylic.SwingAcrylic;
+import db.SessionManager;
+import form.BalanceChartPane;
+import form.DebtsChartPane;
+import form.ExpensesChartPane;
 
 public class Dashboard extends javax.swing.JFrame {
 
@@ -34,7 +43,19 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     private void init() {
-        layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10");
+        // Check if the session is valid
+    /*if (!SessionManager.getInstance().isSessionValid()) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+                "Your session has expired. Please log in again.",
+                "Session Expired",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        //new Login().setVisible(true); // Redirect to login screen
+        this.dispose(); // Close the current dashboard
+        return; // Stop further initialization
+    }*/
+        layout = new MigLayout("fill", "10[]10[100%, fill]10", "10[fill, top]10"); // original code
+        //layout = new MigLayout("fill", "10[200!]10[800!, fill]10", "10[fill, top]10");
+
         bg.setLayout(layout);
         menu = new Menu();
         header = new Header();
@@ -49,7 +70,19 @@ public class Dashboard extends javax.swing.JFrame {
                     if (subMenuIndex == 0) {
                         main.showForm(new Form_Home());
                     } else if (subMenuIndex == 1) {
-                        main.showForm(new Form1());
+                        main.showForm(new ExpensesPane());
+                    } else if (subMenuIndex == 2) {
+                        main.showForm(new DebtsPane());
+                    } else if (subMenuIndex == 3) {
+                        main.showForm(new BalancePane());
+                    }
+                } else if (menuIndex == 1) {
+                    if (subMenuIndex == 0) {
+                        main.showForm(new ExpensesChartPane());
+                    } else if (subMenuIndex == 1) {
+                        main.showForm(new DebtsChartPane());
+                    } else if (subMenuIndex == 2) {
+                        main.showForm(new BalanceChartPane());
                     }
                 }
             }
@@ -168,7 +201,7 @@ public class Dashboard extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
