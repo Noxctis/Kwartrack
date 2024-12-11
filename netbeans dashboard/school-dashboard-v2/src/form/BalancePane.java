@@ -9,6 +9,7 @@ import db.SessionManager;
 import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Date;
+import javax.swing.JOptionPane;
 
 public class BalancePane extends javax.swing.JPanel {
 
@@ -16,6 +17,7 @@ public class BalancePane extends javax.swing.JPanel {
         initComponents();
         setOpaque(false);
         refreshIncomeTable();  // Refresh the income table when the panel is created
+        addTableModelListener();
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -116,6 +118,87 @@ public class BalancePane extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    // Method to add the TableModelListener to the table
+    private void addTableModelListener() {
+        DebtsPaneTable.getModel().addTableModelListener(e -> {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+
+            // Get updated data based on the cell change
+            Object updatedValue = DebtsPaneTable.getValueAt(row, column);
+            int incomeId = (int) DebtsPaneTable.getValueAt(row, 0); // Income ID is in the first column
+
+            // Check which column was edited and update accordingly
+            if (column == 2) { // Source column (index 2)
+                // Source was updated
+                String updatedSource = updatedValue.toString();
+                updateIncomeSource(incomeId, updatedSource);
+            } else if (column == 3) { // Date column (index 3)
+                // Date was updated
+                java.sql.Date updatedDate = java.sql.Date.valueOf(updatedValue.toString());
+                updateIncomeDate(incomeId, updatedDate);
+            } else if (column == 4) { // Amount column (index 4)
+                // Amount was updated
+                double updatedAmount = Double.parseDouble(updatedValue.toString());
+                updateIncomeAmount(incomeId, updatedAmount);
+            }
+        });
+    }
+    
+    // Method to update the income date in the database
+    private void updateIncomeDate(int incomeId, java.sql.Date updatedDate) {
+        String updateDateQuery = "UPDATE incomes SET date = ? WHERE income_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(updateDateQuery)) {
+
+            stmt.setDate(1, updatedDate);
+            stmt.setInt(2, incomeId);
+
+            stmt.executeUpdate(); // Update the date in the database
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating income date: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Method to update the income amount in the database
+    private void updateIncomeAmount(int incomeId, double updatedAmount) {
+        String updateAmountQuery = "UPDATE incomes SET amount = ? WHERE income_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(updateAmountQuery)) {
+
+            stmt.setDouble(1, updatedAmount);
+            stmt.setInt(2, incomeId);
+
+            stmt.executeUpdate(); // Update the amount in the database
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating income amount: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Method to update the income source in the database
+    private void updateIncomeSource(int incomeId, String updatedSource) {
+        String updateSourceQuery = "UPDATE incomes SET source = ? WHERE income_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(updateSourceQuery)) {
+
+            stmt.setString(1, updatedSource);
+            stmt.setInt(2, incomeId);
+
+            stmt.executeUpdate(); // Update the source in the database
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating income source: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     // Function to refresh income table data
     public void refreshIncomeTable() {
     try {
