@@ -25,8 +25,8 @@ public class Button extends JButton {
     private Point pressedPoint;
     private float alpha;
     private Color effectColor = new Color(255, 255, 255);
-    private Color gradientStart = Color.decode("#FF4066"); // Default Gradient Start (Steel Blue)
-    private Color gradientEnd = Color.decode("#FFF16A");   // Default Gradient End (Cornflower Blue)
+    private Color gradientStart = Color.decode("#000000"); // Default Gradient Start (Steel Blue)
+    private Color gradientEnd = Color.decode("#36454f");   // Default Gradient End (Cornflower Blue)
 
     public Button() {
         setContentAreaFilled(false);

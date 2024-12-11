@@ -38,7 +38,7 @@ public class PanelCover extends javax.swing.JPanel {
     private void init() {
         
         // Logo
-        JLabel logo = new JLabel(new ImageIcon(getClass().getResource("/icon/logo2.png"))); // Replace with your logo path
+        JLabel logo = new JLabel(new ImageIcon(getClass().getResource("/icon/logo.png"))); // Replace with your logo path
         add(logo, "wrap, center");
         
         title = new JLabel("Welcome Back!");
@@ -82,8 +82,8 @@ public class PanelCover extends javax.swing.JPanel {
 
     @Override
     protected void paintComponent(Graphics grphcs) {
-        Graphics2D g2 = (Graphics2D) grphcs;
-        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#FF4066"), 0, getHeight(), Color.decode("#FFF16A"));
+        Graphics2D g2 = (Graphics2D) grphcs;                               //FF4066  36454f   FAF9F6   000000                     FFF16A" 219ebc
+        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#000000"), 0, getHeight(), Color.decode("#36454f"));
         g2.setPaint(gra);
         g2.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(grphcs);
