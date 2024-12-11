@@ -15,6 +15,7 @@ public class ExpensesPane extends javax.swing.JPanel {
         initComponents();
         setOpaque(false);
         loadExpenses();
+        addTableModelListener();
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -41,7 +42,15 @@ public class ExpensesPane extends javax.swing.JPanel {
             new String [] {
                 "Expense ID", "Category", "Date", "Amount"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(expensePaneTable);
 
         expensePaneAddExpenseButton.setBackground(new java.awt.Color(204, 204, 204));
@@ -111,6 +120,65 @@ public class ExpensesPane extends javax.swing.JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    // Method to add the TableModelListener to the table
+    private void addTableModelListener() {
+        expensePaneTable.getModel().addTableModelListener(e -> {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+
+            // Get updated data based on the cell change
+            Object updatedValue = expensePaneTable.getValueAt(row, column);
+            int expenseId = (int) expensePaneTable.getValueAt(row, 0); // Expense ID is in the first column
+
+            // Check which column was edited and update accordingly
+            if (column == 3) { // Date column (index 3)
+                // Date was updated
+                java.sql.Date updatedDate = java.sql.Date.valueOf(updatedValue.toString());
+                updateExpenseDate(expenseId, updatedDate);
+            } else if (column == 4) { // Amount column (index 4)
+                // Amount was updated
+                double updatedAmount = Double.parseDouble(updatedValue.toString());
+                updateExpenseAmount(expenseId, updatedAmount);
+            }
+        });
+    }
+
+    // Method to update the expense date in the database
+    private void updateExpenseDate(int expenseId, java.sql.Date updatedDate) {
+        String updateDateQuery = "UPDATE expenses SET date = ? WHERE expense_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(updateDateQuery)) {
+
+            stmt.setDate(1, updatedDate);
+            stmt.setInt(2, expenseId);
+
+            stmt.executeUpdate(); // Update the date in the database
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating expense date: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Method to update the expense amount in the database
+    private void updateExpenseAmount(int expenseId, double updatedAmount) {
+        String updateAmountQuery = "UPDATE expenses SET amount = ? WHERE expense_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(updateAmountQuery)) {
+
+            stmt.setDouble(1, updatedAmount);
+            stmt.setInt(2, expenseId);
+
+            stmt.executeUpdate(); // Update the amount in the database
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating expense amount: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
     public void loadExpenses() {
         // Get user ID from the session

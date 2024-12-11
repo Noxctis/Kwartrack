@@ -52,7 +52,7 @@ public class DebtsPane extends javax.swing.JPanel {
                 java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false, true
+                false, false, false, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
