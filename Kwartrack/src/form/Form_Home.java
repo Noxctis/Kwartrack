@@ -201,7 +201,7 @@ private String getCategoryById(int categoryId) {
             }
             
             // Query to get total debt payments made by the user
-            String debtPaymentQuery = "SELECT SUM(amount) FROM debt_payments WHERE user_id = ?";
+            String debtPaymentQuery = "SELECT SUM(amount) FROM debts WHERE user_id = ?";
             PreparedStatement debtPaymentStmt = connection.prepareStatement(debtPaymentQuery);
             debtPaymentStmt.setInt(1, userId);
             ResultSet debtPaymentRs = debtPaymentStmt.executeQuery();
