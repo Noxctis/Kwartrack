@@ -170,36 +170,61 @@ private String getCategoryById(int categoryId) {
     }
     
     private double getTotalBalance(int userId) {
-    double totalBalance = 0.0;
-    try (Connection connection = DatabaseConnection.getConnection()) {
-        // Query to get total income and total expense for the user
-        String incomeQuery = "SELECT SUM(amount) FROM incomes WHERE user_id = ?";
-        PreparedStatement incomeStmt = connection.prepareStatement(incomeQuery);
-        incomeStmt.setInt(1, userId);
-        ResultSet incomeRs = incomeStmt.executeQuery();
-        if (incomeRs.next()) {
-            totalBalance += incomeRs.getDouble(1);  // Total Income
+        double totalBalance = 0.0;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            // Query to get total income for the user
+            String incomeQuery = "SELECT SUM(amount) FROM incomes WHERE user_id = ?";
+            PreparedStatement incomeStmt = connection.prepareStatement(incomeQuery);
+            incomeStmt.setInt(1, userId);
+            ResultSet incomeRs = incomeStmt.executeQuery();
+            if (incomeRs.next()) {
+                totalBalance += incomeRs.getDouble(1);  // Add Total Income
+            }
+            
+            // Query to get total expense for the user
+            String expenseQuery = "SELECT SUM(amount) FROM expenses WHERE user_id = ?";
+            PreparedStatement expenseStmt = connection.prepareStatement(expenseQuery);
+            expenseStmt.setInt(1, userId);
+            ResultSet expenseRs = expenseStmt.executeQuery();
+            if (expenseRs.next()) {
+                totalBalance -= expenseRs.getDouble(1);  // Subtract Total Expense
+            }
+            
+            // Query to get total debt issued for the user
+            String debtQuery = "SELECT SUM(amount) FROM debts WHERE debtor_id = ? AND is_paid = FALSE";
+            PreparedStatement debtStmt = connection.prepareStatement(debtQuery);
+            debtStmt.setInt(1, userId);
+            ResultSet debtRs = debtStmt.executeQuery();
+            if (debtRs.next()) {
+                totalBalance += debtRs.getDouble(1);  // Add Unpaid Debts (amount owed to the user)
+            }
+            
+            // Query to get total debt payments made by the user
+            String debtPaymentQuery = "SELECT SUM(amount) FROM debt_payments WHERE user_id = ?";
+            PreparedStatement debtPaymentStmt = connection.prepareStatement(debtPaymentQuery);
+            debtPaymentStmt.setInt(1, userId);
+            ResultSet debtPaymentRs = debtPaymentStmt.executeQuery();
+            if (debtPaymentRs.next()) {
+                totalBalance -= debtPaymentRs.getDouble(1);  // Subtract Debt Payments (paid by the user)
+            }
+            
+            incomeRs.close();
+            expenseRs.close();
+            debtRs.close();
+            debtPaymentRs.close();
+            incomeStmt.close();
+            expenseStmt.close();
+            debtStmt.close();
+            debtPaymentStmt.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         
-        String expenseQuery = "SELECT SUM(amount) FROM expenses WHERE user_id = ?";
-        PreparedStatement expenseStmt = connection.prepareStatement(expenseQuery);
-        expenseStmt.setInt(1, userId);
-        ResultSet expenseRs = expenseStmt.executeQuery();
-        if (expenseRs.next()) {
-            totalBalance -= expenseRs.getDouble(1);  // Subtract Total Expense
-        }
-        
-        incomeRs.close();
-        expenseRs.close();
-        incomeStmt.close();
-        expenseStmt.close();
-        
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return totalBalance;
     }
     
-    return totalBalance;
-}
 
 private double getExpenseThisWeek(int userId) {
     double expenseThisWeek = 0.0;
