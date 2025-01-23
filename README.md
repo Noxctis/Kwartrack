@@ -5,12 +5,12 @@ The application not only simplifies financial tracking but also provides persona
 # Object Oriented Analysis
 The app provides a Financial Health Score, personalized insights, and secure data storage. Key Features Include: 
 Functional Features:
--- Money Tracking: The app allows users to track income, expenses, and debts. This includes adding, editing, and categorizing transactions.
--- Financial Health Score: The app calculates a score based on user spending habits, debt management, and savings patterns.
--- Registration and Login: Secure user registration and authentication to protect user data.
--- Personalized Insights: The app provides tailored tips and suggestions based on the user's financial behavior.
--- Secure Data Storage: Data is stored securely using encryption (e.g., hashing) to ensure user privacy.
--- Database Integration: A database is used to store and retrieve user data, transaction history, and other relevant information.
+- Money Tracking: The app allows users to track income, expenses, and debts. This includes adding, editing, and categorizing transactions.
+- Financial Health Score: The app calculates a score based on user spending habits, debt management, and savings patterns.
+- Registration and Login: Secure user registration and authentication to protect user data.
+- Personalized Insights: The app provides tailored tips and suggestions based on the user's financial behavior.
+- Secure Data Storage: Data is stored securely using encryption (e.g., hashing) to ensure user privacy.
+- Database Integration: A database is used to store and retrieve user data, transaction history, and other relevant information.
 
 Non-Functional Features:
 -- User-Friendliness: The app should be intuitive and easy to use, even for users with limited technical skills.
