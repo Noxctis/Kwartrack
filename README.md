@@ -13,26 +13,26 @@ Functional Features:
 - Database Integration: A database is used to store and retrieve user data, transaction history, and other relevant information.
 
 Non-Functional Features:
--- User-Friendliness: The app should be intuitive and easy to use, even for users with limited technical skills.
--- Responsiveness: The app should have high performance and low latency to provide a smooth user experience.
--- Scalability: The app's design should allow for future expansion of features and accommodate a growing user base.
--- Security: User data and privacy should be protected through robust security measures.
+- User-Friendliness: The app should be intuitive and easy to use, even for users with limited technical skills.
+- Responsiveness: The app should have high performance and low latency to provide a smooth user experience.
+- Scalability: The app's design should allow for future expansion of features and accommodate a growing user base.
+- Security: User data and privacy should be protected through robust security measures.
 
 Classes:
--- User: Handles user details, authentication, and preferences. It is the central entity that interacts with other components like transactions, budgets, debts and financial health scoring.
--- Transaction: Manages income, expenses, and debt records with relevant attributes such as amount, category, and date.
--- Debt: Tracks and manages the user’s outstanding financial obligations.
--- FinancialHealthScore: Calculates and updates the user’s financial health and stability based on their data.
--- Budget: Tracks user-defined budgets and alerts for overspending.
+- User: Handles user details, authentication, and preferences. It is the central entity that interacts with other components like transactions, budgets, debts and financial health scoring.
+- Transaction: Manages income, expenses, and debt records with relevant attributes such as amount, category, and date.
+- Debt: Tracks and manages the user’s outstanding financial obligations.
+- FinancialHealthScore: Calculates and updates the user’s financial health and stability based on their data.
+- Budget: Tracks user-defined budgets and alerts for overspending.
 
 Relationships:
--- User ↔ Transactions:
+- User ↔ Transactions:
 Each user is associated with multiple Transaction objects, representing their income, balance, expenses and debts.
--- User ↔ Debt:
+- User ↔ Debt:
 Each user is associated with multiple Debt objects, each tracking a specific financial obligation.
--- Debt ↔ FinancialHealthScore:
+- Debt ↔ FinancialHealthScore:
 The FinancialHealthScore incorporates debt data to evaluate the user’s debt-to-income ratio and financial stability.
--- Transactions ↔ FinancialHealthScore:
+- Transactions ↔ FinancialHealthScore:
 The FinancialHealthScore class processes data from income, balance, expense, transaction and debt objects to calculate the user's financial health score, considering factors like spending habits and debts.
 
 This object-oriented approach ensures that Kwartrack is flexible and future-proof. By defining distinct classes and clear relationships, the system can easily adapt to changing user needs and integrate new features or technologies without disrupting existing functionality.
@@ -40,10 +40,10 @@ This object-oriented approach ensures that Kwartrack is flexible and future-proo
 
 # Object Oriented Design
 The program implements the four object oriented design principles - Abstraction, Encapsulation, Inheritance and Polymorphism - through the use of classes and objects.
--- Abstraction is applied through the class FinancialHealthScore, calculating the user’s financial score by interacting with Transaction, Debt and Budget data, abstracting the calculation details and exposing only the financial score and insights.
--- Encapsulation is applied in all classes like User, Transaction, Debt, Budget, Expense, Balance and Financial HealthScore by using private variables and public getter and setter methods to access or modify them. This ensures that sensitive data like user details or debt balances are securely managed and cannot be accessed or altered directly.
--- Inheritance is applied where all the classes like User, Transaction, Debt, Budget, Expense, Balance and FinancialHealthScore extends to the customed javax.swing classes.
--- Polymorphism is applied in the system where classes like Transaction, Debt, Expense and Balance override common methods inherited from a base class or interface.
+- Abstraction is applied through the class FinancialHealthScore, calculating the user’s financial score by interacting with Transaction, Debt and Budget data, abstracting the calculation details and exposing only the financial score and insights.
+- Encapsulation is applied in all classes like User, Transaction, Debt, Budget, Expense, Balance and Financial HealthScore by using private variables and public getter and setter methods to access or modify them. This ensures that sensitive data like user details or debt balances are securely managed and cannot be accessed or altered directly.
+- Inheritance is applied where all the classes like User, Transaction, Debt, Budget, Expense, Balance and FinancialHealthScore extends to the customed javax.swing classes.
+- Polymorphism is applied in the system where classes like Transaction, Debt, Expense and Balance override common methods inherited from a base class or interface.
 
 # Conclusion
 Kwartrack exemplifies the effective application of object-oriented programming principles to solve a prevalent societal issue: financial mismanagement. By breaking down the system into modular, reusable, and extensible components, the application addresses the unique financial challenges faced by Filipinos, such as tracking small debts ("utang") and managing daily income and expenses.
